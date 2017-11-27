@@ -18,10 +18,10 @@ Budget
 Timeline
 ===
 
--November 26th, 2017 - December 1st, 2017 - Design 
--November 26th, 2017 - December 10th, 2017 - Frontend integration
--November 26th, 2017 - December December 26th - Development
--November 26th, 2017 - January 5th, 2018 - Project Management
+- November 26th, 2017 - December 1st, 2017 - Design 
+- November 26th, 2017 - December 10th, 2017 - Frontend integration
+- November 26th, 2017 - December December 26th - Development
+- November 26th, 2017 - January 5th, 2018 - Project Management
 
 ___
 
