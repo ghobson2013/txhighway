@@ -37,7 +37,7 @@ ___
 Project
 ===
 
-We will coordinate via DM on Slack & Github to design a web app that analyses BCH and BTC blockchains and showcases them in a similar style as the highway meme originally created by Maplesyrupsucker. Data will be analyzed in a similar fashion as Cash Drop. Variations in sprites based on TX size will be used to produce a more balanced interactive meme with variations. Additional data will be displayed, such as transactions waiting to clear, as well as transaction size upon click of a vehicle (transaction). The asset will be a Github hosted web app that allows for users both new and old to easily visualize the problem with the BTC network and highlight the value of Bitcoin Cash.  
+We will coordinate via DM on Slack & Github to design a web app that analyzes BCH and BTC blockchains and showcases them in a similar style as the highway meme originally created by Maplesyrupsucker. Data will be analyzed in a similar fashion as Cash Drop. Variations in sprites based on TX size will be used to produce a more balanced interactive meme with variations. Additional data will be displayed, such as transactions waiting to clear, as well as transaction size upon click of a vehicle (transaction). The asset will be a Github hosted web app that allows for users both new and old to easily visualize the problem with the BTC network and highlight the value of Bitcoin Cash.  
 
 The expected outcome of the project is to bring more users to Bitcoin Cash and get them using Bitcoin Cash. We also want to help increase donations to the Bitcoin Cash Fund by providing a unique interactive feature that gamify's the donation process.
 
