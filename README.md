@@ -1,5 +1,6 @@
 # txhighway
-TX Highway
+
+Visualize the difference in speed and scalability by comparing Bitcoin Cash and Bitcoin Core's transactions. Unlock a "Lambo" with each donation back to the Bitcoin Cash Fund.
 
 
 Budget
