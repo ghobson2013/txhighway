@@ -2,7 +2,7 @@
 
 /* create variables */
 const socketCash = io("https://cashexplorer.bitcoin.com/");
-const socketCore = io("https://insight.bitpay.com/");
+const socketCore = io("https://localbitcoinschain.com/");//https://insight.bitpay.com/");
 const blockchairCashUrl = "http://cors-proxy.htmldriven.com/?url=https://api.blockchair.com/bitcoin-cash/mempool/";
 const blockchairCoreUrl = "http://cors-proxy.htmldriven.com/?url=https://api.blockchair.com/bitcoin/mempool/";
 
@@ -79,6 +79,7 @@ socketCash.on("tx", function(data){
 
 socketCore.on("tx", function(data){
 	newTX("core", data);
+	//console.log("coretx");
 });
 
 socketCash.on("block", function(data){
