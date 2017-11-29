@@ -47,9 +47,10 @@ carXLargeCore.src = "assets/sprites/core-large.png";
 carWhaleCore.src = "assets/sprites/core-whale.png";
 
 // constants
-let SINGLE_LANE = (canvas.height)/14;
 let WIDTH = canvas.width;
 let HEIGHT = canvas.height;
+let SINGLE_LANE = HEIGHT/14;
+
 const SSPEED = 8;
 const CSPEED = 12;
 
@@ -70,11 +71,12 @@ socketCore.on("connect", function () {
 
 socketCash.on("tx", function(data){
 	newTX("cash", data);
+	console.log("cash tx");
 });
 
 socketCore.on("tx", function(data){
 	newTX("core", data);
-	
+	console.log("core tx");
 });
 
 socketCash.on("block", function(data){
@@ -133,56 +135,61 @@ window.addEventListener("resize", resize, false);
 /* new transaction is made */
 function newTX(type, txInfo){
 	let lane = SINGLE_LANE;
-
+	let x = -150
+	
 	if (type == "cash"){
 		let randLane = Math.floor(Math.random() * 8) + 1;
-		lane = randLane * SINGLE_LANE;
-		lane = lane - SINGLE_LANE;
+		lane *= randLane;
+		lane -= SINGLE_LANE;
 
-		let car = getCarSize(txInfo.valueOut);
-		let height = SINGLE_LANE;
-		let width = SINGLE_LANE * (car.height / car.width);
-		let y = lane - height/2;
-		
-		txCash.push({
-			type:"cash",
-			id: txInfo.txid,
-			x: -150,
-			y: lane,
-			h: height,
-			w: width,
-			valueOut: txInfo.valueOut,
-			donation: checkForDonation(txInfo),
-			isCash: true
-		});
+		createVehicle(type, txCash, txInfo, x, lane, true);
 
 	} else {
 		lane *= 10;
+		lane = lane - SINGLE_LANE;
 
-		let x = -150
+		let car = getCar(txInfo.valueOut, false, false);
+		let width = SINGLE_LANE * (car.width / car.height);
+
+		// calculate distance between vehicles
 		if (txCore.length > 0){
 			let last = txCore[txCore.length - 1];
-			let w = SINGLE_LANE * carMediumCash.height / carMediumCash.width;
-			let front = w + x;
+			//let w = SINGLE_LANE * car.height / car.width;
+			let front = width + x;
 			if (front >= last.x){
-				x = last.x - w - 50;
+				x = last.x - width - 10;
 			}
 		}
-		txCore.push({
-			type:"core",
-			id: txInfo.txid,
-			x: x,
-			y: lane,
-			valueOut: txInfo.valueOut,
-			donation: false,
-			isCash: false
-		});
+
+		createVehicle(type, txCore, txInfo, x, lane, false);
+
 	}
 }
+
+/* create vehicles and push to appropriate array */
+function createVehicle(type, arr, txInfo, x, lane, isCash){
+	let car = getCar(txInfo.valueOut, checkForDonation(txInfo), isCash);
+	let height = SINGLE_LANE;
+	let width = height * (car.width / car.height);
+	let y = lane;
+	
+	arr.push({
+		type:type,
+		id: txInfo.txid,
+		x: x,
+		y: y,
+		h: height,
+		w: width,
+		valueOut: txInfo.valueOut,
+		donation: checkForDonation(txInfo),
+		isCash: isCash
+	});
+}
+
 /* end new transaction */
 
 /* return car based upon transaction size*/
-let  getCarSize = function(valueOut, donation, isCash){
+function getCar(valueOut, donation, isCash){
 
 	//console.log(valueOut);
 	if (donation){
@@ -220,7 +227,6 @@ let  getCarSize = function(valueOut, donation, isCash){
 			return carWhaleCore;
 		}
 	}
-
 }
 /* end return car */
 
@@ -242,52 +248,46 @@ function checkForDonation(txInfo){
 }
 /* end check for donations */
 
-
-/* Refresh every frame */
-let requestID = requestAnimationFrame(update);
-
-function update(){
-	requestID = requestAnimationFrame(update);
-
+function drawBackground(){
 	// draw the lanes
 	ctx.clearRect(0,0,WIDTH,HEIGHT);
 	ctx.fillStyle = "#9EA0A3";
 
 	// dash style
 	ctx.setLineDash([6]);
-  	ctx.strokeStyle = "#FFF";
+	ctx.strokeStyle = "#FFF";
 
-  	// stroke
+	// stroke
 	ctx.strokeRect(-2, SINGLE_LANE * 1, WIDTH + 3, SINGLE_LANE);
 	ctx.strokeRect(-2, SINGLE_LANE * 3, WIDTH + 3, SINGLE_LANE);
 	ctx.strokeRect(-2, SINGLE_LANE * 5, WIDTH + 3, SINGLE_LANE);
 	ctx.strokeRect(-2, SINGLE_LANE * 7, WIDTH + 3, SINGLE_LANE);
 
 	ctx.setLineDash([0]);
-  	ctx.strokeStyle = "#3F3B3C";
+	ctx.strokeStyle = "#3F3B3C";
 	ctx.strokeRect(-2, SINGLE_LANE * 8, WIDTH + 3, SINGLE_LANE);
 
 	ctx.setLineDash([6]);
- 	ctx.strokeStyle = "#FFF";
+	ctx.strokeStyle = "#FFF";
 	ctx.strokeRect(-2, SINGLE_LANE * 10, WIDTH + 3, SINGLE_LANE);
-	// ctx.strokeRect(-2, SINGLE_LANE * 12, WIDTH + 3, SINGLE_LANE);
-	
+}
+
+function drawVehicles(){
 	// loop through transactions and draw them
 	txCash.forEach (function(item, index, object){
 		item.x += CSPEED;
-		ctx.drawImage(getCarSize(item.valueOut, item.donation, item.isCash), item.x, item.y, item.h, item.w);
+		ctx.drawImage(getCar(item.valueOut, item.donation, item.isCash), item.x, item.y, item.w, item.h);
 	});
 
 	txCore.forEach(function(item, index, object){
 		item.x += SSPEED;
-		let h = SINGLE_LANE;
-		let w = SINGLE_LANE * carMediumCash.height / carMediumCash.width;
-		let y = item.y - h/2 - w/2;
-
-		ctx.drawImage(getCarSize(item.valueOut, item.donation, item.isCash), item.x, y , h, w);
+		ctx.drawImage(getCar(item.valueOut, item.donation, item.isCash), item.x, item.y , item.w, item.h);
 
 	});
+}
 
+
+function removeVehicles(){
 	// loops through transactions again and removes ones that are off the screen
 	txCash.forEach(function(item, index, object){
 		if (item.x > WIDTH + 100){
@@ -305,4 +305,14 @@ function update(){
 			corePoolInfo.textContent = t + 1;
 		}
 	});
+}
+
+/* animate everything */
+let requestID = requestAnimationFrame(animate);
+
+function animate(){
+	requestID = requestAnimationFrame(animate);
+	drawBackground();
+	drawVehicles();
+	removeVehicles();
 }
