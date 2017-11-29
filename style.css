@@ -78,6 +78,10 @@ span {
 .lane-size.one-core {
   top: 67%;
 }
+.lane-size.two-core {
+  top: 75%;
+  text-decoration: line-through;
+}
 .block {
   position: absolute;
   top: 72.5%;
