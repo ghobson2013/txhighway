@@ -42,6 +42,147 @@ span {
   text-align: center;
   text-transform: uppercase;
 }
+
+/*css speaker by MarvinVK 
+https://codepen.io/MarvinVK/pen/FgAht*/
+
+.speaker {
+  height: 30px;
+  width: 30px;
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+  left:5px;
+  position:absolute;
+  top:85px;
+}
+.speaker span {
+  display: block;
+  width: 8px;
+  height: 8px;
+  background: #fff;
+  margin: 11px 0 0 2px;
+}
+.speaker span:after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-color: transparent #fff transparent transparent;
+  border-width: 10px 14px 10px 15px;
+  left: -13px;
+  top: 5px;
+}
+.speaker span:before {
+  transform: rotate(45deg);
+  border-radius: 0 50px 0 0;
+  content: '';
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  border-style: double;
+  border-color: #fff;
+  border-width: 7px 7px 0 0;
+  left: 18px;
+  top: 9px;
+  transition: all 0.2s ease-out;
+}
+.speaker:hover span:before {
+  transform: scale(0.8) translate(-3px, 0) rotate(42deg);
+}
+.speaker.mute span:before {
+  transform: scale(0.5) translate(-15px, 0) rotate(36deg);
+  opacity: 0;
+}
+
+
+
+.pop {
+    position:relative;
+    z-index:1;
+    overflow:hidden;
+    list-style:none;
+    padding:0;
+    top:130px;
+    position:absolute;
+    left:7px;
+    
+}
+
+.pop a:link,
+.pop a:visited {
+    display:block;
+    border:0;
+    padding-left:28px;
+    color:#c55500;
+}
+
+.pop a:hover,
+.pop a:focus,
+.pop a:active {
+    color:#730800;
+    background:transparent;
+    left:8px;
+}
+
+.pop:before,
+.pop:after,
+.pop a:before,
+.pop a:after {
+    content:"";
+    position:absolute;
+    top:50%;
+    left:0;
+}
+
+.pop a:before,
+.pop a:after {
+    margin:-8px 0 0;
+    background:#c55500;
+}
+
+.pop a:hover:before,
+.pop a:focus:before,
+.pop a:active:before {
+    background:#730800;
+    left:7px;
+}
+
+.pop a:before,
+.pop a:after {
+    width:16px;
+    height:11px;
+    border:1px solid #9EA0A3;
+    margin-top:-4px;
+    background:#fff;
+    -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  transition: all 0.3s;
+}
+
+.pop a:after {
+    left:3px;
+    margin-top:-7px;
+}
+
+.pop a:hover:before,
+.pop a:focus:before,
+.pop a:active:before,
+ .pop a:hover:after,
+ .pop a:focus:after,
+ .pop a:active:after {
+    /*border-color:#730800;*/
+    background:#fff;
+}
+
+.pop a {
+  display:block;width:12px;height:18px;
+}
+
+
+
+
 .lane-size {
   position: absolute;
   right: 2px;
@@ -79,7 +220,7 @@ span {
   top: 67%;
 }
 .lane-size.two-core {
-  top: 75%;
+  top: 74%;
   text-decoration: line-through;
 }
 .block {
@@ -92,10 +233,10 @@ span {
   height: 110px;
 }
 .block.one {
-  left: 45px;
+  left: 55px;
 }
 .block.two {
-  right: 45px;
+  right: 55px;
 }
 
 .caution {
@@ -108,12 +249,12 @@ span {
 }
 .caution.one {
   top: 73.5%;
-  left: 15px;
+  left: 20px;
 }
 
 .caution.two {
   top: 73.5%;
-  right: 15px;
+  right: 20px;
 }
 
 .no2x {
@@ -127,12 +268,12 @@ span {
 
 .no2x.one {
   top: 71.7%;
-  left: 75px;
+  left: 85px;
 }
 
 .no2x.two {
   top: 71.7%;
-  right:75px;
+  right:85px;
 }
 
 
@@ -178,8 +319,8 @@ span.divider {
   z-index: 8;
 }
 .bitcoin-cash {
-  background: #9EA0A3 url('assets/bg/bitcoin-cash-logo.png') no-repeat center center;
-  background-size: 26.5%;
+  background: #9EA0A3 url('assets/bg/bitcoin-cash-logo.png') no-repeat center 69%;
+  background-size: 21.5%;
   height: 57%;
   width: 100%;
   position: absolute;
@@ -188,8 +329,8 @@ span.divider {
   z-index: -1;
 }
 .bs {
-  background: #9EA0A3 url(assets/bg/bs.png) no-repeat center 65%;
-  background-size: 20.5%;
+  background: #9EA0A3 url(assets/bg/bs.png) no-repeat center 0;
+  background-size: 18.5%;
   height: 14.4%;
   width: 100%;
   position: absolute;
