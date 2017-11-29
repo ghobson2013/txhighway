@@ -83,9 +83,9 @@ span {
   top: 72.5%;
   z-index: 2;
   background: url('assets/bg/block.png') no-repeat;
-  background-size: 50% 50%;
+  background-size: 50%;
   width: 27px;
-  height: 246px;
+  height: 110px;
 }
 .block.one {
   left: 45px;
@@ -93,12 +93,7 @@ span {
 .block.two {
   right: 45px;
 }
-.block.three {
-  left: 135px;
-}
-.block.four {
-  right: 135px;
-}
+
 .caution {
   position: absolute;
   z-index: 2;
@@ -111,17 +106,41 @@ span {
   top: 73.5%;
   left: 15px;
 }
+
 .caution.two {
-  left: 15px;
-  top: 88%;
-}
-.caution.three {
   top: 73.5%;
   right: 15px;
 }
-.caution.four {
-  right: 15px;
-  top: 88%;
+
+.no2x {
+  position: absolute;
+  z-index: 2;
+  background: url('assets/bg/no2x.png') no-repeat;
+  background-size: 80%;
+  width: 48px;
+  height: 48px;
+}
+
+.no2x.one {
+  top: 71.7%;
+  left: 75px;
+}
+
+.no2x.two {
+  top: 71.7%;
+  right:75px;
+}
+
+
+.ln {
+  position:absolute;
+  bottom:-10px;
+  left:0;
+  width:100%;
+  height:102px;
+  width:100%;
+  background:url('assets/bg/ln.png') no-repeat;
+  background-size:80%;
 }
 .options {
   top: 10px;
@@ -165,12 +184,12 @@ span.divider {
   z-index: -1;
 }
 .bs {
-  background: #9EA0A3 url('assets/bg/bs.png') no-repeat center 65%;
+  background: #9EA0A3 url(assets/bg/bs.png) no-repeat center 65%;
   background-size: 20.5%;
-  height: 29%;
+  height: 14.4%;
   width: 100%;
   position: absolute;
-  bottom: 6.5%;
+  bottom: 21.4%;
   left: 0;
   z-index: -1;
 }

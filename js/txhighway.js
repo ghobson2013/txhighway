@@ -295,7 +295,7 @@ function update(){
 	ctx.setLineDash([6]);
  	ctx.strokeStyle = "#FFF";
 	ctx.strokeRect(-2, SINGLE_LANE * 10, WIDTH + 3, SINGLE_LANE);
-	ctx.strokeRect(-2, SINGLE_LANE * 12, WIDTH + 3, SINGLE_LANE);
+	// ctx.strokeRect(-2, SINGLE_LANE * 12, WIDTH + 3, SINGLE_LANE);
 	
 	// loop through transactions and draw them
 	txCash.forEach (function(item, index, object){
