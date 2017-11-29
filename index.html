@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta content="IE=11" http-equiv="X-UA-Compatible">
+	<meta content="width=device-width, initial-scale=1.0" name="viewport">
+	<title>TX Highway - Bitcoin Cash vs Bitcoin Core Transaction Visualiser</title>
+	<meta content="Analyze BCH and BTC transactions in our transaction highway." name="description">
+	<link href="style.css" rel="stylesheet" type="text/css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js">
+	</script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.slim.js">
+	</script>
+</head>
+<body>
+	<canvas height="100%" id="renderCanvas" width="100%"></canvas><span class="divider"></span> <span class="lane-size one">1mb</span> <span class="lane-size two">2mb</span> <span class="lane-size three">3mb</span> <span class="lane-size four">4mb</span> <span class="lane-size five">5mb</span> <span class="lane-size six">6mb</span> <span class="lane-size seven">7mb</span> <span class="lane-size eight">8mb</span> <span class="lane-size one-core">1mb</span> <span class="block one"></span> <span class="block two"></span> <span class="block three"></span> <span class="block four"></span> <span class="caution one"></span> <span class="caution two"></span> <span class="caution three"></span> <span class="caution four"></span>
+	<div class="bitcoin-cash"></div>
+	<div class="bs"></div>
+	<div class="title">
+		<img alt="Tx Highway Logo" id="logo" src="assets/tx-highway-logo.png">
+		<h2>Bitcoin Cash vs Bitcoin Core Transaction Visualiser</h2>
+	</div>
+	<div class="options">
+		info/Settings
+	</div><a class="btn" href="#open-modal">Donate</a>
+	<div class="modal-window" id="open-modal">
+		<div>
+			<a class="modal-close" href="#modal-close" title="Close">Close</a>
+			<div class="donate-col modal-column">
+				<h3>Donate to the Bitcoin Cash Fund</h3>
+				<div>
+					<img alt="The Bitcoin Cash Fund" src="assets/qr_code.png"> Support #BitcoinCash growth and make a donation to the <a href="https://thebitcoincash.fund/" target="_blank">The Bitcoin Cash Fund</a>. Stick around after your donation goes through for a bit of fun.
+					<p class="label">3ECKq7onkjnRQR2nNe5uUJp2yMsXRmZavC</p>
+				</div>
+			</div>
+			<div class="stats-col modal-column">
+				<h3>Average Fee</h3>
+				<p>Nullam quis risus eget urna mollis ornare vel eu leo. Aenean lacinia bibendum nulla sed consectetur. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+			</div>
+			<div class="stats-col modal-column">
+				<h3>Average Confirmation</h3>
+				<p>Nullam quis risus eget urna mollis ornare vel eu leo. Aenean lacinia bibendum nulla sed consectetur. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+			</div>
+		</div>
+	</div>
+	<div class="road-sign">
+		<div class="sign-border">
+			<h4 class="sign-title">Tx En-Route to Confirmation Town</h4>
+			<h5 class="highway-num">A1</h5>
+			<div class="cash-pool">
+				<span id="cash-pool">0</span>BCH TX in Transit
+				<h6>0 seconds to destination</h6>
+			</div>
+			<div class="core-pool">
+				<span id="core-pool">10000</span>BTC TX in Transit
+				<h6>24h to destination</h6>
+			</div>
+		</div>
+	</div>
+	<script src="js/txhighway.js">
+	</script>
+</body>
+</html>
