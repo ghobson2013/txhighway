@@ -15,20 +15,18 @@ const corePoolInfo = document.getElementById("core-pool");
 canvas.width = window.innerWidth; 
 canvas.height = window.innerHeight;
 
-// *** sprites ****
+/* sprites */
 const carCore = new Image();
 const carSmallCash = new Image();
 const carMediumCash = new Image();
 const carLargeCash = new Image();
 const carXLargeCash = new Image();
 const carWhaleCash = new Image();
-
 const carSmallCore = new Image();
 const carMediumCore = new Image();
 const carLargeCore = new Image();
 const carXLargeCore = new Image();
 const carWhaleCore = new Image();
-
 const carLambo = new Image();
 
 //cash vehicles
@@ -46,13 +44,17 @@ carLargeCore.src = "assets/sprites/core-xlarge.png";
 carXLargeCore.src = "assets/sprites/core-large.png";
 carWhaleCore.src = "assets/sprites/core-whale.png";
 
+/* end sprites */
+
+
 // constants
 let WIDTH = canvas.width;
 let HEIGHT = canvas.height;
 let SINGLE_LANE = HEIGHT/14;
 
-const SSPEED = 8;
+// cash and segwit speed
 const CSPEED = 12;
+const SSPEED = 8;
 
 // arrays
 let txCash = [];
@@ -84,7 +86,7 @@ socketCash.on("block", function(data){
 });
 
 socketCore.on("block", function(data){
-	getPoolData(blockchairCoreUrl, xhrCore, true);	
+	getPoolData(blockchairCoreUrl, xhrCore, false);	
 });
 /* End connect to socket */
 
