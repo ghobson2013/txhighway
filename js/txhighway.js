@@ -11,6 +11,8 @@ const canvas = document.getElementById("renderCanvas");
 const ctx = canvas.getContext("2d");
 const cashPoolInfo = document.getElementById("cash-pool");
 const corePoolInfo = document.getElementById("core-pool");
+const cashEta = document.getElementById("cash-eta");
+const coreEta = document.getElementById("core-eta");
 
 canvas.width = window.innerWidth; 
 canvas.height = window.innerHeight;
@@ -73,12 +75,10 @@ socketCore.on("connect", function () {
 
 socketCash.on("tx", function(data){
 	newTX("cash", data);
-	console.log("cash tx");
 });
 
 socketCore.on("tx", function(data){
 	newTX("core", data);
-	console.log("core tx");
 });
 
 socketCash.on("block", function(data){
