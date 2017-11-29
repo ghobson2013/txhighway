@@ -6,10 +6,12 @@ Design
 - [X] Adjust sprites with static height
 - [ ] Modal revisions
 - [ ] Optimize PNG's
+- [ ] Make Tuktuk (see first item in development. HURRAY!)
 
 Development 
 ===
 
+- [ ] Look into converting BTC mempool data & websockets to blockchain.info... they show witness data!
 - [ ] Fix Lambos - Donations to BCH
 - [ ] Adjust distance off screen where vehicles are loaded (trucks just 'appear' and don't roll in from the side)
 - [ ] JS bug - Animation pauses when window looses focus. Destroy vehicles to prevent pile up on focus.
