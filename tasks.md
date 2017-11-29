@@ -10,7 +10,8 @@ Design
 Development 
 ===
 
-- [ ] JS bug - Revisit tab after a while and a batch of BCH cruise by
+- [ ] JS bug - Animation pauses when window looses focus. Destroy vehicles to prevent pile up on focus.
+- [ ] Prevent BCH vehicle collisions (if BCH tx come close to and RNG puts them in same lane - allows for more tx)
 - [ ] Setup popup for when blocks are found "xx BCH/BTC transactions have confirmed arrival"
 - [ ] Use average confirmation time to arrival 
 - [ ] Options (Mute/Hide overlays)
