@@ -3,7 +3,7 @@ To do list
 Design
 ===
 
-- [ ] Adjust sprites with static height
+- [X] Adjust sprites with static height
 - [ ] Modal revisions
 - [ ] Optimize PNG's
 
