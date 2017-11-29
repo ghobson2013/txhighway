@@ -3,8 +3,8 @@
 /* create variables */
 const socketCash = io("https://cashexplorer.bitcoin.com/");
 const socketCore = io("https://insight.bitpay.com/");
-const cashXHR = "http://cors-proxy.htmldriven.com/?url=https://api.blockchair.com/bitcoin-cash/mempool/";
-const coreXHR = "http://cors-proxy.htmldriven.com/?url=https://api.blockchair.com/bitcoin/mempool/";
+const blockchairCashUrl = "http://cors-proxy.htmldriven.com/?url=https://api.blockchair.com/bitcoin-cash/mempool/";
+const blockchairCoreUrl = "http://cors-proxy.htmldriven.com/?url=https://api.blockchair.com/bitcoin/mempool/";
 
 // DOM elements
 const canvas = document.getElementById("renderCanvas");
@@ -17,28 +17,34 @@ canvas.height = window.innerHeight;
 
 // *** sprites ****
 const carCore = new Image();
-const carSmall = new Image();
-const carMedium = new Image();
-const carLarge = new Image();
-const carXLarge = new Image();
-const carWhale = new Image();
+const carSmallCash = new Image();
+const carMediumCash = new Image();
+const carLargeCash = new Image();
+const carXLargeCash = new Image();
+const carWhaleCash = new Image();
+
+const carSmallCore = new Image();
+const carMediumCore = new Image();
+const carLargeCore = new Image();
+const carXLargeCore = new Image();
+const carWhaleCore = new Image();
+
 const carLambo = new Image();
 
-carCore.src = "assets/sprites/core-small.png";
-carSmall.src = "assets/sprites/bch-small.png";
-carMedium.src = "assets/sprites/bch-medium.png";
-carLarge.src = "assets/sprites/bch-large.png";
-carXLarge.src = "assets/sprites/bch-xlarge.png";
-carWhale.src = "assets/sprites/bch-whale.png";
+//cash vehicles
+carSmallCash.src = "assets/sprites/bch-small.png";
+carMediumCash.src = "assets/sprites/bch-medium.png";
+carLargeCash.src = "assets/sprites/bch-large.png";
+carXLargeCash.src = "assets/sprites/bch-xlarge.png";
+carWhaleCash.src = "assets/sprites/bch-whale.png";
 carLambo.src = "assets/sprites/lambo.png";
 
-
 //core vehicles
-// coreSmall.src = "assets/sprites/core-small.png";
-// coreMedium.src = "assets/sprites/core-medium.png";
-// coreXlarge.src = "assets/sprites/core-large.png";
-// coreLarge.src = "assets/sprites/core-xlarge.png";
-// coreWhale.src = "assets/sprites/core-whale.png";
+carSmallCore.src = "assets/sprites/core-small.png";
+carMediumCore.src = "assets/sprites/core-medium.png";
+carLargeCore.src = "assets/sprites/core-xlarge.png";
+carXLargeCore.src = "assets/sprites/core-large.png";
+carWhaleCore.src = "assets/sprites/core-whale.png";
 
 // constants
 let SINGLE_LANE = (canvas.height)/14;
@@ -72,11 +78,11 @@ socketCore.on("tx", function(data){
 });
 
 socketCash.on("block", function(data){
-	getCashData(cashXHR);	
+	getPoolData(blockchairCashUrl, xhrCash, true);	
 });
 
 socketCore.on("block", function(data){
-	getCoreData(coreXHR);	
+	getPoolData(blockchairCoreUrl, xhrCore, true);	
 });
 /* End connect to socket */
 
@@ -85,45 +91,32 @@ socketCore.on("block", function(data){
 let xhrCash = new XMLHttpRequest();
 let xhrCore = new XMLHttpRequest();
 
-getCashData(cashXHR);
-getCoreData(coreXHR);
+getPoolData(blockchairCashUrl, xhrCash, true);
+getPoolData(blockchairCoreUrl, xhrCore, false);
 
-function getCashData(url){
-	xhrCash.open('GET', url, true);
-	xhrCash.send();
-	xhrCash.onreadystatechange = function () {
+function getPoolData(url, xhr, isCash){
+	xhr.open('GET', url, true);
+	xhr.send();
+	xhr.onreadystatechange = function () {
 		if (this.readyState == 4 && this.status == 200) {
 			let obj = JSON.parse(this.responseText);
 			let info = JSON.parse(obj.body);
 			info.data.forEach((key)=>{
 				if (key.e =="mempool_transactions"){
+					if (isCash){
 						cashPoolInfo.textContent = key.c;
-				}
-			});
-		}
-	}
-}
-
-function getCoreData(url){
-	xhrCore.open('GET', url, true);
-	xhrCore.send();
-	xhrCore.onreadystatechange = function () {
-		if (this.readyState == 4 && this.status == 200) {
-			let obj = JSON.parse(this.responseText);
-			let info = JSON.parse(obj.body);
-			info.data.forEach((key)=>{
-				if (key.e =="mempool_transactions"){
+					} else {
 						corePoolInfo.textContent = key.c;
+					}
 				}
 			});
 		}
 	}
-	var req;
 }
 /* end get new mempool data*/
 
 /* resize the window */
-function resize (){
+function resize(){
 	let height = window.innerHeight;
 	let ratio = canvas.width/canvas.height;
 	let width = height * ratio;
@@ -139,11 +132,11 @@ window.addEventListener("resize", resize, false);
 
 /* new transaction is made */
 function newTX(type, txInfo){
-	
+	let lane = SINGLE_LANE;
+
 	if (type == "cash"){
-		let lane = Math.floor(Math.random() * 8) + 1;
-		
-		lane *= SINGLE_LANE;
+		let randLane = Math.floor(Math.random() * 8) + 1;
+		lane = randLane * SINGLE_LANE;
 		lane = lane - SINGLE_LANE;
 
 		let car = getCarSize(txInfo.valueOut);
@@ -159,15 +152,17 @@ function newTX(type, txInfo){
 			h: height,
 			w: width,
 			valueOut: txInfo.valueOut,
-			donation: checkForDonation(txInfo)
+			donation: checkForDonation(txInfo),
+			isCash: true
 		});
 
 	} else {
-		let lane = SINGLE_LANE * 10;
+		lane *= 10;
+
 		let x = -150
 		if (txCore.length > 0){
 			let last = txCore[txCore.length - 1];
-			let w = SINGLE_LANE * carMedium.height / carMedium.width;
+			let w = SINGLE_LANE * carMediumCash.height / carMediumCash.width;
 			let front = w + x;
 			if (front >= last.x){
 				x = last.x - w - 50;
@@ -177,22 +172,17 @@ function newTX(type, txInfo){
 			type:"core",
 			id: txInfo.txid,
 			x: x,
-			y: lane
+			y: lane,
+			valueOut: txInfo.valueOut,
+			donation: false,
+			isCash: false
 		});
 	}
 }
+/* end new transaction */
 
-
-let  getCarSize = function(valueOut, donation){
-	// core.png = core transaction
-	// small.png = 0 - 5bch
-	// medium.png = 5ch - 10bch
-	// large.png = 10 bch - 15bch
-	// xlarge.png = 15bch - 25bch
-	// whale.png = 25bch - 50bch
-	// lambo.png = flagged as donation to BCF
-
-	//sprites should maintain their size difference
+/* return car based upon transaction size*/
+let  getCarSize = function(valueOut, donation, isCash){
 
 	//console.log(valueOut);
 	if (donation){
@@ -200,18 +190,39 @@ let  getCarSize = function(valueOut, donation){
 	}
 
 	if (valueOut <= 5){
-		return carSmall;	
+		if (isCash){
+			return carSmallCash;
+		} else {
+			return carSmallCore;
+		}
 	} else if (valueOut > 5 && valueOut <= 10){
-		return carMedium;
+		if (isCash){
+			return carMediumCash;
+		} else {
+			return carMediumCore;
+		}
 	} else if (valueOut > 10 && valueOut <= 15){
-		return carLarge;
+		if (isCash){
+			return carLargeCash;
+		} else {
+			return carLargeCore;
+		}
 	} else if (valueOut > 15 && valueOut <= 25){
-		return carXLarge;
+		if (isCash){
+			return carXLargeCash;
+		} else {
+			return carXLargeCore;
+		}
 	} else if (valueOut > 25){
-		return carWhale;
+		if (isCash){
+			return carWhaleCash;
+		} else {
+			return carWhaleCore;
+		}
 	}
-	
+
 }
+/* end return car */
 
 /* check for donations into the BCF*/
 function checkForDonation(txInfo){
@@ -231,11 +242,10 @@ function checkForDonation(txInfo){
 }
 /* end check for donations */
 
-let requestID = requestAnimationFrame(update);
-
-
 
 /* Refresh every frame */
+let requestID = requestAnimationFrame(update);
+
 function update(){
 	requestID = requestAnimationFrame(update);
 
@@ -243,50 +253,15 @@ function update(){
 	ctx.clearRect(0,0,WIDTH,HEIGHT);
 	ctx.fillStyle = "#9EA0A3";
 
-	//comment the rectangles to set a background image
-	// ctx.fillRect(0, 0, WIDTH, LANE * 1);
-	// ctx.fillRect(0, 0, WIDTH, LANE * 2);
-	// ctx.fillRect(0, 0, WIDTH, LANE * 3);
-	// ctx.fillRect(0, 0, WIDTH, LANE * 4);
-	// ctx.fillRect(0, 0, WIDTH, LANE * 5);
-	// ctx.fillRect(0, 0, WIDTH, LANE * 6);
-	// ctx.fillRect(0, 0, WIDTH, LANE * 7);
-	// ctx.fillRect(0, 0, WIDTH, LANE * 8);
-
-
-
-//render logo on canvas, later canvas builds on top ie z-index
-//render currently flickers. set #logo to display none to try this method
-
-		// var context = document.getElementById('renderCanvas').getContext("2d");
-		// var img = new Image();
-		// img.onload = function () {
-		//     context.drawImage(img, 5, 5, 300, 37);
-		// }
-		// img.src = "assets/tx-highway-logo.png";
-
-
 	// dash style
 	ctx.setLineDash([6]);
   	ctx.strokeStyle = "#FFF";
 
-  // stroke
+  	// stroke
 	ctx.strokeRect(-2, SINGLE_LANE * 1, WIDTH + 3, SINGLE_LANE);
 	ctx.strokeRect(-2, SINGLE_LANE * 3, WIDTH + 3, SINGLE_LANE);
 	ctx.strokeRect(-2, SINGLE_LANE * 5, WIDTH + 3, SINGLE_LANE);
 	ctx.strokeRect(-2, SINGLE_LANE * 7, WIDTH + 3, SINGLE_LANE);
-
-
-	// core fills
-
-	//commented the rectangles to set a background image vs using rect fill
-
-	// ctx.fillStyle = "#A0A2A5";
-	// ctx.fillRect(0, LANE * 9, WIDTH,LANE);
-	// ctx.fillRect(0, LANE * 10, WIDTH,LANE);
-	// ctx.fillRect(0, LANE * 11, WIDTH,LANE);
-	// ctx.fillRect(0, LANE * 12, WIDTH,LANE);
-
 
 	ctx.setLineDash([0]);
   	ctx.strokeStyle = "#3F3B3C";
@@ -300,16 +275,16 @@ function update(){
 	// loop through transactions and draw them
 	txCash.forEach (function(item, index, object){
 		item.x += CSPEED;
-		ctx.drawImage(getCarSize(item.valueOut), item.x, item.y, item.h, item.w);
+		ctx.drawImage(getCarSize(item.valueOut, item.donation, item.isCash), item.x, item.y, item.h, item.w);
 	});
 
 	txCore.forEach(function(item, index, object){
 		item.x += SSPEED;
 		let h = SINGLE_LANE;
-		let w = SINGLE_LANE * carMedium.height / carMedium.width;
+		let w = SINGLE_LANE * carMediumCash.height / carMediumCash.width;
 		let y = item.y - h/2 - w/2;
 
-		ctx.drawImage(carCore, item.x, y , h, w);
+		ctx.drawImage(getCarSize(item.valueOut, item.donation, item.isCash), item.x, y , h, w);
 
 	});
 
