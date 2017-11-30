@@ -48,8 +48,6 @@ carXLargeCore.src = "assets/sprites/core-large.png";
 carWhaleCore.src = "assets/sprites/core-whale.png";
 /* end sprites */
 
-
-
 // constants
 let WIDTH = canvas.width;
 let HEIGHT = canvas.height;
@@ -122,8 +120,8 @@ function getPoolData(url, xhr, isCash){
 	xhr.send();
 }
 
+// get average confirmation time for btc
 function getCoreConfTime(url, xhr){
-
 	xhr.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
 			let obj = JSON.parse(xhr.responseText);
@@ -152,11 +150,40 @@ window.addEventListener("load", resize, false);
 window.addEventListener("resize", resize, false);
 /* end resize the window */
 
+/* window loses focus */
+var vis = (function(){
+    var stateKey, eventKey, keys = {
+        hidden: "visibilitychange",
+        webkitHidden: "webkitvisibilitychange",
+        mozHidden: "mozvisibilitychange",
+        msHidden: "msvisibilitychange"
+    };
+    for (stateKey in keys) {
+        if (stateKey in document) {
+            eventKey = keys[stateKey];
+            break;
+        }
+    }
+    return function(c) {
+        if (c) document.addEventListener(eventKey, c);
+        return !document[stateKey];
+    }
+})();
+
+vis(function(){
+	if (vis()){
+		requestAnimationFrame(animate);
+	} else{
+		cancelAnimationFrame(requestID);		
+	}
+});
+/* end window loses focus */
+
 
 /* new transaction is made */
 function newTX(type, txInfo){
 	let lane = SINGLE_LANE;
-	let x = -150
+	let x = - carWhaleCash.width - 10;
 	
 	if (type == "cash"){
 		let randLane = Math.floor(Math.random() * 8) + 1;
@@ -206,14 +233,15 @@ function createVehicle(type, arr, txInfo, x, lane, isCash){
 		isCash: isCash
 	});
 }
-
 /* end new transaction */
+
 
 /* return car based upon transaction size*/
 function getCar(valueOut, donation, isCash){
 
 	//console.log(valueOut);
 	if (donation){
+		console.log("lambo ready");
 		return carLambo;
 	}
 
