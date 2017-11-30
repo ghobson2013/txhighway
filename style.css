@@ -338,6 +338,7 @@ span.divider {
   left: 0;
   z-index: -1;
 }
+
 .road-sign {
   border: 3px solid #245934;
   border-radius: 10px;
@@ -348,6 +349,7 @@ span.divider {
   width: 250px;
   box-shadow: 2px 3px 15px rgba(0, 0, 0, 0.3);
 }
+
 .road-sign .sign-border {
   background: #245934;
   border: 3px solid #fff;
@@ -498,5 +500,11 @@ span.divider {
   }
   .bitcoin-cash, .bs {
     background-size: 40% !important;
+  }
+}
+
+@media screen and (max-width: 480px){
+  .road-sign {
+    bottom:0;
   }
 }
