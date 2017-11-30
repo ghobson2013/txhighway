@@ -8,6 +8,7 @@ Design
 - [ ] Optimize PNG's
 - [ ] Make Tuktuk (see first item in development. HURRAY!)
 - [ ] Create legend for identifying vehicles
+
 Development 
 ===
 
