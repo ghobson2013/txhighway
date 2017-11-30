@@ -172,6 +172,9 @@ var vis = (function(){
 
 vis(function(){
 	if (vis()){
+		txCash = [];
+		txCore = [];
+		drawBackground();
 		requestAnimationFrame(animate);
 	} else{
 		cancelAnimationFrame(requestID);		
@@ -216,11 +219,13 @@ function newTX(type, txInfo){
 
 /* create vehicles and push to appropriate array */
 function createVehicle(type, arr, txInfo, x, lane, isCash){
-	let car = getCar(txInfo.valueOut, checkForDonation(txInfo), isCash);
+	let donation = checkForDonation(txInfo);
+	let car = getCar(txInfo.valueOut, donation, isCash);
 	let height = SINGLE_LANE;
 	let width = height * (car.width / car.height);
 	let y = lane;
 	
+
 	arr.push({
 		type:type,
 		id: txInfo.txid,
@@ -229,7 +234,7 @@ function createVehicle(type, arr, txInfo, x, lane, isCash){
 		h: height,
 		w: width,
 		valueOut: txInfo.valueOut,
-		donation: checkForDonation(txInfo),
+		donation: donation,
 		isCash: isCash
 	});
 }
@@ -240,8 +245,7 @@ function createVehicle(type, arr, txInfo, x, lane, isCash){
 function getCar(valueOut, donation, isCash){
 
 	//console.log(valueOut);
-	if (donation){
-		console.log("lambo ready");
+	if (donation == true){
 		return carLambo;
 	}
 
@@ -280,20 +284,20 @@ function getCar(valueOut, donation, isCash){
 /* end return car */
 
 /* check for donations into the BCF*/
-function checkForDonation(txInfo){
+let checkForDonation = function(txInfo){
 	let vouts = txInfo.vout;
+	let isDonation = false;
 
 	vouts.forEach((key)=>{
 		let keys = Object.keys(key);
 		keys.forEach((k)=> {
 			if (k == "3ECKq7onkjnRQR2nNe5uUJp2yMsXRmZavC"){
-				console.log("Donation to BCF");
-				return true;
+				isDonation = true;
 			}
 		});
 	});
 
-	return false;
+	return isDonation;
 }
 /* end check for donations */
 
@@ -325,6 +329,8 @@ function drawVehicles(){
 	// loop through transactions and draw them
 	txCash.forEach (function(item, index, object){
 		item.x += CSPEED;
+		//console.log(item.donation);
+		
 		ctx.drawImage(getCar(item.valueOut, item.donation, item.isCash), item.x, item.y, item.w, item.h);
 	});
 
