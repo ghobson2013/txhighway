@@ -7,7 +7,7 @@ Design
 - [ ] Modal revisions
 - [ ] Optimize PNG's
 - [ ] Make Tuktuk (see first item in development. HURRAY!)
-
+- [ ] Create legend for identifying vehicles
 Development 
 ===
 
@@ -19,6 +19,7 @@ Development
 - [ ] Setup popup for when blocks are found "xx BCH/BTC transactions have confirmed arrival"
 - [ ] Use average confirmation time (BCH is always < 10min) - use for BTC https://api.blockchain.info/charts/avg-confirmation-time
 - [ ] Options (Mute/Hide overlays)
+- [ ] (Maybe) On click pause / reposition vehicle so it floats above the rest, data infowindow (tx id, fee, etc)
 - [ ] Map audio to sprites
 - [ ] Add mobile styles
 - [ ] Cross browser test
