@@ -13,8 +13,8 @@ Development
 ===
 
 - [ ] Look into converting BTC mempool data & websockets to blockchain.info... they show witness data!
-- [ ] Fix Lambos - Donations to BCH
-- [ ] Adjust distance off screen where vehicles are loaded (trucks just 'appear' and don't roll in from the side)
+- [X] Fix Lambos - Donations to BCH
+- [X] Adjust distance off screen where vehicles are loaded (trucks just 'appear' and don't roll in from the side)
 - [X] JS bug - Animation pauses when window looses focus. Destroy vehicles to prevent pile up on focus.
 - [ ] Prevent BCH vehicle collisions (if BCH tx come close to and RNG puts them in same lane - allows for more tx)
 - [ ] Setup popup for when blocks are found "xx BCH/BTC transactions have confirmed arrival"
