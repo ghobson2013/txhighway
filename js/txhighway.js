@@ -2,10 +2,10 @@
 
 /* create variables */
 const socketCash = io("https://cashexplorer.bitcoin.com/");
-const socketCore = io("https://localbitcoinschain.com/");//
+const socketCore = io("https://insight.bitpay.com/");//https://localbitcoinschain.com/");//
 const blockchairCashUrl = "http://cors-proxy.htmldriven.com/?url=https://api.blockchair.com/bitcoin-cash/mempool/";
 const blockchairCoreUrl = "http://cors-proxy.htmldriven.com/?url=https://api.blockchair.com/bitcoin/mempool/";
-const blockchainCoreUrl = "http://cors-proxy.htmldriven.com/?url=https://api.blockchain.info/charts/avg-confirmation-time";
+const blockchainCoreUrl = "https://api.blockchain.info/charts/avg-confirmation-time?format=json&cors=true";
 
 // DOM elements
 const canvas = document.getElementById("renderCanvas");
@@ -125,8 +125,9 @@ function getCoreConfTime(url, xhr){
 	xhr.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
 			let obj = JSON.parse(xhr.responseText);
-			let body = JSON.parse(obj.body);
-			coreEta.textContent = body.period;
+			//console.log(obj.period);
+			//let body = JSON.parse(obj.body);
+			coreEta.textContent = obj.period;
 		}
 	}
 
