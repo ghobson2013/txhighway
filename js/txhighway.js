@@ -2,9 +2,10 @@
 
 /* create variables */
 const socketCash = io("https://cashexplorer.bitcoin.com/");
-const socketCore = io("https://localbitcoinschain.com/");//https://insight.bitpay.com/");
+const socketCore = io("https://localbitcoinschain.com/");//
 const blockchairCashUrl = "http://cors-proxy.htmldriven.com/?url=https://api.blockchair.com/bitcoin-cash/mempool/";
 const blockchairCoreUrl = "http://cors-proxy.htmldriven.com/?url=https://api.blockchair.com/bitcoin/mempool/";
+const blockchainCoreUrl = "http://cors-proxy.htmldriven.com/?url=https://api.blockchain.info/charts/avg-confirmation-time";
 
 // DOM elements
 const canvas = document.getElementById("renderCanvas");
@@ -45,8 +46,8 @@ carMediumCore.src = "assets/sprites/core-medium.png";
 carLargeCore.src = "assets/sprites/core-xlarge.png";
 carXLargeCore.src = "assets/sprites/core-large.png";
 carWhaleCore.src = "assets/sprites/core-whale.png";
-
 /* end sprites */
+
 
 
 // constants
@@ -61,8 +62,6 @@ const SSPEED = 8;
 // arrays
 let txCash = [];
 let txCore = []
-
-//setInterval(update,1000/60);
 
 /* connect to socket */
 socketCash.on("connect", function () {
@@ -95,13 +94,14 @@ socketCore.on("block", function(data){
 /* get new cash mempool data */
 let xhrCash = new XMLHttpRequest();
 let xhrCore = new XMLHttpRequest();
+let xhrBlockchain = new XMLHttpRequest();
+
 
 getPoolData(blockchairCashUrl, xhrCash, true);
 getPoolData(blockchairCoreUrl, xhrCore, false);
+getCoreConfTime(blockchainCoreUrl, xhrBlockchain);
 
 function getPoolData(url, xhr, isCash){
-	xhr.open('GET', url, true);
-	xhr.send();
 	xhr.onreadystatechange = function () {
 		if (this.readyState == 4 && this.status == 200) {
 			let obj = JSON.parse(this.responseText);
@@ -117,6 +117,24 @@ function getPoolData(url, xhr, isCash){
 			});
 		}
 	}
+
+	xhr.open('GET', url, true);
+	xhr.send();
+}
+
+function getCoreConfTime(url, xhr){
+
+	xhr.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+			let obj = JSON.parse(xhr.responseText);
+			let body = JSON.parse(obj.body);
+			coreEta.textContent = body.period;
+		}
+	}
+
+	xhr.open("GET", url, true);
+	xhr.send(null);
+	
 }
 /* end get new mempool data*/
 
