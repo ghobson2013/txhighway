@@ -181,6 +181,62 @@ https://codepen.io/MarvinVK/pen/FgAht*/
 }
 
 
+/*heart by https://www.hongkiat.com/blog/css-heart-shape/ */
+
+.heart-shape{
+  position: absolute;
+  top:180px;
+  left:10px;
+  width: 12px;
+  height: 12px;
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+  transform: rotate(45deg);
+  background-color: #fff;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  transition: all 0.3s;
+  cursor:pointer;
+}
+
+.heart-shape a {
+    display:block;
+    height: 18px;
+    width: 18px;
+    margin-top: -5px;
+    margin-left: -4px;
+    z-index:8;
+
+}
+
+.heart-shape:before,
+.heart-shape:after{
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  content: '';
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -o-border-radius: 50%;
+  border-radius: 50%;
+  background-color: #fff;
+}
+.heart-shape:before{
+  bottom: 0px;
+  left: -6px;
+}
+.heart-shape:after{
+  top: -6px;
+  right: 0px;
+}
+
+.heart-shape:hover, .heart-shape:focus {
+     top:177px;
+}
+
+
 
 
 .lane-size {
