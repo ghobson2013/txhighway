@@ -8,6 +8,11 @@ html, body {
 body {
   background: #9A857A;
 }
+
+h1,h2,h3,h4,h5,h6 {
+  font-family:sans-serif;
+}
+
 #renderCanvas {
   z-index: -500;
   display: block;
@@ -150,6 +155,36 @@ span {
     padding: 2px 16px;
     background-color: #149347;
     color: white;
+}
+
+.modal-footer a, .modal-footer a:visited {
+  color:#F0952D;
+  text-decoration:none;
+}
+
+.modal-footer a:hover {
+  text-decoration: underline;
+}
+
+table {
+    table-layout: fixed;
+    width: 100%;
+    white-space: nowrap;
+    text-align:left;
+}
+table thead th.col-type {
+  width:60%;
+  padding:0 0 0 1.5rem;
+}
+
+table thead th.col-val {
+  width:40%;
+  text-align:left;
+}
+
+table tr td img {
+  max-height:70%;
+  padding:1rem;
 }
 
 /*css speaker by MarvinVK 
