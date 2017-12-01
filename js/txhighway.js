@@ -212,31 +212,27 @@ function newTX(type, txInfo){
 		let randLane = Math.floor(Math.random() * 8) + 1;
 		lane *= randLane;
 		lane -= SINGLE_LANE;
-
 		createVehicle(type, txCash, txInfo, x, lane, true);
 
 	} else {
 		lane *= 10;
-		lane = lane - SINGLE_LANE;
-
+		lane -= SINGLE_LANE;
 		let car = getCar(txInfo.valueOut, false, false);
 		let width = SINGLE_LANE * (car.width / car.height);
 
 		// calculate distance between vehicles
 		if (txCore.length > 0){
 			let last = txCore[txCore.length - 1];
-			//let w = SINGLE_LANE * car.height / car.width;
 			let front = width + x;
 			if (front >= last.x){
 				x = last.x - width - 10;
 			}
 		}
-
 		createVehicle(type, txCore, txInfo, x, lane, false);
-		
 	}
 }
 
+// add sounds to sound array for playback
 function addSounds(carType){
 	if (!isVisible){
 		return;
@@ -259,12 +255,20 @@ function addSounds(carType){
 		carType == carWhaleCore){
 			sounds.push(audioSemi.cloneNode(true));
 			sounds[sounds.length-1].playbackRate = 1.6;
+	} else if (carType == carLambo){
+		let randSong = Math.floor(Math.random() * 2) + 1;
+		if (randSong == 1){
+			sounds.push(audioMercy);
+		} else if (randSong == 2){
+			sounds.push(audioRide4);
 		}
+	}
 	playSounds();
 }
 
+// play sounds in sound array
 function playSounds(){
-	console.log(sounds.length);
+	//console.log(sounds.length);
 	sounds.forEach((s, index, object)=>{
 		//console.log(s.currentTime);
 		if (s.currentTime == 0){
