@@ -8,6 +8,7 @@ Design
 - [ ] Optimize PNG's
 - [ ] (maybe) Make Tuktuk (see first item in development. HURRAY!)
 - [ ] Create legend for identifying vehicles
+- [ ] Create speed limit signs (3tx/sec BTC versus 24tx/sec - 96tx/sec BCH)
 
 Development 
 ===
