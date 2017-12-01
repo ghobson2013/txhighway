@@ -19,6 +19,7 @@ Development
 - [ ] Prevent BCH vehicle collisions (if BCH tx come close to and RNG puts them in same lane - allows for more tx)
 - [ ] Setup popup for when blocks are found "xx BCH/BTC transactions have confirmed arrival"
 - [X] Use average confirmation time (BCH is always < 10min) - use for BTC https://api.blockchain.info/charts/avg-confirmation-time
+- [ ] Loading overlay to give the cars a chance to catch up before fading away. 
 - [ ] Options (Mute/Hide overlays)
 - [ ] (Maybe) On click pause / reposition vehicle so it floats above the rest, data infowindow (tx id, fee, etc)
 - [ ] Map audio to sprites
