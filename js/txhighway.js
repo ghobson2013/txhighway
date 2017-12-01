@@ -48,6 +48,22 @@ carXLargeCore.src = "assets/sprites/core-large.png";
 carWhaleCore.src = "assets/sprites/core-whale.png";
 /* end sprites */
 
+/* audio files */
+// car sounds
+const audioCar = new Audio("assets/audio/car-pass.mp3");
+const audioDiesel = new Audio("assets/audio/diesel-pass.mp3");
+const audioSemi = new Audio("assets/audio/semi-pass.mp3");
+const audioCarFast = new Audio("assets/audio/fastcar-pass.mp3");
+
+// donation music
+const audioMercy = new Audio("assets/audio/mercy-6s.mp3");
+const audioRide4 = new Audio("assets/audio/ride-dirty-4s.mp3");
+const audioRide7 = new Audio("assets/audio/ride-dirty-7s.mp3");
+
+// array to store sounds for multiple playback
+let sounds = [];
+
+
 // constants
 let WIDTH = canvas.width;
 let HEIGHT = canvas.height;
@@ -72,6 +88,7 @@ socketCore.on("connect", function () {
 
 socketCash.on("tx", function(data){
 	newTX("cash", data);
+	//console.log(data);
 });
 
 socketCore.on("tx", function(data){
@@ -125,8 +142,6 @@ function getCoreConfTime(url, xhr){
 	xhr.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
 			let obj = JSON.parse(xhr.responseText);
-			//console.log(obj.period);
-			//let body = JSON.parse(obj.body);
 			coreEta.textContent = obj.period;
 		}
 	}
@@ -195,6 +210,7 @@ function newTX(type, txInfo){
 		lane -= SINGLE_LANE;
 
 		createVehicle(type, txCash, txInfo, x, lane, true);
+		addSounds(getCar(txInfo.valueOut,false,true));
 
 	} else {
 		lane *= 10;
@@ -216,6 +232,27 @@ function newTX(type, txInfo){
 		createVehicle(type, txCore, txInfo, x, lane, false);
 
 	}
+}
+
+function addSounds(carType){
+
+	if (carType == carSmallCash){
+		sounds.push(audioCar.cloneNode(true));
+		
+	} else if (carType == carMediumCash){
+
+	}
+	playSounds();
+}
+
+function playSounds(){
+	sounds.forEach((s)=>{
+		console.log(s.currentTime);
+		if (s.currentTime == 0){
+			console.log("play: " + s.src);
+			s.play();
+		}
+	});
 }
 
 /* create vehicles and push to appropriate array */
@@ -330,8 +367,6 @@ function drawVehicles(){
 	// loop through transactions and draw them
 	txCash.forEach (function(item, index, object){
 		item.x += CSPEED;
-		//console.log(item.donation);
-		
 		ctx.drawImage(getCar(item.valueOut, item.donation, item.isCash), item.x, item.y, item.w, item.h);
 	});
 
