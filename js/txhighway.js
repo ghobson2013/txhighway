@@ -63,7 +63,8 @@ const audioRide7 = new Audio("assets/audio/ride-dirty-7s.mp3");
 
 // array to store sounds for multiple playback
 let sounds = [];
-
+let isCashMuted = false;
+let isCoreMuted = false;
 
 // constants
 let WIDTH = canvas.width;
@@ -268,7 +269,7 @@ function addSounds(carType){
 
 // play sounds in sound array
 function playSounds(){
-	//console.log(sounds.length);
+	console.log(sounds.length);
 	sounds.forEach((s, index, object)=>{
 		//console.log(s.currentTime);
 		if (s.currentTime == 0){
@@ -288,7 +289,6 @@ function createVehicle(type, arr, txInfo, x, lane, isCash){
 	let width = height * (car.width / car.height);
 	let y = lane;
 	
-
 	arr.push({
 		type:type,
 		id: txInfo.txid,
@@ -393,16 +393,20 @@ function drawBackground(){
 
 function drawVehicles(arr){
 	// loop through transactions and draw them
-
-
 	arr.forEach(function(item, index, object){
 		item.x += SSPEED;
 		let car = getCar(item.valueOut,item.donation,item.isCash);
-		if (item.x < -200 && item.x > -210){
-			addSounds(car);
+		
+		if ((item.isCash && !isCashMuted) || (!item.isCash && !isCoreMuted)){
+			if (item.x < -200 && item.x > -210){
+				//console.log("not muted");
+				addSounds(car);
+			} else {
+				//console.log("muted");
+			}
 		}
+		
 		ctx.drawImage(car, item.x, item.y , item.w, item.h);
-
 	});
 }
 
@@ -436,19 +440,22 @@ function animate(){
 	drawVehicles(txCash);
 	drawVehicles(txCore);
 	removeVehicles();
-	
 }
 
 
 $('.speaker').click(function(e) {
   e.preventDefault();
-
 	$(this).toggleClass('mute');
 });
 
 $('.nav .mute').click(function(){
     // $(this).next('ul').slideToggle('500');
-    $(this).find('i').toggleClass('fa-volume-up fa-volume-off')
+	$(this).find('i').toggleClass('fa-volume-up fa-volume-off')
+	if (isCashMuted) {
+		isCashMuted = false;
+	 } else {
+		isCashMuted = true;	
+	 }
 });
 
 $('.nav .legend').hover(function(){
@@ -476,13 +483,13 @@ $('.nav .donate').hover(function(){
 
 $('.core-nav .core-mute').click(function(){
     // $(this).next('ul').slideToggle('500');
-    $(this).find('i').toggleClass('fa-volume-up fa-volume-off')
+	$(this).find('i').toggleClass('fa-volume-up fa-volume-off')
+	if (isCoreMuted){
+		isCoreMuted = false;
+	} else {
+		isCoreMuted = true;
+	}
 });
-
-
-
-
-
 
 
 $('.nav a').on('click', function(){
