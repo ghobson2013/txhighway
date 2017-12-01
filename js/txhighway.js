@@ -264,6 +264,7 @@ function addSounds(carType){
 }
 
 function playSounds(){
+	console.log(sounds.length);
 	sounds.forEach((s, index, object)=>{
 		//console.log(s.currentTime);
 		if (s.currentTime == 0){
