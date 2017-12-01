@@ -414,3 +414,57 @@ $('.speaker').click(function(e) {
 
 	$(this).toggleClass('mute');
 });
+
+$('.nav .mute').click(function(){
+    // $(this).next('ul').slideToggle('500');
+    $(this).find('i').toggleClass('fa-volume-up fa-volume-off')
+});
+
+$('.nav .legend').hover(function(){
+    // $(this).next('ul').slideToggle('500');
+    $(this).find('i').toggleClass('fa-car fa-truck')
+});
+
+$('.nav .overlay').hover(function(){
+    // $(this).next('ul').slideToggle('500');
+    $(this).find('i').toggleClass('fa-window-maximize fa-window-restore')
+});
+
+$('.nav .stats').hover(function(){
+    // $(this).next('ul').slideToggle('500');
+    $(this).find('i').toggleClass('fa-cog fa-cogs')
+});
+
+$('.nav .donate').hover(function(){
+    // $(this).next('ul').slideToggle('500');
+    $(this).find('i').toggleClass('fa-heart fa-money')
+});
+
+
+//core nav
+
+$('.core-nav .core-mute').click(function(){
+    // $(this).next('ul').slideToggle('500');
+    $(this).find('i').toggleClass('fa-volume-up fa-volume-off')
+});
+
+
+
+
+
+
+
+$('.nav a').on('click', function(){
+  $('#'+$(this).data('modal')).css('display','block');
+})
+
+$('.close').on('click', function(){
+  $('.modal').hide();
+})
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target.className == 'modal') {
+    $('.modal').hide();
+  }
+}
