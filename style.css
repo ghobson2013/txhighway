@@ -81,7 +81,7 @@ span {
 }
 
 .core-nav a:hover i, .core-nav a:focus i {
-  color:#149347;
+  color:#1D83A1;
 }
 .core-nav i {
   color:#fff;
@@ -187,201 +187,25 @@ table tr td img {
   padding:1rem;
 }
 
-/*css speaker by MarvinVK 
-https://codepen.io/MarvinVK/pen/FgAht*/
-
-.speaker {
-  height: 30px;
-  width: 30px;
-  position: relative;
-  overflow: hidden;
-  display: inline-block;
-  left:5px;
-  position:absolute;
-  top:95px;
+#modal-donate .qr {
+  float:left;
+  width:150px;
+  padding:1rem 1rem 1rem 0;
 }
-.speaker span {
-  display: block;
-  width: 8px;
-  height: 8px;
-  background: #fff;
-  margin: 11px 0 0 2px;
+#modal-donate p.label {
+  background:#eee;
+  border-radius:3px;
+  line-height:1;
+  padding:0.5rem;
 }
-.speaker span:after {
-  content: '';
-  position: absolute;
-  width: 0;
-  height: 0;
-  border-style: solid;
-  border-color: transparent #fff transparent transparent;
-  border-width: 10px 14px 10px 15px;
-  left: -13px;
-  top: 5px;
+#modal-donate p {
+  margin:1.5rem 0 0.5rem;
 }
-.speaker span:before {
-  transform: rotate(45deg);
-  border-radius: 0 50px 0 0;
-  content: '';
-  position: absolute;
-  width: 5px;
-  height: 5px;
-  border-style: double;
-  border-color: #fff;
-  border-width: 7px 7px 0 0;
-  left: 18px;
-  top: 9px;
-  transition: all 0.2s ease-out;
-}
-.speaker:hover span:before {
-  transform: scale(0.8) translate(-3px, 0) rotate(42deg);
-}
-.speaker.mute span:before {
-  transform: scale(0.5) translate(-15px, 0) rotate(36deg);
-  opacity: 0;
-}
-
-/*pop/overlay icon by http://nicolasgallagher.com/pure-css-gui-icons/demo/*/
-
-.pop {
-    position:relative;
-    z-index:1;
-    overflow:hidden;
-    list-style:none;
-    padding:0;
-    top:145px;
-    position:absolute;
-    left:7px;
-    
-}
-
-.pop a:link,
-.pop a:visited {
-    display:block;
-    border:0;
-    padding-left:28px;
-    color:#c55500;
-}
-
-.pop a:hover,
-.pop a:focus,
-.pop a:active {
-    color:#730800;
-    background:transparent;
-    left:8px;
-}
-
-.pop:before,
-.pop:after,
-.pop a:before,
-.pop a:after {
-    content:"";
-    position:absolute;
-    top:50%;
-    left:0;
-}
-
-.pop a:before,
-.pop a:after {
-    margin:-8px 0 0;
-    background:#c55500;
-}
-
-.pop a:hover:before,
-.pop a:focus:before,
-.pop a:active:before {
-    background:#730800;
-    left:7px;
-}
-
-.pop a:before,
-.pop a:after {
-    width:16px;
-    height:11px;
-    border:1px solid #9EA0A3;
-    margin-top:-4px;
-    background:#fff;
-    -webkit-transition: all 0.3s;
-  -moz-transition: all 0.3s;
-  transition: all 0.3s;
-}
-
-.pop a:after {
-    left:3px;
-    margin-top:-7px;
-}
-
-.pop a:hover:before,
-.pop a:focus:before,
-.pop a:active:before,
- .pop a:hover:after,
- .pop a:focus:after,
- .pop a:active:after {
-    /*border-color:#730800;*/
-    background:#fff;
-}
-
-.pop a {
-  display:block;width:12px;height:18px;
+#modal-donate .modal-footer {
+  clear:both;
 }
 
 
-/*heart by https://www.hongkiat.com/blog/css-heart-shape/ */
-
-.heart-shape{
-  position: absolute;
-  top:195px;
-  left:12px;
-  width: 12px;
-  height: 12px;
-  -webkit-transform: rotate(45deg);
-  -moz-transform: rotate(45deg);
-  -ms-transform: rotate(45deg);
-  -o-transform: rotate(45deg);
-  transform: rotate(45deg);
-  background-color: #fff;
-  -webkit-transition: all 0.3s;
-  -moz-transition: all 0.3s;
-  transition: all 0.3s;
-  cursor:pointer;
-}
-
-.heart-shape a {
-    display:block;
-    
-
-    height: 22px;
-    width: 22px;
-    margin-top: -8px;
-    margin-left: -8px;
-    z-index: 99;
-
-}
-
-.heart-shape:before,
-.heart-shape:after{
-  position: absolute;
-  width: 12px;
-  height: 12px;
-  content: '';
-  -webkit-border-radius: 50%;
-  -moz-border-radius: 50%;
-  -o-border-radius: 50%;
-  border-radius: 50%;
-  background-color: #fff;
-  z-index:9;
-}
-.heart-shape:before{
-  bottom: 0px;
-  left: -6px;
-}
-.heart-shape:after{
-  top: -6px;
-  right: 0px;
-}
-
-.heart-shape:hover, .heart-shape:focus {
-     top:192px;
-}
 
 
 
