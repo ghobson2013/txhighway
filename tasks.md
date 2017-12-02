@@ -17,7 +17,7 @@ Development
 - [X] Fix Lambos - Donations to BCH
 - [X] Adjust distance off screen where vehicles are loaded (trucks just 'appear' and don't roll in from the side)
 - [X] JS bug - Animation pauses when window looses focus. Destroy vehicles to prevent pile up on focus.
-- [ ] Prevent BCH vehicle collisions (if BCH tx come to close together and RNG puts them in same lane - allows for more tx/scaling)
+- [X] Prevent BCH vehicle collisions (if BCH tx come to close together and RNG puts them in same lane - allows for more tx/scaling)
 - [ ] Setup popup for when blocks are found "xx BCH/BTC transactions have confirmed arrival"
 - [X] Use average confirmation time (BCH is always < 10min) - use for BTC https://api.blockchain.info/charts/avg-confirmation-time
 - [ ] Loading overlay to give the cars a chance to catch up before fading away.
