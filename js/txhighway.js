@@ -443,11 +443,6 @@ function animate(){
 }
 
 
-$('.speaker').click(function(e) {
-  e.preventDefault();
-	$(this).toggleClass('mute');
-});
-
 $('.nav .mute').click(function(){
     // $(this).next('ul').slideToggle('500');
 	$(this).find('i').toggleClass('fa-volume-up fa-volume-off')
@@ -495,6 +490,12 @@ $('.core-nav .core-mute').click(function(){
 $('.nav a').on('click', function(){
   $('#'+$(this).data('modal')).css('display','block');
 })
+
+$('.nav a.donate').on('click', function(){
+  $('#'+$(this).data('modal')).toggleClass('donate donate-off');
+})
+
+
 
 $('.close').on('click', function(){
   $('.modal').hide();

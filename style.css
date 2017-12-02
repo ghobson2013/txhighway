@@ -107,6 +107,10 @@ span {
     z-index:9999;
 }
 
+.modal.donate {
+  padding-top:28.5%;
+}
+
 /* Modal Content */
 .modal-content {
     position: relative;
@@ -145,16 +149,26 @@ span {
     cursor: pointer;
 }
 
-.modal-header {
+.modal-content .modal-header {
     padding: 2px 16px;
     background-color: #149347;
     color: white;
 }
+.modal-content .modal-header p {
+  margin: 5px 0 10px;
+  font-size: 12px;
+}
+.modal-content .modal-header h2 {margin:10px 0 0; padding:0;}
 .modal-body {padding: 2px 16px;}
 .modal-footer {
     padding: 2px 16px;
     background-color: #149347;
     color: white;
+}
+
+.modal-footer h3 {
+  padding:0; margin:8px 0;
+  font-size:0.8rem;
 }
 
 .modal-footer a, .modal-footer a:visited {
@@ -187,19 +201,27 @@ table tr td img {
   padding:1rem;
 }
 
+.qmark {
+  font-size:4rem;
+  font-weight:bold;
+  padding:0.5rem 0 0 2rem;
+}
+
 #modal-donate .qr {
   float:left;
-  width:150px;
-  padding:1rem 1rem 1rem 0;
+  width:120px;
+  padding:1rem 2rem 1rem 0;
 }
 #modal-donate p.label {
   background:#eee;
   border-radius:3px;
   line-height:1;
   padding:0.5rem;
+  float:left;
+  text-align:center;
 }
 #modal-donate p {
-  margin:1.5rem 0 0.5rem;
+  /*margin:1.5rem 0 0.5rem;*/
 }
 #modal-donate .modal-footer {
   clear:both;
