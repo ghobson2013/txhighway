@@ -15,7 +15,7 @@ const corePoolInfo = document.getElementById("core-pool");
 const cashEta = document.getElementById("cash-eta");
 const coreEta = document.getElementById("core-eta");
 const confirmedNotify = document.getElementById("confirmed-notify");
-const confirmedText = document.getElementById("confirmed-text");
+const confirmedAmount = document.getElementById("confirmed-amount");
 
 canvas.width = window.innerWidth; 
 canvas.height = window.innerHeight;
@@ -124,19 +124,19 @@ function blockNotify(blockId, type){
 	}
 
 	xhr.onreadystatechange = function(){
-		//console.log(this.responseText);
-		let obj = this.responseText;
-		let tx = obj.tx;
-		let amount = tx.length;
-		console.log(obj.tx.length);
-		if (amount == t){
-			amount = "ALL";
+		if (this.readyState == 4 && this.status == 200) {
+			let obj = JSON.parse(this.responseText);
+			let tx = obj.tx;
+			let amount = tx.length;
+			if (amount == t){
+				amount = "ALL";
+			}
+			confirmedAmount.textContent = amount + " " + type;
+			confirmedNotify.style.display = "block"; //no pun intended
+			setTimeout(() => {
+				confirmedNotify.style.display = "none";
+			}, 5000);
 		}
-		confirmedText.textContent = amount + " " + type;
-		confirmedNotify.style.display = "block"; //no pun intended
-		setTimeout(() => {
-			confirmedNotify.style.display = "none";
-		}, 5000);
 	}
 
 	xhr.open("GET", url, true);
@@ -485,7 +485,8 @@ $('.nav .mute').click(function(){
 	if (isCashMuted) {
 		isCashMuted = false;
 	 } else {
-		isCashMuted = true;	
+		isCashMuted = true;
+		sounds = [];
 	 }
 });
 
@@ -519,6 +520,7 @@ $('.core-nav .core-mute').click(function(){
 		isCoreMuted = false;
 	} else {
 		isCoreMuted = true;
+		sounds = [];
 	}
 });
 
