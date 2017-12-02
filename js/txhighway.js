@@ -2,7 +2,7 @@
 
 /* create variables */
 const socketCash = io("https://cashexplorer.bitcoin.com/");
-const socketCore = io("https://localbitcoinschain.com/");//https://insight.bitpay.com/");//https://localbitcoinschain.com/");//
+const socketCore = io("https://search.bitaccess.co/");//https://insight.bitpay.com/");//https://localbitcoinschain.com/");//
 const blockchairCashUrl = "http://cors-proxy.htmldriven.com/?url=https://api.blockchair.com/bitcoin-cash/mempool/";
 const blockchairCoreUrl = "http://cors-proxy.htmldriven.com/?url=https://api.blockchair.com/bitcoin/mempool/";
 const blockchainCoreUrl = "https://api.blockchain.info/charts/avg-confirmation-time?format=json&cors=true";
@@ -14,6 +14,8 @@ const cashPoolInfo = document.getElementById("cash-pool");
 const corePoolInfo = document.getElementById("core-pool");
 const cashEta = document.getElementById("cash-eta");
 const coreEta = document.getElementById("core-eta");
+const confirmedNotify = document.getElementById("confirmed-notify");
+const confirmedText = document.getElementById("confirmed-text");
 
 canvas.width = window.innerWidth; 
 canvas.height = window.innerHeight;
@@ -90,22 +92,56 @@ socketCore.on("connect", function () {
 
 socketCash.on("tx", function(data){
 	newTX("cash", data);
-	//console.log(data);
 });
 
 socketCore.on("tx", function(data){
 	newTX("core", data);
-	//console.log("coretx");
 });
 
 socketCash.on("block", function(data){
-	getPoolData(blockchairCashUrl, xhrCash, true);	
+	blockNotify(data, "BCH");	
 });
 
 socketCore.on("block", function(data){
-	getPoolData(blockchairCoreUrl, xhrCore, false);	
+	blockNotify(data, "BTC");	
 });
 /* End connect to socket */
+
+// notify users when a new block is found
+function blockNotify(blockId, type){
+	let xhr = new XMLHttpRequest();
+	let url = "";
+	let t = 0;
+
+	if(type == "BCH"){
+		t = parseInt(cashPoolInfo.textContent);		
+		url = "https://cashexplorer.bitcoin.com/insight-api/block/" + blockId;
+		getPoolData(blockchairCashUrl, xhrCash, true);		
+	} else {
+		t = parseInt(corePoolInfo.textContent);
+		url = "https://search.bitaccess.co/insight-api/block/" + blockId;
+		getPoolData(blockchairCoreUrl, xhrCore, false);	
+	}
+
+	xhr.onreadystatechange = function(){
+		//console.log(this.responseText);
+		let obj = this.responseText;
+		let tx = obj.tx;
+		let amount = tx.length;
+		console.log(obj.tx.length);
+		if (amount == t){
+			amount = "ALL";
+		}
+		confirmedText.textContent = amount + " " + type;
+		confirmedNotify.style.display = "block"; //no pun intended
+		setTimeout(() => {
+			confirmedNotify.style.display = "none";
+		}, 5000);
+	}
+
+	xhr.open("GET", url, true);
+	xhr.send(null);
+}
 
 
 /* get new cash mempool data */
@@ -205,31 +241,98 @@ vis(function(){
 /* new transaction is made */
 function newTX(type, txInfo){
 	let lane = SINGLE_LANE;
-	let x = - carWhaleCash.width - 10;
+	let x = -carWhaleCash.width - 10;
 	
 	if (type == "cash"){
 		let randLane = Math.floor(Math.random() * 8) + 1;
 		lane *= randLane;
 		lane -= SINGLE_LANE;
 		createVehicle(type, txCash, txInfo, x, lane, true);
-
 	} else {
 		lane *= 10;
 		lane -= SINGLE_LANE;
 		let car = getCar(txInfo.valueOut, false, false);
-		let width = SINGLE_LANE * (car.width / car.height);
-
-		// calculate distance between vehicles
-		if (txCore.length > 0){
-			let last = txCore[txCore.length - 1];
-			let front = width + x;
-			if (front >= last.x){
-				x = last.x - width - 10;
-			}
-		}
 		createVehicle(type, txCore, txInfo, x, lane, false);
 	}
 }
+
+/* create vehicles and push to appropriate array */
+function createVehicle(type, arr, txInfo, x, lane, isCash){
+	let donation = checkForDonation(txInfo);
+	let car = getCar(txInfo.valueOut, donation, isCash);
+	let height = SINGLE_LANE;
+	let width = height * (car.width / car.height);
+	let y = lane;
+	let xNew = x;
+	
+	if (arr.length >0){
+		let last = arr[arr.length -1];
+		let front = width + x;
+
+		if (front >= last.x && y == last.y){
+			xNew = last.x - width - 10;
+		}
+	}
+
+	arr.push({
+		type:type,
+		id: txInfo.txid,
+		x: xNew,
+		y: y,
+		h: height,
+		w: width,
+		valueOut: txInfo.valueOut,
+		donation: donation,
+		isCash: isCash
+	});
+
+	//addSounds(car, arr, arr.length - 1);
+	
+}
+/* end new transaction */
+
+/* return car based upon transaction size*/
+function getCar(valueOut, donation, isCash){
+
+	//console.log(valueOut);
+	if (donation == true){
+		return carLambo;
+	}
+
+	if (valueOut <= 5){
+		if (isCash){
+			return carSmallCash;
+		} else {
+			return carSmallCore;
+		}
+	} else if (valueOut > 5 && valueOut <= 10){
+		if (isCash){
+			return carMediumCash;
+		} else {
+			return carMediumCore;
+		}
+	} else if (valueOut > 10 && valueOut <= 15){
+		if (isCash){
+			return carLargeCash;
+		} else {
+			return carLargeCore;
+		}
+	} else if (valueOut > 15 && valueOut <= 25){
+		if (isCash){
+			return carXLargeCash;
+		} else {
+			return carXLargeCore;
+		}
+	} else if (valueOut > 25){
+		if (isCash){
+			return carWhaleCash;
+		} else {
+			return carWhaleCore;
+		}
+	}
+}
+/* end return car */
+
 
 // add sounds to sound array for playback
 function addSounds(carType){
@@ -274,8 +377,6 @@ function addSounds(carType){
 
 // play sounds in sound array
 function playSounds(){
-	console.log(sounds.length);
-
 	sounds.forEach((s, index, object)=>{
 		if (s.currentTime == 0){
 			s.play();
@@ -285,74 +386,6 @@ function playSounds(){
 		}
 	});
 }
-
-/* create vehicles and push to appropriate array */
-function createVehicle(type, arr, txInfo, x, lane, isCash){
-	let donation = checkForDonation(txInfo);
-	let car = getCar(txInfo.valueOut, donation, isCash);
-	let height = SINGLE_LANE;
-	let width = height * (car.width / car.height);
-	let y = lane;
-	
-	arr.push({
-		type:type,
-		id: txInfo.txid,
-		x: x,
-		y: y,
-		h: height,
-		w: width,
-		valueOut: txInfo.valueOut,
-		donation: donation,
-		isCash: isCash
-	});
-
-	//addSounds(car, arr, arr.length - 1);
-	
-}
-/* end new transaction */
-
-
-/* return car based upon transaction size*/
-function getCar(valueOut, donation, isCash){
-
-	//console.log(valueOut);
-	if (donation == true){
-		return carLambo;
-	}
-
-	if (valueOut <= 5){
-		if (isCash){
-			return carSmallCash;
-		} else {
-			return carSmallCore;
-		}
-	} else if (valueOut > 5 && valueOut <= 10){
-		if (isCash){
-			return carMediumCash;
-		} else {
-			return carMediumCore;
-		}
-	} else if (valueOut > 10 && valueOut <= 15){
-		if (isCash){
-			return carLargeCash;
-		} else {
-			return carLargeCore;
-		}
-	} else if (valueOut > 15 && valueOut <= 25){
-		if (isCash){
-			return carXLargeCash;
-		} else {
-			return carXLargeCore;
-		}
-	} else if (valueOut > 25){
-		if (isCash){
-			return carWhaleCash;
-		} else {
-			return carWhaleCore;
-		}
-	}
-}
-/* end return car */
 
 /* check for donations into the BCF*/
 let checkForDonation = function(txInfo){
