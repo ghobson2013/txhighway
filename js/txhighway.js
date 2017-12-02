@@ -73,8 +73,7 @@ let SINGLE_LANE = HEIGHT/14;
 let isVisible = true;
 
 // cash and segwit speed
-const CSPEED = 12;
-const SSPEED = 8;
+const SPEED = 8;
 
 // arrays
 let txCash = [];
@@ -185,7 +184,7 @@ let vis = (function(){
     }
     return function(c) {
         if (c) document.addEventListener(eventKey, c);
-        return !document[stateKey];
+        	return !document[stateKey];
     }
 })();
 
@@ -237,6 +236,16 @@ function addSounds(carType){
 	if (!isVisible)
 		return;
 
+	if (carType == carLambo){
+		let randSong = Math.floor(Math.random() * 2) + 1;
+		sounds.push(audioCarFast.cloneNode(true));
+		if (randSong == 1){
+			sounds.push(audioMercy);
+		} else if (randSong == 2){
+			sounds.push(audioRide4);
+		}
+	}
+
 	if (sounds.length > 15){
 		playSounds();
 		return;
@@ -245,8 +254,7 @@ function addSounds(carType){
 	if (carType == carSmallCash ||
 		carType == carSmallCore){
 			sounds.push(audioCar.cloneNode(true));
-			sounds[sounds.length-1].volume = 0.2;			
-			
+			sounds[sounds.length-1].volume = 0.2;
 	} else if (carType == carMediumCash ||
 		carType == carMediumCore ||
 		carType == carLargeCash ||
@@ -259,13 +267,6 @@ function addSounds(carType){
 		carType == carWhaleCore){
 			sounds.push(audioSemi.cloneNode(true));
 			sounds[sounds.length-1].playbackRate = 1.6;
-	} else if (carType == carLambo){
-		let randSong = Math.floor(Math.random() * 2) + 1;
-		if (randSong == 1){
-			sounds.push(audioMercy);
-		} else if (randSong == 2){
-			sounds.push(audioRide4);
-		}
 	}
 
 	playSounds();
@@ -398,7 +399,8 @@ function drawBackground(){
 // loop through transactions and draw them
 function drawVehicles(arr){
 	arr.forEach(function(item, index, object){
-		item.x += SSPEED;
+		item.x += SPEED;
+		
 		let car = getCar(item.valueOut,item.donation,item.isCash);
 		
 		if ((item.isCash && !isCashMuted) || (!item.isCash && !isCoreMuted)){
