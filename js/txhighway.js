@@ -241,43 +241,43 @@ vis(function(){
 /* new transaction is made */
 function newTX(type, txInfo){
 	let lane = SINGLE_LANE;
-	let x = -carWhaleCash.width - 10;
 	
 	if (type == "cash"){
 		let randLane = Math.floor(Math.random() * 8) + 1;
 		lane *= randLane;
 		lane -= SINGLE_LANE;
-		createVehicle(type, txCash, txInfo, x, lane, true);
+		createVehicle(type, txCash, txInfo, lane, true);
 	} else {
 		lane *= 10;
 		lane -= SINGLE_LANE;
 		let car = getCar(txInfo.valueOut, false, false);
-		createVehicle(type, txCore, txInfo, x, lane, false);
+		createVehicle(type, txCore, txInfo, lane, false);
 	}
 }
 
 /* create vehicles and push to appropriate array */
-function createVehicle(type, arr, txInfo, x, lane, isCash){
+function createVehicle(type, arr, txInfo, lane, isCash){
 	let donation = checkForDonation(txInfo);
 	let car = getCar(txInfo.valueOut, donation, isCash);
 	let height = SINGLE_LANE;
 	let width = height * (car.width / car.height);
 	let y = lane;
-	let xNew = x;
+	let x = -width - SPEED;
 	
-	if (arr.length >0){
+	if (arr.length > 0){
 		let last = arr[arr.length -1];
-		let front = width + x;
+		let front = width;
 
 		if (front >= last.x && y == last.y){
-			xNew = last.x - width - 10;
+			x = last.x - width - SPEED;
 		}
 	}
 
+	//console.log("car pos" + x);
 	arr.push({
 		type:type,
 		id: txInfo.txid,
-		x: xNew,
+		x: x,
 		y: y,
 		h: height,
 		w: width,
@@ -285,9 +285,6 @@ function createVehicle(type, arr, txInfo, x, lane, isCash){
 		donation: donation,
 		isCash: isCash
 	});
-
-	//addSounds(car, arr, arr.length - 1);
-	
 }
 /* end new transaction */
 
@@ -349,7 +346,7 @@ function addSounds(carType){
 		}
 	}
 
-	if (sounds.length > 15){
+	if (sounds.length > 16){
 		playSounds();
 		return;
 	}
@@ -381,6 +378,12 @@ function playSounds(){
 		if (s.currentTime == 0){
 			s.play();
 		}
+	});
+}
+
+// remove sounds from array
+function removeSounds(){
+	sounds.forEach((s,index,object)=>{
 		if (s.ended){
 			object.splice(index, 1);
 		}
@@ -432,21 +435,25 @@ function drawBackground(){
 // loop through transactions and draw them
 function drawVehicles(arr){
 	arr.forEach(function(item, index, object){
-		item.x += SPEED;
 		
 		let car = getCar(item.valueOut,item.donation,item.isCash);
 		
-		if ((item.isCash && !isCashMuted) || (!item.isCash && !isCoreMuted)){
-			if (item.x < -200 && item.x > -210){
-				addSounds(car);
+		if (item.x > -car.width){
+			ctx.drawImage(car, item.x, item.y, item.w, item.h);
+			if ((item.isCash && !isCashMuted) || (!item.isCash && !isCoreMuted)){
+				if (!item.isPlaying){
+					addSounds(car);
+				}
 			}
+			item.isPlaying = true;
+			
 		}
-		if (item.x > -car.width)
-			ctx.drawImage(car, item.x, item.y , item.w, item.h);
+		item.x += SPEED;
+			
 	});
 }
 
-
+// removes vehicles that are off the map
 function removeVehicles(){
 	// loops through transactions again and removes ones that are off the screen
 	txCash.forEach(function(item, index, object){
@@ -476,6 +483,7 @@ function animate(){
 	drawVehicles(txCash);
 	drawVehicles(txCore);
 	removeVehicles();
+	removeSounds();
 }
 
 
