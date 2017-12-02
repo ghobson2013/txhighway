@@ -435,7 +435,6 @@ function drawBackground(){
 // loop through transactions and draw them
 function drawVehicles(arr){
 	arr.forEach(function(item, index, object){
-		
 		let car = getCar(item.valueOut,item.donation,item.isCash);
 		
 		if (item.x > -car.width){
@@ -446,10 +445,8 @@ function drawVehicles(arr){
 				}
 			}
 			item.isPlaying = true;
-			
 		}
 		item.x += SPEED;
-			
 	});
 }
 
@@ -549,7 +546,5 @@ $('.close').on('click', function(){
 
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function(event) {
-  if (event.target.className == 'modal') {
-    $('.modal').hide();
-  }
+	if($(event.target).hasClass('modal')) $('.modal').hide();
 }
