@@ -203,7 +203,6 @@ vis(function(){
 });
 /* end window loses focus */
 
-
 /* new transaction is made */
 function newTX(type, txInfo){
 	let lane = SINGLE_LANE;
@@ -235,7 +234,11 @@ function newTX(type, txInfo){
 
 // add sounds to sound array for playback
 function addSounds(carType){
-	if (!isVisible){
+	if (!isVisible)
+		return;
+
+	if (sounds.length > 15){
+		playSounds();
 		return;
 	}
 
@@ -264,14 +267,15 @@ function addSounds(carType){
 			sounds.push(audioRide4);
 		}
 	}
+
 	playSounds();
 }
 
 // play sounds in sound array
 function playSounds(){
 	console.log(sounds.length);
+
 	sounds.forEach((s, index, object)=>{
-		//console.log(s.currentTime);
 		if (s.currentTime == 0){
 			s.play();
 		}
@@ -391,22 +395,19 @@ function drawBackground(){
 	ctx.strokeRect(-2, SINGLE_LANE * 10, WIDTH + 3, SINGLE_LANE);
 }
 
+// loop through transactions and draw them
 function drawVehicles(arr){
-	// loop through transactions and draw them
 	arr.forEach(function(item, index, object){
 		item.x += SSPEED;
 		let car = getCar(item.valueOut,item.donation,item.isCash);
 		
 		if ((item.isCash && !isCashMuted) || (!item.isCash && !isCoreMuted)){
 			if (item.x < -200 && item.x > -210){
-				//console.log("not muted");
 				addSounds(car);
-			} else {
-				//console.log("muted");
 			}
 		}
-		
-		ctx.drawImage(car, item.x, item.y , item.w, item.h);
+		if (item.x > -car.width)
+			ctx.drawImage(car, item.x, item.y , item.w, item.h);
 	});
 }
 
