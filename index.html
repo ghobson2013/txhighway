@@ -14,7 +14,9 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
-	<canvas height="100%" id="renderCanvas" width="100%"></canvas><span class="divider"></span> <span class="lane-size one">1mb</span> <span class="lane-size two">2mb</span> <span class="lane-size three">3mb</span> <span class="lane-size four">4mb</span> <span class="lane-size five">5mb</span> <span class="lane-size six">6mb</span> <span class="lane-size seven">7mb</span> <span class="lane-size eight">8mb</span> <span class="lane-size one-core">1mb</span> <span class="lane-size two-core">2mb</span> <span class="block one"></span> <span class="block two"></span>  <span class="caution one"></span> <span class="caution two"></span>  <span class="no2x one"></span> <span class="no2x two"></span> 
+	<canvas height="100%" id="renderCanvas" width="100%"></canvas>
+
+  <span class="divider"></span> <span class="lane-size one">1mb</span> <span class="lane-size two">2mb</span> <span class="lane-size three">3mb</span> <span class="lane-size four">4mb</span> <span class="lane-size five">5mb</span> <span class="lane-size six">6mb</span> <span class="lane-size seven">7mb</span> <span class="lane-size eight">8mb</span> <span class="lane-size one-core">1mb</span> <span class="lane-size two-core">2mb</span> <span class="block one"></span> <span class="block two"></span>  <span class="caution one"></span> <span class="caution two"></span>  <span class="no2x one"></span> <span class="no2x two"></span> 
 
 	<div class="ln"></div>
 
@@ -33,16 +35,16 @@
 	<a href="#" class="mute">
 		<i class="fa fa-volume-up" aria-hidden="true"></i>
 	</a>
+  <a href="#" class="overlay">
+    <i class="fa fa-window-maximize" aria-hidden="true"></i>
+  </a>
 	<a href="#" class="legend" data-modal='modal-legend'>
 		<i class="fa fa-car" aria-hidden="true"></i>
 	</a>
-	<a href="#" class="overlay" data-modal='modal-overlay'>
-		<i class="fa fa-window-maximize" aria-hidden="true"></i>
-	</a>
-	<a href="#" class="stats" data-modal='modal-stats'>
+<!-- 	<a href="#" class="stats" data-modal='modal-stats'>
 		<i class="fa fa-cog" aria-hidden="true"></i>
 	</a>
-	<a href="#" class="donate" data-modal='modal-donate'>
+ -->	<a href="#" class="donate" data-modal='modal-donate'>
 		<i class="fa fa-heart" aria-hidden="true"></i>
 	</a>
 </div>
@@ -56,7 +58,6 @@
 
 
 <div id="modal-legend" class="modal">  
-  <!-- Modal content -->
   <div class="modal-content">
     <div class="modal-header">
       <span class="close">×</span>
@@ -65,61 +66,56 @@
     </div>
     <div class="modal-body">
     
-  <table>
-    <thead>
+    <table>
+        
       <tr>
-        <th class="col-type"><h4>Type</h4></th>
-        <th class="col-val"><h4>Value</h4></th>
+        <td>
+        <h6>0 - 5 BCH/BTC</h6>
+        <img src="assets/sprites/bch-small.png" alt="small">
+        </td>
+
+      <td>
+        <h6>5 - 10 BCH/BTC</h6>
+          <img src="assets/sprites/bch-medium.png" alt="medium">
+      </td>
+
+
+      <tr>
+        <td>
+        <h6>10 - 15 BCH/BTC</h6>
+        <img src="assets/sprites/bch-large.png" alt="large">
+        </td>
+
+      <td>
+          <h6>15 - 25 BCH/BTC</h6>
+          <img src="assets/sprites/bch-xlarge.png" alt="xlarge">
+      </td>
       </tr>
-    </thead>
-  <tr>
-    <td>
-    <h6>0 - 5 BCH/BTC</h6>
-    <img src="assets/sprites/bch-small.png" alt="small">
-    </td>
 
-  <td>
-    <h6>5 - 10 BCH/BTC</h6>
-      <img src="assets/sprites/bch-medium.png" alt="medium">
-  </td>
+      <tr>
+        <td>
+        <h6>25+ BCH/BTC</h6>
+        <img src="assets/sprites/bch-whale.png" alt="whale">
+        </td>
+      <td>
+      <h6>Donation to <a href="http://thebitcoincash.fund" target="_blank">The Bitcoin Cash Fund</a></h6>
+      <h4 class="qmark">?</h4>
+      </td>
+      
+      </tr>
 
-
-  <tr>
-    <td>
-    <h6>10 - 15 BCH/BTC</h6>
-    <img src="assets/sprites/bch-large.png" alt="large">
-    </td>
-
-  <td>
-      <h6>15 - 25 BCH/BTC</h6>
-      <img src="assets/sprites/bch-xlarge.png" alt="xlarge">
-  </td>
-  </tr>
-
-  <tr>
-    <td>
-    <h6>25+ BCH/BTC</h6>
-    <img src="assets/sprites/bch-whale.png" alt="whale">
-    </td>
-  <td>
-  <h6>Donation to <a href="http://thebitcoincash.fund" target="_blank">The Bitcoin Cash Fund</a></h6>
-  <h4 class="qmark">?</h4>
-  </td>
-  
-  </tr>
-
-</table>
+    </table>
+    
     </div>
     <div class="modal-footer">
-      <h3>Make a donation to <a href="http://thebitcoincash.fund" target="_blank">The Bitcoin Cash Fund</a> to view your Lambo</h3>
+      <h3>Donate to <a href="http://thebitcoincash.fund" target="_blank">The Bitcoin Cash Fund</a> &amp; support Bitcoin Cash.</h3>
     </div>
   </div>
 </div>
 
 
 
-<div id="modal-overlay" class="modal">  
-  <!-- Modal content -->
+<!-- <div id="modal-overlay" class="modal">  
   <div class="modal-content">
     <div class="modal-header">
       <span class="close">×</span>
@@ -133,12 +129,11 @@
       <h3> FIRST Modal Footer</h3>
     </div>
   </div>
-</div>
+</div> -->
 
 
 
-<div id="modal-stats" class="modal">
-  <!-- Modal content 2 -->
+<!-- <div id="modal-stats" class="modal">
   <div class="modal-content">
     <div class="modal-header">
       <span class="close">×</span>
@@ -152,10 +147,8 @@
       <h3>SECOND Modal Footer</h3>
     </div>
   </div>
-</div>
+</div> -->
 
-
-<!-- The Modal 2 -->
 <div id="modal-donate" class="modal">
   <!-- Modal content 2 -->
   <div class="modal-content">
@@ -181,28 +174,7 @@
 	<div class="options">
 		info/Settings
 	</div>
-	<!-- <a class="btn" href="#open-modal">Donate</a> -->
-	<!-- <div class="modal-window" id="open-modal">
-		<div>
-			<a class="modal-close" href="#modal-close" title="Close">Close</a>
-			<div class="donate-col modal-column">
-				<h3>Donate to the Bitcoin Cash Fund</h3>
-				<div>
-					<img alt="The Bitcoin Cash Fund" src="assets/qr_code.png"> Support #BitcoinCash growth and make a donation to the <a href="https://thebitcoincash.fund/" target="_blank">The Bitcoin Cash Fund</a>. Stick around after your donation goes through for a bit of fun.
-					<p class="label">3ECKq7onkjnRQR2nNe5uUJp2yMsXRmZavC</p>
-				</div>
-			</div>
-			<div class="stats-col modal-column">
-				<h3>Average Fee</h3>
-				<p>Nullam quis risus eget urna mollis ornare vel eu leo. Aenean lacinia bibendum nulla sed consectetur. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-			</div>
-			<div class="stats-col modal-column">
-				<h3>Average Confirmation</h3>
-				<p>Nullam quis risus eget urna mollis ornare vel eu leo. Aenean lacinia bibendum nulla sed consectetur. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-			</div>
-		</div>
-	</div> -->
-	<div class="road-sign">
+	<div class="road-sign sign">
 		<div class="sign-border">
 			<h4 class="sign-title">Tx En-Route to Confirmation Town</h4>
 			<h5 class="highway-num">A1</h5>

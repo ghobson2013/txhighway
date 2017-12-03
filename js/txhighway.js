@@ -573,9 +573,11 @@ $('.nav .legend').hover(function(){
     $(this).find('i').toggleClass('fa-car fa-truck')
 });
 
-$('.nav .overlay').hover(function(){
+$('.nav .overlay').click(function(){
     // $(this).next('ul').slideToggle('500');
     $(this).find('i').toggleClass('fa-window-maximize fa-window-restore')
+    $( ".sign" ).fadeToggle( "slow", "linear" );
+
 });
 
 $('.nav .stats').hover(function(){

@@ -171,7 +171,7 @@ span {
 }
 
 .modal-footer a, .modal-footer a:visited {
-  color:#F0952D;
+  color:#149347;
   text-decoration:none;
 }
 
@@ -197,13 +197,18 @@ table thead th.col-val {
 
 table tr td img {
   max-height:70px;
-  padding:0 1rem 1rem;
+  padding:0;
+}
+
+table tr td h6 {
+  font-size:1.1rem;
+  margin:0;
+
 }
 
 .qmark {
   font-size: 3rem;
   font-weight: bold;
-  padding: 2rem;
   margin: 0 0 3rem;
 }
 
