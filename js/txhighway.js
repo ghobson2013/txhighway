@@ -51,17 +51,6 @@ carWhaleCore.src = "assets/sprites/core-whale.png";
 /* end sprites */
 
 /* audio files */
-// car sounds
-const audioCar = new Audio("assets/audio/car-pass.mp3");
-const audioDiesel = new Audio("assets/audio/diesel-pass.mp3");
-const audioSemi = new Audio("assets/audio/semi-pass.mp3");
-const audioCarFast = new Audio("assets/audio/fastcar-pass.mp3");
-audioSemi.playbackRate = 4;
-
-// donation music
-const audioMercy = new Audio("assets/audio/mercy-6s.mp3");
-const audioRide4 = new Audio("assets/audio/ride-dirty-4s.mp3");
-const audioRide7 = new Audio("assets/audio/ride-dirty-7s.mp3");
 
 // array to store sounds for multiple playback
 let sounds = [];
@@ -262,14 +251,14 @@ function createVehicle(type, arr, txInfo, lane, isCash){
 	let height = SINGLE_LANE;
 	let width = height * (car.width / car.height);
 	let y = lane;
-	let x = -width - SPEED;
+	let x = -width - SPEED - 20;
 	
 	if (arr.length > 0){
 		let last = arr[arr.length -1];
 		let front = width;
 
 		if (front >= last.x && y == last.y){
-			x = last.x - width - SPEED;
+			x = last.x - width - SPEED - 20;
 		}
 	}
 
@@ -330,65 +319,146 @@ function getCar(valueOut, donation, isCash){
 }
 /* end return car */
 
-
 // add sounds to sound array for playback
 function addSounds(carType){
 	if (!isVisible)
 		return;
 
+	let duration = 0;
+	let pr = 0;
+
 	if (carType == carLambo){
 		let randSong = Math.floor(Math.random() * 2) + 1;
-		sounds.push(audioCarFast.cloneNode(true));
+		//sounds.push(audioCarFast.cloneNode(true));
 		if (randSong == 1){
 			sounds.push(audioMercy);
+			playSound(audioMercy, null);
 		} else if (randSong == 2){
+			playSound(audioRide, null);
 			sounds.push(audioRide4);
 		}
 	}
 
-	if (sounds.length > 16){
-		playSounds();
-		return;
-	}
-
 	if (carType == carSmallCash ||
 		carType == carSmallCore){
-			sounds.push(audioCar.cloneNode(true));
-			sounds[sounds.length-1].volume = 0.2;
+			audioCar.playbackRate = pr;
+			playSound(audioCar, carSmallCash);
 	} else if (carType == carMediumCash ||
 		carType == carMediumCore ||
 		carType == carLargeCash ||
 		carType == carLargeCore ||
 		carType == carXLargeCash ||
 		carType == carXLargeCore){
-			sounds.push(audioDiesel.cloneNode(true));
-			sounds[sounds.length-1].playbackRate = 1.3;			
+			audioDiesel.playbackRate = 1.4;
+			playSound(audioDiesel, carMediumCash);	
 	} else if (carType == carWhaleCash ||
 		carType == carWhaleCore){
-			sounds.push(audioSemi.cloneNode(true));
-			sounds[sounds.length-1].playbackRate = 1.6;
+			audioSemi.playbackRate = 1.8;
+			playSound(audioSemi, carWhaleCash);
 	}
-
-	playSounds();
 }
 
-// play sounds in sound array
-function playSounds(){
-	sounds.forEach((s, index, object)=>{
-		if (s.currentTime == 0){
-			s.play();
-		}
-	});
+// plays the sound
+function playSound(buffer, carType) {
+	let source = context.createBufferSource();
+	let gainNode = context.createGain();
+	source.buffer = buffer;
+
+	// set playback rate based upon window width and speed
+	//let duration = source.buffer.duration;
+	//let pr = duration / (WIDTH / (SPEED*60));
+	//source.playbackRate.value = pr -1;
+
+	if(carType == carSmallCash)
+		gainNode.gain.value = 0.2;
+	
+	source.connect(gainNode);
+	gainNode.connect(context.destination);
+	source.start(0);
 }
 
-// remove sounds from array
-function removeSounds(){
-	sounds.forEach((s,index,object)=>{
-		if (s.ended){
-			object.splice(index, 1);
-		}
-	});
+/* LOAD SOUNDS */
+let context = new AudioContext();
+const audioCarUrl = "assets/audio/car-pass.mp3";
+const audioDieselUrl = "assets/audio/diesel-pass.mp3";
+const audioSemiUrl = "assets/audio/semi-pass.mp3";
+
+// donation music
+const audioMercyUrl = "assets/audio/mercy-6s.mp3";
+const audioRideUrl = "assets/audio/ride-dirty-4s.mp3";
+
+let audioCar = null;
+let audioDiesel = null;
+let audioSemi = null;
+let audioMercy = null;
+let audioRide = null;
+
+loadSoundCar(audioCarUrl);
+loadSoundDiesel(audioDieselUrl);
+loadSoundSemi(audioSemiUrl);
+loadSoundMercy(audioMercyUrl);
+loadSoundRide(audioRideUrl);
+
+function loadSoundCar(url){
+	let request = new XMLHttpRequest();
+	request.open('GET', url, true);
+	request.responseType = 'arraybuffer';
+	request.onload = function(){
+		context.decodeAudioData(request.response, function(buffer){
+			audioCar = buffer;
+		});
+	}
+	request.send();
 }
+
+function loadSoundDiesel(url){
+	let request = new XMLHttpRequest();
+	request.open('GET', url, true);
+	request.responseType = 'arraybuffer';
+	request.onload = function(){
+		context.decodeAudioData(request.response, function(buffer){
+			audioDiesel = buffer;
+		});
+	}
+	request.send();
+}
+
+function loadSoundSemi(url){
+	let request = new XMLHttpRequest();
+	request.open('GET', url, true);
+	request.responseType = 'arraybuffer';
+	request.onload = function(){
+		context.decodeAudioData(request.response, function(buffer){
+			audioSemi = buffer;
+		});
+	}
+	request.send();
+}
+
+function loadSoundMercy(url){
+	let request = new XMLHttpRequest();
+	request.open('GET', url, true);
+	request.responseType = 'arraybuffer';
+	request.onload = function(){
+		context.decodeAudioData(request.response, function(buffer){
+			audioMercy = buffer;
+		});
+	}
+	request.send();
+}
+
+function loadSoundRide(url){
+	let request = new XMLHttpRequest();
+	request.open('GET', url, true);
+	request.responseType = 'arraybuffer';
+	request.onload = function(){
+		context.decodeAudioData(request.response, function(buffer){
+			audioRide = buffer;
+		});
+	}
+	request.send();
+}
+/* END LOAD SOUNDS */
 
 /* check for donations into the BCF*/
 let checkForDonation = function(txInfo){
@@ -438,13 +508,16 @@ function drawVehicles(arr){
 		let car = getCar(item.valueOut,item.donation,item.isCash);
 		
 		if (item.x > -car.width){
-			ctx.drawImage(car, item.x, item.y, item.w, item.h);
 			if ((item.isCash && !isCashMuted) || (!item.isCash && !isCoreMuted)){
 				if (!item.isPlaying){
+					//playSound(carSound);
 					addSounds(car);
 				}
 			}
 			item.isPlaying = true;
+
+			ctx.drawImage(car, item.x, item.y, item.w, item.h);
+
 		}
 		item.x += SPEED;
 	});
@@ -480,7 +553,7 @@ function animate(){
 	drawVehicles(txCash);
 	drawVehicles(txCore);
 	removeVehicles();
-	removeSounds();
+	//removeSounds();
 }
 
 
@@ -515,9 +588,7 @@ $('.nav .donate').hover(function(){
     $(this).find('i').toggleClass('fa-heart fa-money')
 });
 
-
 //core nav
-
 $('.core-nav .core-mute').click(function(){
     // $(this).next('ul').slideToggle('500');
 	$(this).find('i').toggleClass('fa-volume-up fa-volume-off')
