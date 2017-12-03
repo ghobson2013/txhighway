@@ -460,6 +460,70 @@ span.divider {
   font-weight: normal;
   color: #F8D448;
 }
+
+.waiting-sign {
+  border: 2px solid #222;
+  border-radius: 10px;
+  position: absolute;
+  left: 40px;
+  bottom: 35%;
+  z-index: 99;
+  width: 70px;
+  box-shadow: 2px 3px 15px rgba(0, 0, 0, 0.3);
+}
+
+.waiting-sign .sign-border {
+  background:#222;
+  border:2px solid #fff;
+  padding:5px;
+  border-radius: 10px;
+}
+
+.waiting-sign div {
+  text-align:center;
+}
+
+.waiting-sign h5 {
+  font-size:1rem;
+  line-height:1;
+  text-align:center;
+  color:#fff;
+  margin:0;
+  padding:0.7rem 0;
+}
+
+.waiting-sign .sign-title {
+  background:#fff;
+  border-radius:3px;
+  line-height:1;
+  text-transform: uppercase;
+  padding:3px;
+  text-align:center;
+  color:#222;
+  padding:3px 2px 1px;
+  font-size:7px;
+  font-weight:bold;
+  font-family:sans-serif;
+  margin:0;
+}
+
+.whitepaper {
+  position:absolute;
+  bottom:35.2%;
+  left:30%;
+  z-index:9;
+  }
+.whitepaper i {
+  color:#999;
+  background:#fff;
+  border-radius: 0 7px 0 0;
+  transform: rotate(35deg);
+}
+
+.whitepaper a{
+  display:block;
+}
+
 .btn {
   background-color: #F0952D;
   padding: 10px 3em;
@@ -596,10 +660,28 @@ span.divider {
     margin:0;
   }
   .modal {padding-top:30px;}
+  .modal-header h2 {
+    font-size:1.2rem;
+  }
+  #modal-donate .qr {
+    width:90px;
+    padding:1rem 1rem 1rem 0;
+  }
+  #modal-donate .modal-header p {
+    display:none;
+  }
+  #modal-donate .modal-header h2 {
+    margin:5px 0 5px;
+  }
 }
 
 @media screen and (max-width: 480px){
   .road-sign {
     bottom:0;
+    right:5px;
+  }
+  .waiting-sign {
+    bottom:0;
+    left:5px;
   }
 }
