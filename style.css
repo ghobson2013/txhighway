@@ -633,6 +633,28 @@ span.divider {
   color:#222;
 }
 
+
+#page {
+    display: none;
+}
+#loading {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+    height:100%;
+    width:100%;
+    width: 100vw;
+    height: 100vh;
+    background-color: #f8f8f8;
+    background-image: url("assets/blockchain.gif");
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+
+
 @media only screen and (max-width:767px) {
   .title {
     width: 170px;
