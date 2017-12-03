@@ -96,44 +96,43 @@ span {
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
     z-index: 1; /* Sit on top */
-    padding-top: 100px; /* Location of the box */
+    /*padding-top: 100px; */
     left: 0;
-    top: 0;
+    bottom: 0;
     width: 100%; /* Full width */
     height: 100%; /* Full height */
     overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-    z-index:9999;
-}
 
-.modal.donate {
-  padding-top:28.5%;
+    z-index:9999;
+    /*background-color: rgb(0,0,0); 
+    background-color: rgba(0,0,0,0.4); */
 }
 
 /* Modal Content */
 .modal-content {
-    position: relative;
+    position: absolute;
     background-color: #fefefe;
     margin: auto;
     padding: 0;
     border: 1px solid #888;
     width: 80%;
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+    box-shadow: 0 15px 27px 0 rgba(0,0,0,0.3), 0 4px 38px 0 rgba(0,0,0,0.39);
     -webkit-animation-name: animatetop;
     -webkit-animation-duration: 0.4s;
     animation-name: animatetop;
-    animation-duration: 0.4s
+    animation-duration: 0.4s;
+    bottom:0;
+    left:10%;
 }
 
 /* Add Animation */
 @-webkit-keyframes animatetop {
-    from {top:-300px; opacity:0} 
-    to {top:0; opacity:1}
+    from {bottom:-300px; opacity:0} 
+    to {bottom:0; opacity:1}
 }
 @keyframes animatetop {
-    from {top:-300px; opacity:0}
-    to {top:0; opacity:1}
+    from {bottom:-300px; opacity:0}
+    to {bottom:0; opacity:1}
 }
 /* The Close Button */
 .close {
@@ -151,7 +150,7 @@ span {
 
 .modal-content .modal-header {
     padding: 2px 16px;
-    background-color: #149347;
+    background-color: #F0952D;
     color: white;
 }
 .modal-content .modal-header p {
@@ -162,7 +161,7 @@ span {
 .modal-body {padding: 2px 16px;}
 .modal-footer {
     padding: 2px 16px;
-    background-color: #149347;
+    background-color: #F0952D;
     color: white;
 }
 
@@ -183,7 +182,7 @@ span {
 table {
     table-layout: fixed;
     width: 100%;
-    white-space: nowrap;
+    /*white-space: nowrap;*/
     text-align:left;
 }
 table thead th.col-type {
@@ -197,14 +196,15 @@ table thead th.col-val {
 }
 
 table tr td img {
-  max-height:70%;
-  padding:1rem;
+  max-height:70px;
+  padding:0 1rem 1rem;
 }
 
 .qmark {
-  font-size:4rem;
-  font-weight:bold;
-  padding:0.5rem 0 0 2rem;
+  font-size: 3rem;
+  font-weight: bold;
+  padding: 2rem;
+  margin: 0 0 3rem;
 }
 
 #modal-donate .qr {
@@ -554,7 +554,14 @@ span.divider {
   top: -50%;
   left:-50%;
   text-align: center;
-  background: #149347;
+  background: rgba(255,255,255,0.7);
+  border-radius:3px;
+  padding:1rem;
+  color:#222;
+}
+
+.confirmed-text p {
+  color:#222;
 }
 
 @media only screen and (max-width:767px) {
@@ -568,6 +575,22 @@ span.divider {
   .bitcoin-cash, .bs {
     background-size: 40% !important;
   }
+
+  table tr td img {
+    max-height:28px;
+  }
+  table tr td .qmark {
+    font-size:2rem;
+  }
+  .modal-content {
+    width:96%;
+    left: 2%;
+
+  }
+  .qmark {
+    margin:0;
+  }
+  .modal {padding-top:30px;}
 }
 
 @media screen and (max-width: 480px){
