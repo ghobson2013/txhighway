@@ -143,6 +143,11 @@ function init(){
 	loadSoundMercy(audioMercyUrl);
 	loadSoundRide(audioRideUrl);
 
+
+	onReady(function () {
+		show('page', true);
+		show('loading', false);
+	});
 }
 
 // notify users when a new block is found
@@ -217,12 +222,12 @@ function getCoreConfTime(url, xhr){
 
 /* resize the window */
 function resize(){
-	let height = window.innerHeight;
-	let ratio = canvas.width/canvas.height;
-	let width = height * ratio;
+	HEIGHT = window.innerHeight;
+	WIDTH = window.innerWidth;
+	SINGLE_LANE = HEIGHT/14;
 
-	canvas.style.width = width + "px";
-	canvas.style.height = height + "px";
+	canvas.width = WIDTH;
+	canvas.height = HEIGHT;
 }
 
 /* end resize the window */
@@ -263,18 +268,11 @@ vis(function(){
 
 /* new transaction is made */
 function newTX(type, txInfo){
-	let lane = SINGLE_LANE;
-	
 	if (type == "cash"){
 		let randLane = Math.floor(Math.random() * 8) + 1;
-		lane *= randLane;
-		lane -= SINGLE_LANE;
-		createVehicle(type, txCash, txInfo, lane, true);
+		createVehicle(type, txCash, txInfo, randLane, true);
 	} else {
-		lane *= 10;
-		lane -= SINGLE_LANE;
-		let car = getCar(txInfo.valueOut, false, false);
-		createVehicle(type, txCore, txInfo, lane, false);
+		createVehicle(type, txCore, txInfo, 10, false);
 	}
 }
 
@@ -282,27 +280,24 @@ function newTX(type, txInfo){
 function createVehicle(type, arr, txInfo, lane, isCash){
 	let donation = checkForDonation(txInfo);
 	let car = getCar(txInfo.valueOut, donation, isCash);
-	let height = SINGLE_LANE;
-	let width = height * (car.width / car.height);
-	let y = lane;
+	let width = SINGLE_LANE * (car.width / car.height);
 	let x = -width - carWhaleCash.width;
 	
 	if (arr.length > 0){
 		let last = arr[arr.length -1];
 		let front = width;
 
-		if (front >= last.x && y == last.y){
+		if (front >= last.x && lane == last.lane){
 			x = last.x - width;
 		}
 	}
 
-	//console.log("car pos" + x);
 	arr.push({
 		type:type,
 		id: txInfo.txid,
 		x: x,
-		y: y,
-		h: height,
+		lane: lane,
+		h: SINGLE_LANE,
 		w: width,
 		valueOut: txInfo.valueOut,
 		donation: donation,
@@ -313,8 +308,6 @@ function createVehicle(type, arr, txInfo, lane, isCash){
 
 /* return car based upon transaction size*/
 function getCar(valueOut, donation, isCash){
-
-	//console.log(valueOut);
 	if (donation == true){
 		return carLambo;
 	}
@@ -356,7 +349,6 @@ function getCar(valueOut, donation, isCash){
 // add sounds to sound array for playback
 function addSounds(carType){
 	if (!isVisible) return;
-
 
 	if (carType == carLambo){
 		let randSong = Math.floor(Math.random() * 2) + 1;
@@ -514,7 +506,11 @@ function drawVehicles(arr){
 				if (!item.isPlaying) addSounds(car);
 			}
 			item.isPlaying = true;
-			ctx.drawImage(car, item.x, item.y, item.w, item.h);
+
+			let y = (item.lane * SINGLE_LANE) - SINGLE_LANE;
+			let width = SINGLE_LANE * (car.width / car.height);
+
+			ctx.drawImage(car, item.x, y, width, SINGLE_LANE);
 		}
 		item.x += SPEED;
 	});
@@ -624,7 +620,3 @@ function show(id, value) {
     document.getElementById(id).style.display = value ? 'block' : 'none';
 }
 
-onReady(function () {
-    show('page', true);
-    show('loading', false);
-});
