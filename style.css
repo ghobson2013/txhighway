@@ -634,7 +634,7 @@ span.divider {
 }
 
 
-/*#page {
+#page {
     display: none;
 }
 #loading {
@@ -651,7 +651,7 @@ span.divider {
     background-image: url("assets/blockchain.gif");
     background-repeat: no-repeat;
     background-position: center;
-}*/
+}
 
 
 
