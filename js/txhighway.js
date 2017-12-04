@@ -20,7 +20,13 @@ const confirmedAmount = document.getElementById("confirmed-amount");
 canvas.width = window.innerWidth; 
 canvas.height = window.innerHeight;
 
-/* sprites */
+// for ajax requests
+let xhrCash = new XMLHttpRequest();
+let xhrCore = new XMLHttpRequest();
+let xhrBlockchain = new XMLHttpRequest();
+
+
+// sprites
 const carCore = new Image();
 const carSmallCash = new Image();
 const carMediumCash = new Image();
@@ -48,12 +54,26 @@ carMediumCore.src = "assets/sprites/core-medium.png";
 carLargeCore.src = "assets/sprites/core-xlarge.png";
 carXLargeCore.src = "assets/sprites/core-large.png";
 carWhaleCore.src = "assets/sprites/core-whale.png";
-/* end sprites */
-
-/* audio files */
 
 // array to store sounds for multiple playback
 let sounds = [];
+
+// sound locations
+let context = new AudioContext();
+const audioCarUrl = "assets/audio/car-pass.mp3";
+const audioDieselUrl = "assets/audio/diesel-pass.mp3";
+const audioSemiUrl = "assets/audio/semi-pass.mp3";
+const audioMercyUrl = "assets/audio/mercy-6s.mp3";
+const audioRideUrl = "assets/audio/ride-dirty-4s.mp3";
+
+// sound variables
+let audioCar = null;
+let audioDiesel = null;
+let audioSemi = null;
+let audioMercy = null;
+let audioRide = null;
+
+// mute variables
 let isCashMuted = false;
 let isCoreMuted = false;
 
@@ -80,10 +100,18 @@ socketCore.on("connect", function () {
 });
 
 socketCash.on("tx", function(data){
+	if (cashPoolInfo.textContent != "UPDATING"){
+		let t = parseInt(cashPoolInfo.textContent);			
+		cashPoolInfo.textContent = t + 1;			
+	} 
 	newTX("cash", data);
 });
 
 socketCore.on("tx", function(data){
+	if (cashPoolInfo.textContent != "UPDATING"){
+		let t = parseInt(corePoolInfo.textContent);
+		corePoolInfo.textContent = t + 1;
+	}
 	newTX("core", data);
 });
 
@@ -95,6 +123,27 @@ socketCore.on("block", function(data){
 	blockNotify(data, "BTC");	
 });
 /* End connect to socket */
+
+init();
+
+function init(){
+	// listenners
+	window.addEventListener("load", resize, false);
+	window.addEventListener("resize", resize, false);
+
+	// acquire data for signs
+	getPoolData(blockchairCashUrl, xhrCash, true);
+	getPoolData(blockchairCoreUrl, xhrCore, false);
+	getCoreConfTime(blockchainCoreUrl, xhrBlockchain);
+
+	// assign sounds to variables
+	loadSoundCar(audioCarUrl);
+	loadSoundDiesel(audioDieselUrl);
+	loadSoundSemi(audioSemiUrl);
+	loadSoundMercy(audioMercyUrl);
+	loadSoundRide(audioRideUrl);
+
+}
 
 // notify users when a new block is found
 function blockNotify(blockId, type){
@@ -132,17 +181,7 @@ function blockNotify(blockId, type){
 	xhr.send(null);
 }
 
-
-/* get new cash mempool data */
-let xhrCash = new XMLHttpRequest();
-let xhrCore = new XMLHttpRequest();
-let xhrBlockchain = new XMLHttpRequest();
-
-
-getPoolData(blockchairCashUrl, xhrCash, true);
-getPoolData(blockchairCoreUrl, xhrCore, false);
-getCoreConfTime(blockchainCoreUrl, xhrBlockchain);
-
+// retrieve pool information for signs
 function getPoolData(url, xhr, isCash){
 	xhr.onreadystatechange = function () {
 		if (this.readyState == 4 && this.status == 200) {
@@ -172,12 +211,9 @@ function getCoreConfTime(url, xhr){
 			coreEta.textContent = obj.period;
 		}
 	}
-
 	xhr.open("GET", url, true);
 	xhr.send(null);
-	
 }
-/* end get new mempool data*/
 
 /* resize the window */
 function resize(){
@@ -189,8 +225,6 @@ function resize(){
 	canvas.style.height = height + "px";
 }
 
-window.addEventListener("load", resize, false);
-window.addEventListener("resize", resize, false);
 /* end resize the window */
 
 /* window loses focus */
@@ -251,14 +285,14 @@ function createVehicle(type, arr, txInfo, lane, isCash){
 	let height = SINGLE_LANE;
 	let width = height * (car.width / car.height);
 	let y = lane;
-	let x = -width - SPEED - 20;
+	let x = -width - carWhaleCash.width;
 	
 	if (arr.length > 0){
 		let last = arr[arr.length -1];
 		let front = width;
 
 		if (front >= last.x && y == last.y){
-			x = last.x - width - SPEED - 20;
+			x = last.x - width;
 		}
 	}
 
@@ -321,27 +355,21 @@ function getCar(valueOut, donation, isCash){
 
 // add sounds to sound array for playback
 function addSounds(carType){
-	if (!isVisible)
-		return;
+	if (!isVisible) return;
 
-	let duration = 0;
-	let pr = 0;
 
 	if (carType == carLambo){
 		let randSong = Math.floor(Math.random() * 2) + 1;
-		//sounds.push(audioCarFast.cloneNode(true));
-		if (randSong == 1){
-			sounds.push(audioMercy);
+		
+		if (randSong == 1){		
 			playSound(audioMercy, null);
-		} else if (randSong == 2){
+		} else {
 			playSound(audioRide, null);
-			sounds.push(audioRide4);
 		}
 	}
 
 	if (carType == carSmallCash ||
 		carType == carSmallCore){
-			audioCar.playbackRate = pr;
 			playSound(audioCar, carSmallCash);
 	} else if (carType == carMediumCash ||
 		carType == carMediumCore ||
@@ -364,40 +392,12 @@ function playSound(buffer, carType) {
 	let gainNode = context.createGain();
 	source.buffer = buffer;
 
-	// set playback rate based upon window width and speed
-	//let duration = source.buffer.duration;
-	//let pr = duration / (WIDTH / (SPEED*60));
-	//source.playbackRate.value = pr -1;
+	if(carType == carSmallCash)	gainNode.gain.value = 0.2;
 
-	if(carType == carSmallCash)
-		gainNode.gain.value = 0.2;
-	
 	source.connect(gainNode);
 	gainNode.connect(context.destination);
 	source.start(0);
 }
-
-/* LOAD SOUNDS */
-let context = new AudioContext();
-const audioCarUrl = "assets/audio/car-pass.mp3";
-const audioDieselUrl = "assets/audio/diesel-pass.mp3";
-const audioSemiUrl = "assets/audio/semi-pass.mp3";
-
-// donation music
-const audioMercyUrl = "assets/audio/mercy-6s.mp3";
-const audioRideUrl = "assets/audio/ride-dirty-4s.mp3";
-
-let audioCar = null;
-let audioDiesel = null;
-let audioSemi = null;
-let audioMercy = null;
-let audioRide = null;
-
-loadSoundCar(audioCarUrl);
-loadSoundDiesel(audioDieselUrl);
-loadSoundSemi(audioSemiUrl);
-loadSoundMercy(audioMercyUrl);
-loadSoundRide(audioRideUrl);
 
 function loadSoundCar(url){
 	let request = new XMLHttpRequest();
@@ -478,6 +478,7 @@ let checkForDonation = function(txInfo){
 }
 /* end check for donations */
 
+/** Draw the background */
 function drawBackground(){
 	// draw the lanes
 	ctx.clearRect(0,0,WIDTH,HEIGHT);
@@ -504,43 +505,29 @@ function drawBackground(){
 
 // loop through transactions and draw them
 function drawVehicles(arr){
+	let car = null;
 	arr.forEach(function(item, index, object){
-		let car = getCar(item.valueOut,item.donation,item.isCash);
+		car = getCar(item.valueOut,item.donation,item.isCash);
 		
 		if (item.x > -car.width){
 			if ((item.isCash && !isCashMuted) || (!item.isCash && !isCoreMuted)){
-				if (!item.isPlaying){
-					//playSound(carSound);
-					addSounds(car);
-				}
+				if (!item.isPlaying) addSounds(car);
 			}
 			item.isPlaying = true;
-
 			ctx.drawImage(car, item.x, item.y, item.w, item.h);
-
 		}
 		item.x += SPEED;
 	});
 }
 
-// removes vehicles that are off the map
+// remove vehicles that are off the map
 function removeVehicles(){
-	// loops through transactions again and removes ones that are off the screen
 	txCash.forEach(function(item, index, object){
-		if (item.x > WIDTH + 100){
-			object.splice(index, 1);
-			let t = parseInt(cashPoolInfo.textContent);
-			cashPoolInfo.textContent = t + 1;
-		}
+		if (item.x > WIDTH + 100) object.splice(index, 1);
 	});
 
-	// loops through transactions again and removes ones that are off the screen
 	txCore.forEach(function(item, index, object){
-		if (item.x > WIDTH + 100){
-			object.splice(index, 1);
-			let t = parseInt(corePoolInfo.textContent);
-			corePoolInfo.textContent = t + 1;
-		}
+		if (item.x > WIDTH + 100) object.splice(index, 1);
 	});
 }
 
@@ -553,7 +540,6 @@ function animate(){
 	drawVehicles(txCash);
 	drawVehicles(txCore);
 	removeVehicles();
-	//removeSounds();
 }
 
 

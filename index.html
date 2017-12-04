@@ -14,6 +14,8 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
+    <div id="loading"></div>
+    
   <div id="page">
 	<canvas height="100%" id="renderCanvas" width="100%"></canvas>
 
@@ -175,38 +177,27 @@
 	<div class="options">
 		info/Settings
 	</div>
-
-	<div class="road-sign sign cash-road-sign">
+	<div class="road-sign sign">
 		<div class="sign-border">
 			<h4 class="sign-title">Tx En-Route to Confirmation Town</h4>
-			<h5 class="highway-num">BCH</h5>
-
+			<h5 class="highway-num">A1</h5>
 			<div class="cash-pool">
-				<span id="cash-pool">0</span>BCH TX in Transit
+				<span id="cash-pool">UPDATING</span>BCH TX in Transit
 				<h6>avg time to destination<span id="cash-eta">< 10MIN</span> </h6>
 			</div>
-			
+			<div class="core-pool">
+				<span id="core-pool">UPDATING</span>BTC TX in Transit
+				<h6>avg time to destination<span id="core-eta">24h</span></h6>
+			</div>
 		</div>
   </div>
 
-  <div class="road-sign sign core-road-sign">
-    <div class="sign-border">
-      <h4 class="sign-title">Tx En-Route to Confirmation Town</h4>
-      <h5 class="highway-num">BTC</h5>
-      
-      <div class="core-pool">
-        <span id="core-pool">10000</span>BTC TX in Transit
-        <h6>avg time to destination<span id="core-eta">24h</span></h6>
-      </div>
-    </div>
-  </div>
-
-  <!-- <div class="waiting-sign sign">
+  <div class="waiting-sign sign">
     <div class="sign-border">
       <h5>12,545</h5>
       <div class="sign-title">BTC Vehicles<br>In Queue</div>
     </div>
-  </div> -->
+  </div>
 
   <div class="whitepaper">
     <a href="https://bitcoin.com/bitcoin.pdf" target="_blank" title="Whitepaper">
@@ -220,7 +211,6 @@
   </div>
 
   </div>
-  <div id="loading"></div>
 	<script src="js/txhighway.js">
 	</script>
 </body>
