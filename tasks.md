@@ -23,7 +23,8 @@ Development
 - [X] Fix sound bug. Sometimes vehicles dont make a sound
 - [X] Fix audio playback on mobile devices
 - [X] Loading overlay to give the cars a chance to catch up before fading away.
-- [ ] Options (Mute/Hide overlays)
+- [X] Options (Mute/Hide overlays)
+- [ ] Fix number format to thousands
 - [ ] (Maybe) On click pause / reposition vehicle so it floats above the rest, data infowindow (tx id, fee, etc)
 - [X] Map audio to sprites
 - [ ] Add mobile styles
