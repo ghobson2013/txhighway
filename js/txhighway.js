@@ -64,7 +64,7 @@ const audioCarUrl = "assets/audio/car-pass.mp3";
 const audioDieselUrl = "assets/audio/diesel-pass.mp3";
 const audioSemiUrl = "assets/audio/semi-pass.mp3";
 const audioMercyUrl = "assets/audio/mercy-6s.mp3";
-const audioRideUrl = "assets/audio/ride-dirty-4s.mp3";
+const audioRideUrl = "assets/audio/ride-dirty-7s.mp3";
 
 // sound variables
 let audioCar = null;
@@ -84,7 +84,7 @@ let SINGLE_LANE = HEIGHT/14;
 let isVisible = true;
 
 // cash and segwit speed
-const SPEED = 8;
+let SPEED = 8;
 
 // arrays
 let txCash = [];
@@ -313,6 +313,7 @@ function createVehicle(type, arr, txInfo, lane, isCash){
 /* return car based upon transaction size*/
 function getCar(valueOut, donation, isCash){
 	if (donation == true){
+		SPEED = 4;
 		return carLambo;
 	}
 
@@ -464,9 +465,7 @@ let checkForDonation = function(txInfo){
 	vouts.forEach((key)=>{
 		let keys = Object.keys(key);
 		keys.forEach((k)=> {
-			if (k == "3ECKq7onkjnRQR2nNe5uUJp2yMsXRmZavC"){
-				isDonation = true;
-			}
+			if (k == "3ECKq7onkjnRQR2nNe5uUJp2yMsXRmZavC") isDonation = true;
 		});
 	});
 
@@ -518,9 +517,7 @@ function drawVehicles(arr){
 			width = SINGLE_LANE * (car.width / car.height);
 
 			ctx.drawImage(car, item.x, y, width, SINGLE_LANE);
-			
 		}
-
 		item.x += SPEED;
 	});
 }
@@ -528,6 +525,7 @@ function drawVehicles(arr){
 // remove vehicles that are off the map
 function removeVehicles(){
 	txCash.forEach(function(item, index, object){
+		if (item.donation) SPEED = 8;
 		if (item.x > WIDTH + 100) object.splice(index, 1);
 	});
 
@@ -546,7 +544,6 @@ function animate(){
 	drawVehicles(txCore);
 	removeVehicles();
 }
-
 
 $('.nav .mute').click(function(){
     // $(this).next('ul').slideToggle('500');
