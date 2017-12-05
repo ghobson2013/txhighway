@@ -29,4 +29,5 @@ Development
 - [X] Map audio to sprites
 - [ ] Add mobile styles
 - [ ] Cross browser test
+- [ ] Imrpove performance
 
