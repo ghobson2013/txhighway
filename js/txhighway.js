@@ -101,16 +101,16 @@ socketCore.on("connect", function () {
 
 socketCash.on("tx", function(data){
 	if (cashPoolInfo.textContent != "UPDATING"){
-		let t = parseInt(cashPoolInfo.textContent);			
-		cashPoolInfo.textContent = t + 1;			
+		let t = parseInt(cashPoolInfo.textContent.replace(/\,/g,''));			
+		cashPoolInfo.textContent = numberWithCommas(t +1);			
 	} 
 	newTX("cash", data);
 });
 
 socketCore.on("tx", function(data){
 	if (cashPoolInfo.textContent != "UPDATING"){
-		let t = parseInt(corePoolInfo.textContent);
-		corePoolInfo.textContent = t + 1;
+		let t = parseInt(corePoolInfo.textContent.replace(/\,/g,''));
+		corePoolInfo.textContent = numberWithCommas(t +1);
 	}
 	newTX("core", data);
 });
@@ -148,6 +148,10 @@ function init(){
 		show('page', true);
 		show('loading', false);
 	});
+}
+
+function numberWithCommas(x){
+	return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");	
 }
 
 // notify users when a new block is found
@@ -288,7 +292,7 @@ function createVehicle(type, arr, txInfo, lane, isCash){
 		let front = width;
 
 		if (front >= last.x && lane == last.lane){
-			x = last.x - width;
+			x = last.x - width - 10;
 		}
 	}
 
@@ -498,6 +502,9 @@ function drawBackground(){
 // loop through transactions and draw them
 function drawVehicles(arr){
 	let car = null;
+	let y = null;
+	let width = null;
+
 	arr.forEach(function(item, index, object){
 		car = getCar(item.valueOut,item.donation,item.isCash);
 		
@@ -507,11 +514,13 @@ function drawVehicles(arr){
 			}
 			item.isPlaying = true;
 
-			let y = (item.lane * SINGLE_LANE) - SINGLE_LANE;
-			let width = SINGLE_LANE * (car.width / car.height);
+			y = (item.lane * SINGLE_LANE) - SINGLE_LANE;
+			width = SINGLE_LANE * (car.width / car.height);
 
 			ctx.drawImage(car, item.x, y, width, SINGLE_LANE);
+			
 		}
+
 		item.x += SPEED;
 	});
 }
