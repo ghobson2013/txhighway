@@ -321,8 +321,8 @@ function getCar(valueOut, donation, isCash, userTx){
 		return carLambo;
 	}
 
-	if (userTx[1]){
-		if (userTx[0]){
+	if (userTx){
+		if (isCash){
 			return carSmallCash;
 		} else {
 			return carSmallCore;
@@ -486,24 +486,17 @@ let checkForDonation = function(txInfo){
 }
 /* end check for donations */
 
-let checkForUserTx = function(txInfo){
+function checkForUserTx(txInfo){
 	let vouts = txInfo.vout;
-	let isUserTx = false;
-	let isCashTx = false;
 
 	vouts.forEach((key)=>{
 		let keys = Object.keys(key);
 		keys.forEach((k)=>{
-			if (k == cashAddress.value){
-				isUserTx = true;
-				isCashTx = true;
-			} else if (k == coreAddress.value){
-				isUserTx = true;
-			}
-		});
+			if (k == cashAddress.value || k == coreAddress.value)return true;
+		})
 	});
 
-	return [isCashTx, isUserTx];
+	return false;
 }
 
 /** Draw the background */
@@ -538,7 +531,7 @@ function drawVehicles(arr){
 	let width = null;
 
 	arr.forEach(function(item, index, object){
-		car = getCar(item.valueOut,item.donation,item.isCash, item.isUserTx);
+		car = getCar(item.valueOut,item.donation,item.isCash, item.userTx);
 		
 		if (item.x > -car.width){
 			if ((item.isCash && !isCashMuted) || (!item.isCash && !isCoreMuted)){
