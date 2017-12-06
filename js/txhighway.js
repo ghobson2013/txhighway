@@ -16,6 +16,8 @@ const cashEta = document.getElementById("cash-eta");
 const coreEta = document.getElementById("core-eta");
 const confirmedNotify = document.getElementById("confirmed-notify");
 const confirmedAmount = document.getElementById("confirmed-amount");
+const cashAddress = document.getElementById("cash-address-input");
+const coreAddress = document.getElementById("core-address-input");
 
 canvas.width = window.innerWidth; 
 canvas.height = window.innerHeight;
@@ -283,6 +285,7 @@ function newTX(type, txInfo){
 /* create vehicles and push to appropriate array */
 function createVehicle(type, arr, txInfo, lane, isCash){
 	let donation = checkForDonation(txInfo);
+	let userTx = checkForUserTx(txInfo);
 	let car = getCar(txInfo.valueOut, donation, isCash);
 	let width = SINGLE_LANE * (car.width / car.height);
 	let x = -width - carWhaleCash.width;
@@ -305,16 +308,25 @@ function createVehicle(type, arr, txInfo, lane, isCash){
 		w: width,
 		valueOut: txInfo.valueOut,
 		donation: donation,
+		userTx: userTx,
 		isCash: isCash
 	});
 }
 /* end new transaction */
 
 /* return car based upon transaction size*/
-function getCar(valueOut, donation, isCash){
+function getCar(valueOut, donation, isCash, userTx){
 	if (donation == true){
 		SPEED = 4;
 		return carLambo;
+	}
+
+	if (userTx[1]){
+		if (userTx[0]){
+			return carSmallCash;
+		} else {
+			return carSmallCore;
+		}
 	}
 
 	if (valueOut <= 5){
@@ -354,6 +366,7 @@ function getCar(valueOut, donation, isCash){
 // add sounds to sound array for playback
 function addSounds(carType){
 	if (!isVisible) return;
+
 
 	if (carType == carLambo){
 		let randSong = Math.floor(Math.random() * 2) + 1;
@@ -473,6 +486,26 @@ let checkForDonation = function(txInfo){
 }
 /* end check for donations */
 
+let checkForUserTx = function(txInfo){
+	let vouts = txInfo.vout;
+	let isUserTx = false;
+	let isCashTx = false;
+
+	vouts.forEach((key)=>{
+		let keys = Object.keys(key);
+		keys.forEach((k)=>{
+			if (k == cashAddress.value){
+				isUserTx = true;
+				isCashTx = true;
+			} else if (k == coreAddress.value){
+				isUserTx = true;
+			}
+		});
+	});
+
+	return [isCashTx, isUserTx];
+}
+
 /** Draw the background */
 function drawBackground(){
 	// draw the lanes
@@ -505,7 +538,7 @@ function drawVehicles(arr){
 	let width = null;
 
 	arr.forEach(function(item, index, object){
-		car = getCar(item.valueOut,item.donation,item.isCash);
+		car = getCar(item.valueOut,item.donation,item.isCash, item.isUserTx);
 		
 		if (item.x > -car.width){
 			if ((item.isCash && !isCashMuted) || (!item.isCash && !isCoreMuted)){
@@ -578,15 +611,35 @@ $('.nav .donate').hover(function(){
     $(this).find('i').toggleClass('fa-heart fa-money')
 });
 
+$('.nav .cash-address i').click(function(){
+	let value = $('#cash-address-input').css('display');
+	console.log('clicky: ' + value);
+	if (value == 'none'){
+		$('#cash-address-input').css('display','block');
+	} else {
+		$('#cash-address-input').css('display','none');
+	}
+});
+
+
 //core nav
 $('.core-nav .core-mute').click(function(){
-    // $(this).next('ul').slideToggle('500');
-	$(this).find('i').toggleClass('fa-volume-up fa-volume-off')
+	// $(this).next('ul').slideToggle('500');
+	$(this).find('i').toggleClass('fa-volume-up fa-volume-off');
 	if (isCoreMuted){
 		isCoreMuted = false;
 	} else {
 		isCoreMuted = true;
 		sounds = [];
+	}
+});
+
+$('.core-nav .core-address i').click(function(){
+	let value = $('#core-address-input').css('display');
+	if (value == 'none'){
+		$('#core-address-input').css('display','block');
+	} else {
+		$('#core-address-input').css('display','none');
 	}
 });
 
@@ -604,6 +657,9 @@ $('.nav a.donate').on('click', function(){
 $('.close').on('click', function(){
   $('.modal').hide();
 })
+
+
+
 
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function(event) {

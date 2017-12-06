@@ -68,6 +68,17 @@ span {
   padding:5px;
 }
 
+#cash-address-input {
+  position: absolute;
+  left: 55px;
+  bottom: 16px;
+  -webkit-animation-name: animateleft;
+  -webkit-animation-duration: 0.4s;
+  animation-name: animateleft;
+  animation-duration: 0.4s;
+}
+
+
 
 .core-nav {
   left:0;
@@ -88,6 +99,17 @@ span {
   font-size:1.7rem;
   padding:5px 10px 5px;
 }
+
+#core-address-input {
+  position: absolute;
+  left: 55px;
+  bottom: 16px;
+  -webkit-animation-name: animateleft;
+  -webkit-animation-duration: 0.4s;
+  animation-name: animateleft;
+  animation-duration: 0.4s;
+}
+
 
 
 /*shoutout to the modal switcher here: https://jsfiddle.net/jnwrc5ay/245/*/
@@ -134,6 +156,13 @@ span {
     from {bottom:-300px; opacity:0}
     to {bottom:0; opacity:1}
 }
+
+@keyframes animateleft {
+  from{left:-300px; opacity:0}
+  to {left: 55px; opacity: 1}
+}
+
+
 /* The Close Button */
 .close {
     color: white;
