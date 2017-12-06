@@ -2,45 +2,46 @@
 
 /* create variables */
 const socketCash = io("https://cashexplorer.bitcoin.com/");
-const socketCore = io("https://search.bitaccess.co/");//https://insight.bitpay.com/");//https://localbitcoinschain.com/");//
+const socketCore = io("https://search.bitaccess.co/");
 const blockchairCashUrl = "http://cors-proxy.htmldriven.com/?url=https://api.blockchair.com/bitcoin-cash/mempool/";
 const blockchairCoreUrl = "http://cors-proxy.htmldriven.com/?url=https://api.blockchair.com/bitcoin/mempool/";
 const blockchainCoreUrl = "https://api.blockchain.info/charts/avg-confirmation-time?format=json&cors=true";
 
 // DOM elements
-const canvas = document.getElementById("renderCanvas");
-const ctx = canvas.getContext("2d");
-const cashPoolInfo = document.getElementById("cash-pool");
-const corePoolInfo = document.getElementById("core-pool");
-const cashEta = document.getElementById("cash-eta");
-const coreEta = document.getElementById("core-eta");
-const confirmedNotify = document.getElementById("confirmed-notify");
-const confirmedAmount = document.getElementById("confirmed-amount");
-const cashAddress = document.getElementById("cash-address-input");
-const coreAddress = document.getElementById("core-address-input");
+const canvas = document.getElementById("renderCanvas"),
+	ctx = canvas.getContext("2d"),
+	cashPoolInfo = document.getElementById("cash-pool"),
+	corePoolInfo = document.getElementById("core-pool"),
+	cashEta = document.getElementById("cash-eta"),
+	coreEta = document.getElementById("core-eta"),
+	confirmedNotify = document.getElementById("confirmed-notify"),
+	confirmedAmount = document.getElementById("confirmed-amount"),
+	cashAddress = document.getElementById("cash-address-input"),
+	coreAddress = document.getElementById("core-address-input");
 
 canvas.width = window.innerWidth; 
 canvas.height = window.innerHeight;
 
 // for ajax requests
-let xhrCash = new XMLHttpRequest();
-let xhrCore = new XMLHttpRequest();
-let xhrBlockchain = new XMLHttpRequest();
-
+const xhrCash = new XMLHttpRequest(),
+	xhrCore = new XMLHttpRequest(),
+	xhrBlockchain = new XMLHttpRequest();
 
 // sprites
-const carCore = new Image();
-const carSmallCash = new Image();
-const carMediumCash = new Image();
-const carLargeCash = new Image();
-const carXLargeCash = new Image();
-const carWhaleCash = new Image();
-const carSmallCore = new Image();
-const carMediumCore = new Image();
-const carLargeCore = new Image();
-const carXLargeCore = new Image();
-const carWhaleCore = new Image();
-const carLambo = new Image();
+const carCore = new Image(),
+	carSmallCash = new Image(),
+	carMediumCash = new Image(),
+	carLargeCash = new Image(),
+	carXLargeCash = new Image(),
+	carWhaleCash = new Image(),
+	carUserCash = new Image(),
+	carSmallCore = new Image(),
+	carMediumCore = new Image(),
+	carLargeCore = new Image(),
+	carXLargeCore = new Image(),
+	carWhaleCore = new Image(),
+	carUserCore = new Image(),
+	carLambo = new Image();
 
 //cash vehicles
 carSmallCash.src = "assets/sprites/bch-small.png";
@@ -48,6 +49,7 @@ carMediumCash.src = "assets/sprites/bch-medium.png";
 carLargeCash.src = "assets/sprites/bch-large.png";
 carXLargeCash.src = "assets/sprites/bch-xlarge.png";
 carWhaleCash.src = "assets/sprites/bch-whale.png";
+carUserCash.src = "";
 carLambo.src = "assets/sprites/lambo.png";
 
 //core vehicles
@@ -56,24 +58,25 @@ carMediumCore.src = "assets/sprites/core-medium.png";
 carLargeCore.src = "assets/sprites/core-xlarge.png";
 carXLargeCore.src = "assets/sprites/core-large.png";
 carWhaleCore.src = "assets/sprites/core-whale.png";
+carUserCore.src = "";
 
 // array to store sounds for multiple playback
 let sounds = [];
 
 // sound locations
 let context = new AudioContext();
-const audioCarUrl = "assets/audio/car-pass.mp3";
-const audioDieselUrl = "assets/audio/diesel-pass.mp3";
-const audioSemiUrl = "assets/audio/semi-pass.mp3";
-const audioMercyUrl = "assets/audio/mercy-6s.mp3";
-const audioRideUrl = "assets/audio/ride-dirty-7s.mp3";
+const audioCarUrl = "assets/audio/car-pass.mp3",
+	audioDieselUrl = "assets/audio/diesel-pass.mp3",
+	audioSemiUrl = "assets/audio/semi-pass.mp3",
+	audioMercyUrl = "assets/audio/mercy-6s.mp3",
+	audioRideUrl = "assets/audio/ride-dirty-7s.mp3";
 
 // sound variables
-let audioCar = null;
-let audioDiesel = null;
-let audioSemi = null;
-let audioMercy = null;
-let audioRide = null;
+let audioCar = null,
+	audioDiesel = null,
+	audioSemi = null,
+	audioMercy = null,
+	audioRide = null;
 
 // mute variables
 let isCashMuted = false;
@@ -83,10 +86,9 @@ let isCoreMuted = false;
 let WIDTH = canvas.width;
 let HEIGHT = canvas.height;
 let SINGLE_LANE = HEIGHT/14;
-let isVisible = true;
-
-// cash and segwit speed
 let SPEED = 8;
+
+let isVisible = true;
 
 // arrays
 let txCash = [];
@@ -104,7 +106,7 @@ socketCore.on("connect", function () {
 socketCash.on("tx", function(data){
 	if (cashPoolInfo.textContent != "UPDATING"){
 		let t = parseInt(cashPoolInfo.textContent.replace(/\,/g,''));			
-		cashPoolInfo.textContent = numberWithCommas(t +1);			
+		cashPoolInfo.textContent = formatNumbersWithCommas(t +1);			
 	} 
 	newTX("cash", data);
 });
@@ -112,7 +114,7 @@ socketCash.on("tx", function(data){
 socketCore.on("tx", function(data){
 	if (cashPoolInfo.textContent != "UPDATING"){
 		let t = parseInt(corePoolInfo.textContent.replace(/\,/g,''));
-		corePoolInfo.textContent = numberWithCommas(t +1);
+		corePoolInfo.textContent = formatNumbersWithCommas(t +1);
 	}
 	newTX("core", data);
 });
@@ -152,7 +154,7 @@ function init(){
 	});
 }
 
-function numberWithCommas(x){
+function formatNumbersWithCommas(x){
 	return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");	
 }
 
@@ -211,7 +213,7 @@ function getPoolData(url, xhr, isCash){
 	}
 
 	xhr.open('GET', url, true);
-	xhr.send();
+	xhr.send(null);
 }
 
 // get average confirmation time for btc
@@ -571,6 +573,8 @@ function animate(){
 	removeVehicles();
 }
 
+/* Front end element controls */
+
 $('.nav .mute').click(function(){
     // $(this).next('ul').slideToggle('500');
 	$(this).find('i').toggleClass('fa-volume-up fa-volume-off')
@@ -606,7 +610,6 @@ $('.nav .donate').hover(function(){
 
 $('.nav .cash-address i').click(function(){
 	let value = $('#cash-address-input').css('display');
-	console.log('clicky: ' + value);
 	if (value == 'none'){
 		$('#cash-address-input').css('display','block');
 	} else {
