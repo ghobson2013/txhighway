@@ -531,8 +531,8 @@ function drawBackground(){
 	ctx.strokeRect(-2, SINGLE_LANE * 10, WIDTH + 3, SINGLE_LANE);
 
 	// font for txid
-	ctx.font = "10px Arial";
-	ctx.fillStyle = "red";
+	//ctx.font = "10px Arial";
+	//ctx.fillStyle = "red";
 
 }
 
@@ -555,7 +555,7 @@ function drawVehicles(arr){
 
 			ctx.drawImage(car, item.x, y, width, SINGLE_LANE);
 			
-			ctx.fillText("TXID: " + item.id.substring(0, 5) + "...", item.x, y + SINGLE_LANE/2);
+			//ctx.fillText("TXID: " + item.id.substring(0, 5) + "...", item.x, y + SINGLE_LANE/2);
 			
 		}
 		item.x += SPEED;
