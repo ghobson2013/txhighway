@@ -18,7 +18,9 @@ const canvas = document.getElementById("renderCanvas"),
 	confirmedAmount = document.getElementById("confirmed-amount"),
 	cashAddress = document.getElementById("cash-address-input"),
 	coreAddress = document.getElementById("core-address-input"),
-	speedSlider = document.getElementById("speedSlider");
+	speedSlider = document.getElementById("speedSlider"),
+	page = document.getElementById("page"),
+	transactionList = document.getElementById("transactions");
 
 // for ajax requests
 const xhrCash = new XMLHttpRequest(),
@@ -232,6 +234,7 @@ function getCoreConfTime(url, xhr){
 
 /* resize the window */
 function resize(){
+	
 	HEIGHT = window.innerHeight;
 	WIDTH = window.innerWidth;
 	SINGLE_LANE = HEIGHT/14;
@@ -588,6 +591,18 @@ speedSlider.oninput = function(){
 	let newSpeed = 16 * (this.value/100);
 	SPEED = newSpeed;
 }
+
+
+$('#tx-list-button').click(function(){
+	if (transactionList.style.width == '15%'){
+		transactionList.style.width = '0%';
+		page.style.width = '100%';
+	} else {
+		transactionList.style.width = '15%';
+		page.style.width = '85%';
+	}
+	console.log("clicked");
+});
 
 $('.nav .mute').click(function(){
     // $(this).next('ul').slideToggle('500');

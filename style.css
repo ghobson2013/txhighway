@@ -724,6 +724,7 @@ span.divider {
 
 #page {
     display: none;
+    position:absolute;
 }
 #loading {
     display: block;
@@ -750,10 +751,29 @@ span.divider {
   bottom: 50px;
 }
 
+#transactions{
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  height: 100%;
+  list-style:none;
+  margin: 0;
+  padding: 0;
+  background-color: #fff;
+  text-align:center;
+}
 
+#tx-list-button {
+  position:absolute; 
+  top: 10px;
+  right: 40px;
+}
 
-
-
+#tx-list-button i{
+  color: #fff;
+  font-size: 1.7rem;
+  padding: 5px;
+}
 
 
 
