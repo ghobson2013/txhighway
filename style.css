@@ -68,7 +68,7 @@ span {
   padding:5px;
 }
 
-#cash-address-input {
+/*#cash-address-input {
   position: absolute;
   left: 55px;
   bottom: 16px;
@@ -76,13 +76,13 @@ span {
   -webkit-animation-duration: 0.4s;
   animation-name: animateleft;
   animation-duration: 0.4s;
-}
+}*/
 
 
 
 .core-nav {
   left:0;
-  top:388px;
+  top:402px;
   position:absolute;
 }
 .core-nav a {
@@ -100,7 +100,13 @@ span {
   padding:5px 10px 5px;
 }
 
-#core-address-input {
+#modal-search fieldset {
+  display:inline;
+  width:45%;
+  margin-right:1.5%;
+}
+
+/*#core-address-input {
   position: absolute;
   left: 55px;
   bottom: 16px;
@@ -108,7 +114,7 @@ span {
   -webkit-animation-duration: 0.4s;
   animation-name: animateleft;
   animation-duration: 0.4s;
-}
+}*/
 
 
 
@@ -745,10 +751,19 @@ span.divider {
 
 /* Range Slider for speed control */
 #slidecontainer {
-  width: 90%; /* Width of the outside container */
+  width: auto; 
   position: absolute;
-  left: 50px;
-  bottom: 50px;
+  right: 90px;
+  top: 15px;
+}
+#slidecontainer label {
+  color:#fff;
+  font-size:10px;
+  margin:0;
+  line-height:1;
+  display:inline-block;
+  vertical-align: middle;
+  margin-top:-5px;
 }
 
 #transactions{
@@ -777,15 +792,20 @@ span.divider {
 }
 
 .txinfo-cash{
-  background-color: #45c72a;
+  background: #45c72a url('assets/bch.png') no-repeat 5px center;
   white-space: pre;
-  border-bottom: solid 1px #000;
+  border-bottom: solid 1px #777;
+  background-size:25px;
 }
 
 .txinfo-core{
-  background-color: #02a5f7;
+  background: #02a5f7 url('assets/btc.png') no-repeat 5px center;
   white-space: pre;
-  border-bottom: solid 1px #000;
+  border-bottom: solid 1px #777;
+  background-size:25px;
+}
+.txinfo-core:before {
+
 }
 
 @media only screen and (max-width:767px) {
@@ -843,6 +863,12 @@ span.divider {
     right: 10px;
     left: auto;
     bottom: auto;
+  }
+  #modal-search fieldset {
+    display:block;
+    width:auto;
+    margin:0 0 5px;
+    text-align:center;
   }
 }
 

@@ -71,9 +71,9 @@
       <a href="#" class="donate" data-modal='modal-donate'>
         <i class="fa fa-heart" aria-hidden="true"></i>
       </a>
-      <a href="#" class="cash-address">
-        <i class="fa fa-plus-square-o" aria-hidden="true"></i>
-        <input id="cash-address-input" size="34" style="display: none;" type="text" />
+      <a href="#" class="search" data-modal='modal-search'>
+        <i class="fa fa-search" aria-hidden="true"></i>
+        <!-- <input id="cash-address-input" size="34" style="display: none;" type="text" /> -->
       </a>
     </div>
 
@@ -82,10 +82,10 @@
       <a href="#" class="core-mute">
         <i class="fa fa-volume-up" aria-hidden="true"></i>
       </a>
-      <a href="#" class="core-address">
+      <!-- <a href="#" class="core-address">
         <i class="fa fa-plus-square-o" aria-hidden="true"></i>
         <input id="core-address-input" size="34" style="display: none;" type="text" />
-      </a>
+      </a> -->
     </div>
 
 
@@ -149,6 +149,7 @@
     </div>
 
     <div id="slidecontainer">
+      <label>Speed</label>
       <input type="range" min="1" max="100" value="50" class="slider" id="speedSlider">
     </div>
 
@@ -170,21 +171,27 @@
 
 
 
-    <!-- <div id="modal-stats" class="modal">
+<div id="modal-search" class="modal">
   <div class="modal-content">
     <div class="modal-header">
       <span class="close">×</span>
-      <h2>Stats</h2>
+      <h2>Monitor Addresses</h2>
     </div>
     <div class="modal-body">
-      <p>Some text in the Modal Body 2</p>
-      <p>Some other text...</p>
+      <p>Input your public wallet address to monitor for incoming transactions.</p>
+        <fieldset>
+          <label><i class="fa fa-search" aria-hidden="true"></i> Bitcoin Cash Address</label>
+          <input id="cash-address-input" size="34" type="text" />
+        </fieldset>
+
+        <fieldset>
+          <label><i class="fa fa-search" aria-hidden="true"></i> Bitcoin Segwit Address</label>
+          <input id="core-address-input" size="34" type="text" />
+        </fieldset>
     </div>
-    <div class="modal-footer">
-      <h3>SECOND Modal Footer</h3>
-    </div>
+    
   </div>
-</div> -->
+</div>
 
     <div id="modal-donate" class="modal">
       <!-- Modal content 2 -->

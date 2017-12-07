@@ -650,24 +650,38 @@ $('.nav .overlay').click(function(){
 
 });
 
-$('.nav .stats').hover(function(){
+$('.nav .search').click(function(){
     // $(this).next('ul').slideToggle('500');
-    $(this).find('i').toggleClass('fa-cog fa-cogs')
+    $(this).find('i').toggleClass('fa-search fa-eye')
+
 });
+
+$('.tx-list-link').click(function(){
+    // $(this).next('ul').slideToggle('500');
+    $(this).find('i').toggleClass('fa-list fa-close')
+
+});
+
+
+
+// $('.nav .stats').hover(function(){
+//     // $(this).next('ul').slideToggle('500');
+//     $(this).find('i').toggleClass('fa-cog fa-cogs')
+// });
 
 $('.nav .donate').hover(function(){
     // $(this).next('ul').slideToggle('500');
     $(this).find('i').toggleClass('fa-heart fa-money')
 });
 
-$('.nav .cash-address i').click(function(){
-	let value = $('#cash-address-input').css('display');
-	if (value == 'none'){
-		$('#cash-address-input').css('display','block');
-	} else {
-		$('#cash-address-input').css('display','none');
-	}
-});
+// $('.nav .cash-address i').click(function(){
+// 	let value = $('#cash-address-input').css('display');
+// 	if (value == 'none'){
+// 		$('#cash-address-input').css('display','block');
+// 	} else {
+// 		$('#cash-address-input').css('display','none');
+// 	}
+// });
 
 
 //core nav
