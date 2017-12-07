@@ -293,8 +293,8 @@ function newTX(type, txInfo){
 function addTxToList(isCash, txid, valueOut){
 
 	let node = document.createElement("LI");
-	let text = "txid: " + txid.substring(0, 5) + "...\n";
-	text += "value: " + valueOut;
+	let text = "txid: " + txid.substring(0, 7) + "...\n";
+	text += "value: " + valueOut.toString().substring(0,9);
 	let textNode = document.createTextNode(text);
 	
 	if (isCash){
