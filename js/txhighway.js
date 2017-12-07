@@ -17,7 +17,8 @@ const canvas = document.getElementById("renderCanvas"),
 	confirmedNotify = document.getElementById("confirmed-notify"),
 	confirmedAmount = document.getElementById("confirmed-amount"),
 	cashAddress = document.getElementById("cash-address-input"),
-	coreAddress = document.getElementById("core-address-input");
+	coreAddress = document.getElementById("core-address-input"),
+	speedSlider = document.getElementById("speedSlider");
 
 canvas.width = window.innerWidth; 
 canvas.height = window.innerHeight;
@@ -574,6 +575,11 @@ function animate(){
 }
 
 /* Front end element controls */
+
+speedSlider.oninput = function(){
+	let newSpeed = 16 * (this.value/100);
+	SPEED = newSpeed;
+}
 
 $('.nav .mute').click(function(){
     // $(this).next('ul').slideToggle('500');

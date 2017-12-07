@@ -742,6 +742,20 @@ span.divider {
 }
 
 
+/* Range Slider for speed control */
+#slidecontainer {
+  width: 90%; /* Width of the outside container */
+  position: absolute;
+  left: 50px;
+  bottom: 50px;
+}
+
+
+
+
+
+
+
 
 @media only screen and (max-width:767px) {
   .title {
