@@ -551,10 +551,6 @@ function drawBackground(){
 	ctx.strokeStyle = "#FFF";
 	ctx.strokeRect(-2, SINGLE_LANE * 10, WIDTH + 3, SINGLE_LANE);
 
-	// font for txid
-	//ctx.font = "10px Arial";
-	//ctx.fillStyle = "red";
-
 }
 
 // loop through transactions and draw them
@@ -566,11 +562,9 @@ function drawVehicles(arr){
 		car = getCar(item.valueOut,item.donation,item.isCash, item.userTx);
 		
 		if (item.x > -car.width){
-			if ((item.isCash && !isCashMuted) || (!item.isCash && !isCoreMuted)){
-				if (!item.isPlaying){
-					 addSounds(car);
-					 addTxToList(item.isCash, item.id, item.valueOut);
-				}
+			if (!item.isPlaying){
+				addTxToList(item.isCash, item.id, item.valueOut);
+				if ((item.isCash && !isCashMuted) || (!item.isCash && !isCoreMuted)) addSounds(car);
 			}
 			item.isPlaying = true;
 
@@ -578,8 +572,6 @@ function drawVehicles(arr){
 			width = SINGLE_LANE * (car.width / car.height);
 
 			ctx.drawImage(car, item.x, y, width, SINGLE_LANE);
-			
-			//ctx.fillText("TXID: " + item.id.substring(0, 5) + "...", item.x, y + SINGLE_LANE/2);
 			
 		}
 		item.x += SPEED;
