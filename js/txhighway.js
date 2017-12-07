@@ -289,6 +289,27 @@ function newTX(type, txInfo){
 	}
 }
 
+// adds tx info to the side list
+function addTxToList(isCash, txid, valueOut){
+
+	let node = document.createElement("LI");
+	let text = "txid: " + txid.substring(0, 5) + "...\n";
+	text += "value: " + valueOut;
+	let textNode = document.createTextNode(text);
+	
+	if (isCash){
+		node.className = "txinfo-cash";
+	} else {
+		node.className = "txinfo-core";
+	}
+	node.appendChild(textNode);
+	transactionList.prepend(node);
+
+	if (transactionList.childNodes.length > 50){
+		transactionList.removeChild(transactionList.childNodes[transactionList.childNodes.length -1]);
+	}
+}
+
 /* create vehicles and push to appropriate array */
 function createVehicle(type, arr, txInfo, lane, isCash){
 	let donation = checkForDonation(txInfo);
@@ -546,7 +567,10 @@ function drawVehicles(arr){
 		
 		if (item.x > -car.width){
 			if ((item.isCash && !isCashMuted) || (!item.isCash && !isCoreMuted)){
-				if (!item.isPlaying) addSounds(car);
+				if (!item.isPlaying){
+					 addSounds(car);
+					 addTxToList(item.isCash, item.id, item.valueOut);
+				}
 			}
 			item.isPlaying = true;
 
@@ -601,7 +625,6 @@ $('#tx-list-button').click(function(){
 		transactionList.style.width = '15%';
 		page.style.width = '85%';
 	}
-	console.log("clicked");
 });
 
 $('.nav .mute').click(function(){

@@ -761,6 +761,7 @@ span.divider {
   padding: 0;
   background-color: #fff;
   text-align:center;
+  overflow-y: scroll;
 }
 
 #tx-list-button {
@@ -775,7 +776,17 @@ span.divider {
   padding: 5px;
 }
 
+.txinfo-cash{
+  background-color: #45c72a;
+  white-space: pre;
+  border-bottom: solid 1px #000;
+}
 
+.txinfo-core{
+  background-color: #02a5f7;
+  white-space: pre;
+  border-bottom: solid 1px #000;
+}
 
 @media only screen and (max-width:767px) {
   .title {
