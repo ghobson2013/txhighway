@@ -20,9 +20,6 @@ const canvas = document.getElementById("renderCanvas"),
 	coreAddress = document.getElementById("core-address-input"),
 	speedSlider = document.getElementById("speedSlider");
 
-canvas.width = window.innerWidth; 
-canvas.height = window.innerHeight;
-
 // for ajax requests
 const xhrCash = new XMLHttpRequest(),
 	xhrCore = new XMLHttpRequest(),
@@ -132,6 +129,10 @@ socketCore.on("block", function(data){
 init();
 
 function init(){
+	// setup canvas
+	canvas.width = window.innerWidth; 
+	canvas.height = window.innerHeight;
+
 	// listenners
 	window.addEventListener("load", resize, false);
 	window.addEventListener("resize", resize, false);
@@ -292,7 +293,7 @@ function createVehicle(type, arr, txInfo, lane, isCash){
 	let car = getCar(txInfo.valueOut, donation, isCash);
 	let width = SINGLE_LANE * (car.width / car.height);
 	let x = -width - carWhaleCash.width;
-	
+
 	if (arr.length > 0){
 		let last = arr[arr.length -1];
 		let front = width;
@@ -525,6 +526,11 @@ function drawBackground(){
 	ctx.setLineDash([6]);
 	ctx.strokeStyle = "#FFF";
 	ctx.strokeRect(-2, SINGLE_LANE * 10, WIDTH + 3, SINGLE_LANE);
+
+	// font for txid
+	ctx.font = "10px Arial";
+	ctx.fillStyle = "red";
+
 }
 
 // loop through transactions and draw them
@@ -532,7 +538,6 @@ function drawVehicles(arr){
 	let car = null;
 	let y = null;
 	let width = null;
-
 	arr.forEach(function(item, index, object){
 		car = getCar(item.valueOut,item.donation,item.isCash, item.userTx);
 		
@@ -546,6 +551,9 @@ function drawVehicles(arr){
 			width = SINGLE_LANE * (car.width / car.height);
 
 			ctx.drawImage(car, item.x, y, width, SINGLE_LANE);
+			
+			ctx.fillText("TXID: " + item.id.substring(0, 5) + "...", item.x, y + SINGLE_LANE/2);
+			
 		}
 		item.x += SPEED;
 	});
