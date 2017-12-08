@@ -348,18 +348,18 @@ table tr td h6 {
   position: absolute;
   z-index: 2;
   background: url('assets/bg/no2x.png') no-repeat;
-  background-size: 80%;
+  background-size: 55%;
   width: 48px;
   height: 48px;
 }
 
 .no2x.one {
-  top: 71.7%;
+  top: 72.5%;
   left: 85px;
 }
 
 .no2x.two {
-  top: 71.7%;
+  top: 72.5%;
   right:85px;
 }
 
@@ -952,12 +952,8 @@ span.divider {
   table tr td img {
     max-height:25px;
   }
-  .no2x {
-    background-size:70%;
-  }
-  .no2x.one,.no2x.two {
-    top:72.3%;
-  }
+  
+  
   .ln {
     background-size: cover;
     background-position: 45% 0;
