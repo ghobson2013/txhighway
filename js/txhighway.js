@@ -298,7 +298,7 @@ function addTxToList(isCash, txid, valueOut, car){
 	let text = "txid: " + txid.substring(0, 7) + "...\n";
 	text += "value: " + valueOut.toString().substring(0,9);
 	let textNode = document.createTextNode(text);
-	console.log(car.src);
+
 	node.setAttribute("style", "background-image: url(" + car.src + ");");
 
     if (isCash){
@@ -433,10 +433,14 @@ function addSounds(carType){
 function playSound(buffer, carType) {
 	let source = context.createBufferSource();
 	let gainNode = context.createGain();
+	
 	source.buffer = buffer;
+
+	source.playbackRate.value = speedSlider.value/100 + 0.5;
 
 	if(carType == carSmallCash)	gainNode.gain.value = 0.2;
 
+	
 	source.connect(gainNode);
 	gainNode.connect(context.destination);
 	source.start(0);
