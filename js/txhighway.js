@@ -50,18 +50,13 @@ const carCore = new Image(),
 let context = new AudioContext();
 let gainNode = context.createGain();
 
-const audioCarUrl = "assets/audio/car-pass-lowergain.mp3",
-	audioDieselUrl = "assets/audio/diesel-pass.mp3",
-	audioSemiUrl = "assets/audio/semi-pass.mp3",
-	audioMercyUrl = "assets/audio/mercy-6s.mp3",
-	audioRideUrl = "assets/audio/ride-dirty-7s.mp3";
-
 // sound variables
 let audioCar = null,
 	audioDiesel = null,
 	audioSemi = null,
 	audioMercy = null,
-	audioRide = null;
+	audioRide = null,
+	audioChaChing = null;
 
 // mute variables
 let isCashMuted = false;
@@ -150,11 +145,12 @@ function init(){
 	getCoreConfTime(blockchainCoreUrl, xhrBlockchain);
 
 	// assign sounds to variables
-	loadSound(audioCarUrl, "car");
-	loadSound(audioDieselUrl, "diesel");
-	loadSound(audioSemiUrl, "semi");
-	loadSound(audioMercyUrl, "mercy");
-	loadSound(audioRideUrl, "ride");
+	loadSound("assets/audio/car-pass-lowergain.mp3", "car");
+	loadSound("assets/audio/diesel-pass.mp3", "diesel");
+	loadSound("assets/audio/semi-pass.mp3", "semi");
+	loadSound("assets/audio/mercy-6s.mp3", "mercy");
+	loadSound("assets/audio/ride-dirty-7s.mp3", "ride");
+	loadSound("assets/audio/cha-ching.mp3", "cha-ching")
 
 	onReady(function () {
 		show('page', true);
@@ -195,6 +191,7 @@ function blockNotify(blockId, type){
 			}
 			confirmedAmount.textContent = amount + " " + type;
 			confirmedNotify.style.display = "block"; //no pun intended
+			playSound(audioChaChing);
 			setTimeout(() => {
 				confirmedNotify.style.display = "none";
 			}, 5000);
@@ -411,15 +408,15 @@ function addSounds(carType){
 		let randSong = Math.floor(Math.random() * 2) + 1;
 		
 		if (randSong == 1){		
-			playSound(audioMercy, null);
+			playSound(audioMercy);
 		} else {
-			playSound(audioRide, null);
+			playSound(audioRide);
 		}
 	}
 
 	if (carType == carSmallCash ||
 		carType == carSmallCore){
-			playSound(audioCar, carSmallCash);
+			playSound(audioCar);
 	} else if (carType == carMediumCash ||
 		carType == carMediumCore ||
 		carType == carLargeCash ||
@@ -427,16 +424,16 @@ function addSounds(carType){
 		carType == carXLargeCash ||
 		carType == carXLargeCore){
 			audioDiesel.playbackRate = 1.4;
-			playSound(audioDiesel, carMediumCash);	
+			playSound(audioDiesel);	
 	} else if (carType == carWhaleCash ||
 		carType == carWhaleCore){
 			audioSemi.playbackRate = 1.8;
-			playSound(audioSemi, carWhaleCash);
+			playSound(audioSemi);
 	}
 }
 
 // plays the sound
-function playSound(buffer, carType) {
+function playSound(buffer) {
 	let source = context.createBufferSource();
 	source.buffer = buffer;
 	source.playbackRate.value = speedSlider.value/100 + 0.5;
@@ -463,6 +460,8 @@ function loadSound(url, sound){
 				audioMercy = buffer;
 			} else if (sound == "ride"){
 				audioRide = buffer;
+			} else if (sound == "cha-ching"){
+				audioChaChing = buffer;
 			}
 		});
 	}
