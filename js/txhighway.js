@@ -20,7 +20,9 @@ const canvas = document.getElementById("renderCanvas"),
 	coreAddress = document.getElementById("core-address-input"),
 	speedSlider = document.getElementById("speedSlider"),
 	page = document.getElementById("page"),
+	transactionWrap = document.getElementById("tx-wrap"),
 	transactionList = document.getElementById("transactions");
+
 
 // for ajax requests
 const xhrCash = new XMLHttpRequest(),
@@ -610,14 +612,25 @@ speedSlider.oninput = function(){
 
 
 $('#tx-list-button').click(function(){
-	if (transactionList.style.width == '15%'){
-		transactionList.style.width = '0%';
-		page.style.width = '100%';
+	if (transactionWrap.style.right == '0%'){
+		transactionWrap.style.right = '-150px';
+		// page.style.right = '0';
 	} else {
-		transactionList.style.width = '15%';
-		page.style.width = '85%';
+		transactionWrap.style.right = '0%';
+		// page.style.width = '85%';
 	}
 });
+
+
+// $('#tx-list-button').click(function(){
+// 	if (transactionList.style.width == '15%'){
+// 		transactionList.style.width = '0%';
+// 		page.style.width = '100%';
+// 	} else {
+// 		transactionList.style.width = '15%';
+// 		page.style.width = '85%';
+// 	}
+// });
 
 $('.nav .mute').click(function(){
     // $(this).next('ul').slideToggle('500');

@@ -62,16 +62,12 @@
       <a href="#" class="legend" data-modal='modal-legend'>
         <i class="fa fa-car" aria-hidden="true"></i>
       </a>
-      <!-- 	<a href="#" class="stats" data-modal='modal-stats'>
-		<i class="fa fa-cog" aria-hidden="true"></i>
-	</a>
- -->
+      
       <a href="#" class="donate" data-modal='modal-donate'>
         <i class="fa fa-heart" aria-hidden="true"></i>
       </a>
       <a href="#" class="search" data-modal='modal-search'>
         <i class="fa fa-search" aria-hidden="true"></i>
-        <!-- <input id="cash-address-input" size="34" style="display: none;" type="text" /> -->
       </a>
     </div>
 
@@ -80,10 +76,7 @@
       <a href="#" class="core-mute">
         <i class="fa fa-volume-up" aria-hidden="true"></i>
       </a>
-      <!-- <a href="#" class="core-address">
-        <i class="fa fa-plus-square-o" aria-hidden="true"></i>
-        <input id="core-address-input" size="34" style="display: none;" type="text" />
-      </a> -->
+      
     </div>
 
 
@@ -150,24 +143,6 @@
       <label>Speed</label>
       <input type="range" min="1" max="100" value="50" class="slider" id="speedSlider">
     </div>
-
-    <!-- <div id="modal-overlay" class="modal">  
-  <div class="modal-content">
-    <div class="modal-header">
-      <span class="close">×</span>
-      <h2>Overlay</h2>
-    </div>
-    <div class="modal-body">
-      <p>Some text in the Modal Body 1</p>
-      <p>Some other text...</p>
-    </div>
-    <div class="modal-footer">
-      <h3> FIRST Modal Footer</h3>
-    </div>
-  </div>
-</div> -->
-
-
 
 <div id="modal-search" class="modal">
   <div class="modal-content">
@@ -246,39 +221,31 @@
     
       </div>
     
-      <!-- <div class="waiting-sign sign">
-        <div class="sign-border">
-          <h5>12,545</h5>
-          <div class="sign-title">BTC Vehicles<br>In Queue</div>
-        </div>
-      </div> -->
-    
       <div class="whitepaper">
         <a href="https://bitcoin.com/bitcoin.pdf" target="_blank" title="Whitepaper">
           <i class="fa fa-file-text-o" aria-hidden="true"></i>
         </a>
       </div>
     
-      <div id="tx-list-button">
-        <a href="#" class="tx-list-link">
-          <i class="fa fa-list" aria-hidden="true"></i>
-        </a>
-      </div>
+      
     
       <div id="confirmed-notify">
         <div class="confirmed-text">
           <span id="confirmed-amount">100 BTC</span> Transactions Confirmed
         </div>
       </div>
-
   </div>
   </div>
-
- 
-
   </div>
-
-  <ul id="transactions" style="width:0%"></ul>
+  
+  <div id="tx-wrap" style="right:-150px;">
+    <div id="tx-list-button">
+        <a href="#" class="tx-list-link">
+          <i class="fa fa-list" aria-hidden="true"></i>
+        </a>
+    </div>
+    <ul id="transactions"></ul>
+  </div>
 
 
   <script src="js/txhighway.js">

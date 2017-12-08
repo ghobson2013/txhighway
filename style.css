@@ -730,6 +730,7 @@ span.divider {
 #page {
     display: none;
     position:absolute;
+    
 }
 #loading {
     display: block;
@@ -752,7 +753,7 @@ span.divider {
 #slidecontainer {
   width: auto; 
   position: absolute;
-  right: 90px;
+  right: 240px;
   top: 15px;
 }
 #slidecontainer label {
@@ -765,23 +766,36 @@ span.divider {
   margin-top:-10px;
 }
 
-#transactions{
+
+#tx-wrap {
   position: absolute;
   top: 0px;
-  right: 0px;
   height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-y: scroll;
+  z-index:99;
+  width:150px;
+  -webkit-transition: all 350ms ease-in-out;
+    -moz-transition: all 350ms ease-in-out;
+    -o-transition: all 350ms ease-in-out;
+    transition: all 350ms ease-in-out;
+    overflow:visible;
+}
+#transactions{
   list-style:none;
   margin: 0;
   padding: 0;
   background-color: #fff;
   text-align:center;
   overflow-y: scroll;
+  
 }
 
 #tx-list-button {
-  position:absolute; 
-  top: 10px;
-  right: 40px;
+  position:fixed; 
+  top: 5px;
+  right: 190px;
 }
 
 #tx-list-button i{
@@ -794,14 +808,18 @@ span.divider {
   background: #45c72a url('assets/bch.png') no-repeat 5px center;
   white-space: pre;
   border-bottom: solid 1px #777;
-  background-size:25px;
+  background-size:24px;
+  text-align:right;
+  padding-right:3px;
 }
 
 .txinfo-core{
   background: #02a5f7 url('assets/btc.png') no-repeat 5px center;
   white-space: pre;
   border-bottom: solid 1px #777;
-  background-size:25px;
+  background-size:24px;
+  text-align:right;
+  padding-right:3px;
 }
 .txinfo-core:before {
 
@@ -888,9 +906,16 @@ span.divider {
   }
 }
 
-
-
 @media screen and (max-width: 600px){
+
+    #tx-list-button {
+    
+    right:auto;
+    left:5px;
+    top:280px;
+
+    }
+
   .core-road-sign {
     bottom:10px;
     right:10px;
@@ -916,6 +941,9 @@ span.divider {
   }
   #modal-search fieldset {
     padding:5px;
+  }
+  #modal-donate p.label {
+    font-size:11px;
   }
   table tr td h6 {
     font-size:0.9rem;
