@@ -292,18 +292,21 @@ function newTX(type, txInfo){
 }
 
 // adds tx info to the side list
-function addTxToList(isCash, txid, valueOut){
+function addTxToList(isCash, txid, valueOut, car){
 
 	let node = document.createElement("LI");
 	let text = "txid: " + txid.substring(0, 7) + "...\n";
 	text += "value: " + valueOut.toString().substring(0,9);
 	let textNode = document.createTextNode(text);
-	
-	if (isCash){
-		node.className = "txinfo-cash";
-	} else {
-		node.className = "txinfo-core";
-	}
+	console.log(car.src);
+	node.setAttribute("style", "background-image: url(" + car.src + ");");
+
+    if (isCash){
+        node.className = "txinfo-cash";
+    } else {
+        node.className = "txinfo-core";
+    }
+
 	node.appendChild(textNode);
 	transactionList.prepend(node);
 
@@ -565,7 +568,7 @@ function drawVehicles(arr){
 		
 		if (item.x > -car.width){
 			if (!item.isPlaying){
-				addTxToList(item.isCash, item.id, item.valueOut);
+				addTxToList(item.isCash, item.id, item.valueOut, car);
 				if ((item.isCash && !isCashMuted) || (!item.isCash && !isCoreMuted)) addSounds(car);
 			}
 			item.isPlaying = true;

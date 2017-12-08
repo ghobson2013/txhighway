@@ -792,6 +792,11 @@ span.divider {
   
 }
 
+#transactions li {
+  background-size: 20%;
+  background-repeat: no-repeat;
+}
+
 #tx-list-button {
   position:fixed; 
   top: 5px;
