@@ -9,6 +9,8 @@ Design
 - [ ] (maybe) Make Tuktuk (see first item in development. HURRAY!)
 - [X] Create legend for identifying vehicles
 - [ ] Create speed limit signs (3tx/sec BTC versus 24tx/sec - 96tx/sec BCH)
+- [ ] Create sprites for transactions where user enters address
+- [ ] Create sprites for micro-transactions
 
 Development 
 ===
