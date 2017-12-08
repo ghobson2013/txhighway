@@ -19,6 +19,7 @@ const canvas = document.getElementById("renderCanvas"),
 	cashAddress = document.getElementById("cash-address-input"),
 	coreAddress = document.getElementById("core-address-input"),
 	speedSlider = document.getElementById("speedSlider"),
+	volumeSlider = document.getElementById("volumeSlider"),
 	page = document.getElementById("page"),
 	transactionWrap = document.getElementById("tx-wrap"),
 	transactionList = document.getElementById("transactions");
@@ -45,29 +46,11 @@ const carCore = new Image(),
 	carUserCore = new Image(),
 	carLambo = new Image();
 
-//cash vehicles
-carSmallCash.src = "assets/sprites/bch-small.png";
-carMediumCash.src = "assets/sprites/bch-medium.png";
-carLargeCash.src = "assets/sprites/bch-large.png";
-carXLargeCash.src = "assets/sprites/bch-xlarge.png";
-carWhaleCash.src = "assets/sprites/bch-whale.png";
-carUserCash.src = "";
-carLambo.src = "assets/sprites/lambo.png";
-
-//core vehicles
-carSmallCore.src = "assets/sprites/core-small.png";
-carMediumCore.src = "assets/sprites/core-medium.png";
-carLargeCore.src = "assets/sprites/core-xlarge.png";
-carXLargeCore.src = "assets/sprites/core-large.png";
-carWhaleCore.src = "assets/sprites/core-whale.png";
-carUserCore.src = "";
-
-// array to store sounds for multiple playback
-let sounds = [];
-
 // sound locations
 let context = new AudioContext();
-const audioCarUrl = "assets/audio/car-pass.mp3",
+let gainNode = context.createGain();
+
+const audioCarUrl = "assets/audio/car-pass-lowergain.mp3",
 	audioDieselUrl = "assets/audio/diesel-pass.mp3",
 	audioSemiUrl = "assets/audio/semi-pass.mp3",
 	audioMercyUrl = "assets/audio/mercy-6s.mp3",
@@ -89,6 +72,10 @@ let WIDTH = canvas.width;
 let HEIGHT = canvas.height;
 let SINGLE_LANE = HEIGHT/14;
 let SPEED = 8;
+let VOLUME = 1;
+
+// animation
+let requestID = null;
 
 let isVisible = true;
 
@@ -130,7 +117,7 @@ socketCore.on("block", function(data){
 });
 /* End connect to socket */
 
-
+// initialise everything
 function init(){
 	// setup canvas
 	canvas.width = window.innerWidth; 
@@ -139,6 +126,23 @@ function init(){
 	// listenners
 	window.addEventListener("load", resize, false);
 	window.addEventListener("resize", resize, false);
+
+	//cash vehicles
+	carSmallCash.src = "assets/sprites/bch-small.png";
+	carMediumCash.src = "assets/sprites/bch-medium.png";
+	carLargeCash.src = "assets/sprites/bch-large.png";
+	carXLargeCash.src = "assets/sprites/bch-xlarge.png";
+	carWhaleCash.src = "assets/sprites/bch-whale.png";
+	carUserCash.src = "";
+	carLambo.src = "assets/sprites/lambo.png";
+
+	//core vehicles
+	carSmallCore.src = "assets/sprites/core-small.png";
+	carMediumCore.src = "assets/sprites/core-medium.png";
+	carLargeCore.src = "assets/sprites/core-xlarge.png";
+	carXLargeCore.src = "assets/sprites/core-large.png";
+	carWhaleCore.src = "assets/sprites/core-whale.png";
+	carUserCore.src = "";
 
 	// acquire data for signs
 	getPoolData(blockchairCashUrl, xhrCash, true);
@@ -156,8 +160,11 @@ function init(){
 		show('page', true);
 		show('loading', false);
 	});
+
+	requestID = requestAnimationFrame(animate);
 }
 
+// adds thousands seperator to large numbers
 function formatNumbersWithCommas(x){
 	return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");	
 }
@@ -232,9 +239,8 @@ function getCoreConfTime(url, xhr){
 	xhr.send(null);
 }
 
-/* resize the window */
+// resize the window
 function resize(){
-	
 	HEIGHT = window.innerHeight;
 	WIDTH = window.innerWidth;
 	SINGLE_LANE = HEIGHT/14;
@@ -243,9 +249,8 @@ function resize(){
 	canvas.height = HEIGHT;
 }
 
-/* end resize the window */
 
-/* window loses focus */
+// pause everything when window loses focus
 let vis = (function(){
     var stateKey, eventKey, keys = {
         hidden: "visibilitychange",
@@ -277,9 +282,8 @@ vis(function(){
 		isVisible = false;
 	}
 });
-/* end window loses focus */
 
-/* new transaction is made */
+// create a new transaction
 function newTX(type, txInfo){
 	if (type == "cash"){
 		let randLane = Math.floor(Math.random() * 8) + 1;
@@ -316,7 +320,7 @@ function addTxToList(isCash, txid, valueOut, car){
 /* create vehicles and push to appropriate array */
 function createVehicle(type, arr, txInfo, lane, isCash){
 	let donation = checkForDonation(txInfo);
-	let userTx = checkForUserTx(txInfo);
+	let userTx = isUserTx(txInfo);
 	let car = getCar(txInfo.valueOut, donation, isCash);
 	let width = SINGLE_LANE * (car.width / car.height);
 	let x = -width - carWhaleCash.width;
@@ -399,6 +403,9 @@ function getCar(valueOut, donation, isCash, userTx){
 function addSounds(carType){
 	if (!isVisible) return;
 
+	/**
+	 * NEED TO ADD CODE FOR USER TX
+	 */
 
 	if (carType == carLambo){
 		let randSong = Math.floor(Math.random() * 2) + 1;
@@ -431,15 +438,9 @@ function addSounds(carType){
 // plays the sound
 function playSound(buffer, carType) {
 	let source = context.createBufferSource();
-	let gainNode = context.createGain();
-	
 	source.buffer = buffer;
-
 	source.playbackRate.value = speedSlider.value/100 + 0.5;
 
-	if(carType == carSmallCash)	gainNode.gain.value = 0.2;
-
-	
 	source.connect(gainNode);
 	gainNode.connect(context.destination);
 	source.start(0);
@@ -467,9 +468,8 @@ function loadSound(url, sound){
 	}
 	request.send();
 }
-/* END LOAD SOUNDS */
 
-/* check for donations into the BCF*/
+// check for donations into the BCF
 let checkForDonation = function(txInfo){
 	let vouts = txInfo.vout;
 	let isDonation = false;
@@ -483,15 +483,15 @@ let checkForDonation = function(txInfo){
 
 	return isDonation;
 }
-/* end check for donations */
 
-function checkForUserTx(txInfo){
+// check for transactions to user's addresses
+function isUserTx(txInfo){
 	let vouts = txInfo.vout;
 
 	vouts.forEach((key)=>{
 		let keys = Object.keys(key);
 		keys.forEach((k)=>{
-			if (k == cashAddress.value || k == coreAddress.value)return true;
+			if (k == cashAddress.value || k == coreAddress.value) return true;
 		})
 	});
 
@@ -521,7 +521,6 @@ function drawBackground(){
 	ctx.setLineDash([6]);
 	ctx.strokeStyle = "#FFF";
 	ctx.strokeRect(-2, SINGLE_LANE * 10, WIDTH + 3, SINGLE_LANE);
-
 }
 
 // loop through transactions and draw them
@@ -561,9 +560,7 @@ function removeVehicles(){
 	});
 }
 
-/* animate everything */
-let requestID = requestAnimationFrame(animate);
-
+// animate everything
 function animate(){
 	requestID = requestAnimationFrame(animate);
 	drawBackground();
@@ -572,13 +569,17 @@ function animate(){
 	removeVehicles();
 }
 
-/* Front end element controls */
-
+// adjust speed on slider change
 speedSlider.oninput = function(){
 	let newSpeed = 16 * (this.value/100);
 	SPEED = newSpeed;
 }
 
+volumeSlider.oninput = function(){
+	let newVol = this.value/100;
+	VOLUME = newVol;
+	gainNode.gain.value = VOLUME;
+}
 
 $('#tx-list-button').click(function(){
 	if (transactionWrap.style.right == '0%'){
