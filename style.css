@@ -438,7 +438,7 @@ span.divider {
 }
 
 .road-sign {
-  border: 3px solid #245934;
+  border: 2px solid #245934;
   border-radius: 10px;
   position: absolute;
   right: 40px;
@@ -450,33 +450,33 @@ span.divider {
 
 .road-sign .sign-border {
   background: #245934;
-  border: 3px solid #fff;
+  border: 2px solid #fff;
   border-radius: 10px;
-  padding: 0.35em;
+  padding: 0.2em;
 }
 .road-sign .highway-num {
   color: #F9D536;
   text-transform: uppercase;
   font-family: sans-serif;
-  font-size: 0.8em;
+  font-size: 0.7em;
   position: absolute;
   left: 10px;
-  top: 19px;
+  top: 16px;
   margin: 0;
 }
 .road-sign .sign-title {
   color: #245A35;
   text-transform: uppercase;
   font-family: sans-serif;
-  font-size: 0.8em;
+  font-size: 0.7em;
   background: #fff;
   border-radius: 3px;
   line-height: 1;
-  padding: 4px;
+  padding: 2px;
   width: 75%;
   position: absolute;
   right: 10px;
-  top: 10px;
+  top: 7px;
   margin: 0;
   display: inline-block;
   text-align: center;
@@ -495,14 +495,14 @@ span.divider {
 
 .road-sign .sign-title .censored {
      position: absolute;
-    top: 3px;
+    top: 0px;
     left: 41px;
     z-index: 100;
     background: #231F20 url(assets/bg/c2.png) no-repeat center center;
     width: 109px;
     height: 11px;
     background-size: 100%;
-    transform: rotate(6deg);
+    transform: rotate(4deg);
     box-shadow:1px 1px 3px rgba(0, 0, 0, 0.5);
     margin:0; padding:0;
 
@@ -512,8 +512,8 @@ span.divider {
   color: #fff;
   text-transform: uppercase;
   font-family: sans-serif;
-  font-size: 0.8em;
-  margin: 5px 0 0;
+  font-size: 0.7em;
+  margin: 5px 0 0 5px;
   font-weight: bold;
   letter-spacing: 1px;
 }
@@ -523,6 +523,7 @@ span.divider {
 .road-sign .cash-pool span, .road-sign .core-pool span {
   float: right;
   padding-left: 1em;
+  margin-right:5px;
   font-weight: bold;
   letter-spacing: 1px;
 }
@@ -809,6 +810,30 @@ span.divider {
 }
 
 @media only screen and (max-width:767px) {
+  .nav {
+    top:47px;
+  }
+  .nav a {
+    margin-bottom:10px;
+  }
+  .nav a i {
+    line-height:1;
+  }
+
+  .core-nav {
+    top:420px;
+  }
+
+  span.divider {
+    background-size:cover;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+  }
+
+
+
   .title {
     width: 170px;
     top: 10px;
@@ -817,7 +842,22 @@ span.divider {
     display: none;
   }
   .bitcoin-cash, .bs {
-    background-size: 40% !important;
+    background-size: 45% !important;
+  }
+  .bitcoin-cash {
+    background-position:50% 60%;
+  }
+
+  #slidecontainer {
+    top:520px;
+    z-index:8;
+    right:auto;
+    left:50%;
+    margin-left:-90px;
+  }
+
+  .modal-body {
+    overflow:hidden;
   }
 
   table tr td img {
@@ -869,6 +909,32 @@ span.divider {
     width:auto;
     margin:0 0 5px;
     text-align:center;
+  }
+  .modal-header h2 {
+    font-size:1rem;
+  }
+  .modal-footer h3 {
+    font-size:0.7rem;
+  }
+  #modal-search fieldset {
+    padding:5px;
+  }
+  table tr td h6 {
+    font-size:0.9rem;
+    font-weight:normal;
+  }
+  table tr td img {
+    max-height:25px;
+  }
+  .no2x {
+    background-size:70%;
+  }
+  .no2x.one,.no2x.two {
+    top:72.3%;
+  }
+  .ln {
+    background-size: cover;
+    background-position: 45% 0;
   }
 }
 
