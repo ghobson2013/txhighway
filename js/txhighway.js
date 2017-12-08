@@ -130,7 +130,6 @@ socketCore.on("block", function(data){
 });
 /* End connect to socket */
 
-init();
 
 function init(){
 	// setup canvas
@@ -147,12 +146,11 @@ function init(){
 	getCoreConfTime(blockchainCoreUrl, xhrBlockchain);
 
 	// assign sounds to variables
-	loadSoundCar(audioCarUrl);
-	loadSoundDiesel(audioDieselUrl);
-	loadSoundSemi(audioSemiUrl);
-	loadSoundMercy(audioMercyUrl);
-	loadSoundRide(audioRideUrl);
-
+	loadSound(audioCarUrl, "car");
+	loadSound(audioDieselUrl, "diesel");
+	loadSound(audioSemiUrl, "semi");
+	loadSound(audioMercyUrl, "mercy");
+	loadSound(audioRideUrl, "ride");
 
 	onReady(function () {
 		show('page', true);
@@ -354,6 +352,7 @@ function getCar(valueOut, donation, isCash, userTx){
 		return carLambo;
 	}
 
+	// user tx vehicles need to go here
 	if (userTx){
 		if (isCash){
 			return carSmallCash;
@@ -446,61 +445,24 @@ function playSound(buffer, carType) {
 	source.start(0);
 }
 
-function loadSoundCar(url){
+// load the sounds into their correct variables
+function loadSound(url, sound){
 	let request = new XMLHttpRequest();
 	request.open('GET', url, true);
 	request.responseType = 'arraybuffer';
 	request.onload = function(){
 		context.decodeAudioData(request.response, function(buffer){
-			audioCar = buffer;
-		});
-	}
-	request.send();
-}
-
-function loadSoundDiesel(url){
-	let request = new XMLHttpRequest();
-	request.open('GET', url, true);
-	request.responseType = 'arraybuffer';
-	request.onload = function(){
-		context.decodeAudioData(request.response, function(buffer){
-			audioDiesel = buffer;
-		});
-	}
-	request.send();
-}
-
-function loadSoundSemi(url){
-	let request = new XMLHttpRequest();
-	request.open('GET', url, true);
-	request.responseType = 'arraybuffer';
-	request.onload = function(){
-		context.decodeAudioData(request.response, function(buffer){
-			audioSemi = buffer;
-		});
-	}
-	request.send();
-}
-
-function loadSoundMercy(url){
-	let request = new XMLHttpRequest();
-	request.open('GET', url, true);
-	request.responseType = 'arraybuffer';
-	request.onload = function(){
-		context.decodeAudioData(request.response, function(buffer){
-			audioMercy = buffer;
-		});
-	}
-	request.send();
-}
-
-function loadSoundRide(url){
-	let request = new XMLHttpRequest();
-	request.open('GET', url, true);
-	request.responseType = 'arraybuffer';
-	request.onload = function(){
-		context.decodeAudioData(request.response, function(buffer){
-			audioRide = buffer;
+			if (sound=="car") {
+				audioCar = buffer;
+			} else if (sound == "diesel"){
+				audioDiesel = buffer;
+			} else if (sound == "semi"){
+				audioSemi = buffer;
+			} else if (sound == "mercy"){
+				audioMercy = buffer;
+			} else if (sound == "ride"){
+				audioRide = buffer;
+			}
 		});
 	}
 	request.send();
@@ -756,3 +718,4 @@ function show(id, value) {
     document.getElementById(id).style.display = value ? 'block' : 'none';
 }
 
+init();
