@@ -5,6 +5,9 @@ html, body {
   margin: 0;
   padding: 0;
 }
+* { margin: 0; padding: 0px; }
+
+
 body {
   background: #9A857A;
 }
@@ -42,21 +45,26 @@ span {
 .title h2 {
   font-size: 17px;
   color: #231F20;
-  margin-top: 0px;
+  margin-top: 5px;
   font-family: sans-serif;
   text-align: center;
   text-transform: uppercase;
+  line-height:1;
+  margin-bottom:0;
+  padding-bottom:0;
 }
 
 .nav {
   left:0;
-  top:86px;
+  top:90px;
   position:absolute;
+  display:block;
 }
 .nav a {
   display:block;
-  margin:0px 10px 8px 10px;
   cursor:pointer;
+  vertical-align:top;
+  margin:7px 0px 18px 10px;
 }
 
 .nav a:hover i, .nav a:focus i {
@@ -65,30 +73,28 @@ span {
 .nav i {
   color:#fff;
   font-size:1.7rem;
-  padding:5px;
+  padding:0px;
 }
-
-/*#cash-address-input {
-  position: absolute;
-  left: 55px;
-  bottom: 16px;
-  -webkit-animation-name: animateleft;
-  -webkit-animation-duration: 0.4s;
-  animation-name: animateleft;
-  animation-duration: 0.4s;
-}*/
-
-
 
 .core-nav {
   left:0;
-  top:402px;
+  top:405px;
   position:absolute;
+  display:block;
 }
 .core-nav a {
   display:block;
-  margin:0px 10px 8px 10px;
+  margin:0px 0px 5px 10px;
   cursor:pointer;
+  vertical-align:top;
+  line-height:1;
+}
+
+@-moz-document url-prefix() { 
+
+  .core-nav {top:425px;}
+
+
 }
 
 .core-nav a:hover i, .core-nav a:focus i {
@@ -97,25 +103,17 @@ span {
 .core-nav i {
   color:#fff;
   font-size:1.7rem;
-  padding:5px 10px 5px;
+  padding:0;
 }
 
 #modal-search fieldset {
   display:inline;
   width:45%;
   margin-right:1.5%;
+  margin-top:10px;
+  margin-bottom:5px;
+  padding:5px;
 }
-
-/*#core-address-input {
-  position: absolute;
-  left: 55px;
-  bottom: 16px;
-  -webkit-animation-name: animateleft;
-  -webkit-animation-duration: 0.4s;
-  animation-name: animateleft;
-  animation-duration: 0.4s;
-}*/
-
 
 
 /*shoutout to the modal switcher here: https://jsfiddle.net/jnwrc5ay/245/*/
@@ -759,12 +757,12 @@ span.divider {
 }
 #slidecontainer label {
   color:#fff;
-  font-size:10px;
+  font-size:9px;
   margin:0;
   line-height:1;
   display:inline-block;
   vertical-align: middle;
-  margin-top:-5px;
+  margin-top:-10px;
 }
 
 #transactions{
@@ -811,18 +809,14 @@ span.divider {
 
 @media only screen and (max-width:767px) {
   .nav {
-    top:47px;
+    top:45px;
   }
-  .nav a {
-    margin-bottom:10px;
-  }
+  
   .nav a i {
     line-height:1;
   }
 
-  .core-nav {
-    top:420px;
-  }
+  
 
   span.divider {
     background-size:cover;
@@ -849,11 +843,15 @@ span.divider {
   }
 
   #slidecontainer {
-    top:520px;
+    top:500px;
     z-index:8;
     right:auto;
     left:50%;
     margin-left:-90px;
+  }
+
+  @-moz-document url-prefix() { 
+    #slidecontainer {top:520px;}
   }
 
   .modal-body {
