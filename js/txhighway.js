@@ -53,7 +53,8 @@ let context = new AudioContext();
 let gainNode = context.createGain();
 
 // sound variables
-let audioCar = null,
+let audioMotorcycle = null,
+	audioCar = null,
 	audioDiesel = null,
 	audioSemi = null,
 	audioMercy = null,
@@ -150,6 +151,7 @@ function init(){
 	getCoreConfTime(blockchainCoreUrl, xhrBlockchain);
 
 	// assign sounds to variables
+	loadSound("assets/audio/motorcycle-lowergain.mp3", "motorcycle")
 	loadSound("assets/audio/car-pass-lowergain.mp3", "car");
 	loadSound("assets/audio/diesel-pass.mp3", "diesel");
 	loadSound("assets/audio/semi-pass.mp3", "semi");
@@ -430,8 +432,9 @@ function addSounds(carType){
 			playSound(audioRide);
 		}
 	}
-
-	if (carType == carMicroCash || carType == carMicroCore || carType == carSmallCash ||
+	if (carType == carMicroCash || carType == carMicroCore){
+		playSound(audioMotorcycle);
+	} else if (carType == carMicroCash || carType == carMicroCore || carType == carSmallCash ||
 		carType == carSmallCore){
 			playSound(audioCar);
 	} else if (carType == carMediumCash ||
@@ -467,7 +470,9 @@ function loadSound(url, sound){
 	request.responseType = 'arraybuffer';
 	request.onload = function(){
 		context.decodeAudioData(request.response, function(buffer){
-			if (sound=="car") {
+			if (sound == "motorcycle"){
+				audioMotorcycle = buffer;
+			} else if (sound=="car") {
 				audioCar = buffer;
 			} else if (sound == "diesel"){
 				audioDiesel = buffer;
