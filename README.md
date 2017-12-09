@@ -82,7 +82,7 @@ ___
 Summary
 ===
 
-TX Highway aims to showcase in a fun, clear and dynamic way the key benefits of Bitcoin Cash over Bitcoin Core by creating an interactive blockchain visualizer that monitors transactions on BCH and BTC. Building off the success of the recently launched Cash Drop app (https://porlybe.github.io/cashdrop/), developed by Porlybe and inspired by the popular Bit Bonkers (bitbonkers.com). We want to better showcase the improvements in BCH by creating an interactive meme, inspired by the design of Maplesyrupsucker's popular illustration comparing the BCH blockchain to an 8 lane highway and BTC to a single lane highway with a toll road. 
+TX Highway aims to showcase in a fun, clear and dynamic way the key benefits of Bitcoin Cash over Bitcoin Core by creating an interactive blockchain visualizer that monitors transactions on BCH and BTC. Building off the success of the recently launched Cash Drop app (https://porlybe.github.io/cashdrop/), developed by Porlybe and inspired by the popular Bit Bonkers (bitbonkers.com). We want to better showcase the improvements in BCH by creating an interactive blockchain visualizer, inspired by the design of Maplesyrupsucker's popular illustration comparing the BCH blockchain to an 8 lane highway and BTC to a single lane highway with a toll road. 
 
 ![sample](https://puu.sh/ytDPL/5e6d00e149.png "Sample")
 
