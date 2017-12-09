@@ -606,14 +606,14 @@ $("input.cash-mute").change(function() {
 				isCashMuted = false;
 			 } else {
 				isCashMuted = true;
-				sounds = [];
+				//sounds = [];
 			 }
     } else {
       if (isCashMuted) {
 				isCashMuted = false;
 			 } else {
 				isCashMuted = true;
-				sounds = [];
+				//sounds = [];
 			 }
     }
 });
