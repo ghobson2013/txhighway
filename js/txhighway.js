@@ -190,7 +190,7 @@ function blockNotify(blockId, type){
 		getPoolData(blockchairCashUrl, xhrCash, true);		
 	} else {
 		t = parseInt(corePoolInfo.textContent);
-		url = "https://insight.bitpay.com/insight-api/block/" + blockId;
+		url = "http://cors-proxy.htmldriven.com/?url=https://https://insight.bitpay.com/insight-api/block/" + blockId;
 		getPoolData(blockchairCoreUrl, xhrCore, false);	
 	}
 
