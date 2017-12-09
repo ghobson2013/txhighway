@@ -1,11 +1,15 @@
 "use strict";
 
-/* create variables */
-const socketCash = io("https://cashexplorer.bitcoin.com/");
-const socketCore = io("https://insight.bitpay.com/");
-const blockchairCashUrl = "http://cors-proxy.htmldriven.com/?url=https://api.blockchair.com/bitcoin-cash/mempool/";
-const blockchairCoreUrl = "http://cors-proxy.htmldriven.com/?url=https://api.blockchair.com/bitcoin/mempool/";
-const blockchainCoreUrl = "https://api.blockchain.info/charts/avg-confirmation-time?format=json&cors=true";
+// urls
+const urlCash = "https://cashexplorer.bitcoin.com/",
+	urlCore = "https://insight.bitpay.com/",
+	urlBlockchairCash = "http://cors-proxy.htmldriven.com/?url=https://api.blockchair.com/bitcoin-cash/mempool/",
+	urlBlockchairCore = "http://cors-proxy.htmldriven.com/?url=https://api.blockchair.com/bitcoin/mempool/",
+	urlBlockchainCore = "https://api.blockchain.info/charts/avg-confirmation-time?format=json&cors=true";
+
+// sockets
+const socketCash = io(urlCash);
+const socketCore = io(urlCore);
 
 // DOM elements
 const canvas = document.getElementById("renderCanvas"),
@@ -23,7 +27,6 @@ const canvas = document.getElementById("renderCanvas"),
 	page = document.getElementById("page"),
 	transactionWrap = document.getElementById("tx-wrap"),
 	transactionList = document.getElementById("transactions");
-
 
 // for ajax requests
 const xhrCash = new XMLHttpRequest(),
@@ -48,7 +51,7 @@ const carCore = new Image(),
 	carUserCore = new Image(),
 	carLambo = new Image();
 
-// sound locations
+// sound system
 let context = new AudioContext();
 let gainNode = context.createGain();
 
@@ -62,9 +65,9 @@ let audioMotorcycle = null,
 	audioChaChing = null,
 	audioWoohoo = null;
 
-// mute variables
-let isCashMuted = false;
-let isCoreMuted = false;
+// mutes
+let isCashMuted = false,
+	isCoreMuted = false;
 
 // constants
 let WIDTH = canvas.width;
@@ -100,7 +103,7 @@ socketCash.on("tx", function(data){
 });
 
 socketCore.on("tx", function(data){
-	if (cashPoolInfo.textContent != "UPDATING"){
+	if (corePoolInfo.textContent != "UPDATING"){
 		let t = parseInt(corePoolInfo.textContent.replace(/\,/g,''));
 		corePoolInfo.textContent = formatNumbersWithCommas(t +1);
 	}
@@ -108,11 +111,11 @@ socketCore.on("tx", function(data){
 });
 
 socketCash.on("block", function(data){
-	blockNotify(data, "BCH");	
+	blockNotify(data, true);	
 });
 
 socketCore.on("block", function(data){
-	blockNotify(data, "BTC");	
+	blockNotify(data, false);	
 });
 /* End connect to socket */
 
@@ -126,7 +129,6 @@ function init(){
 	window.addEventListener("load", resize, false);
 	window.addEventListener("resize", resize, false);
 
-	
 	//cash vehicles
 	carMicroCash.src = "assets/sprites/bch-micro.png";
 	carSmallCash.src = "assets/sprites/bch-small.png";
@@ -145,7 +147,6 @@ function init(){
 	carXLargeCore.src = "assets/sprites/core-large.png";
 	carWhaleCore.src = "assets/sprites/core-whale.png";
 	carUserCore.src = "assets/sprites/tx-taxi.png";
-
 
 	// assign sounds to variables
 	loadSound("assets/audio/motorcycle-lowergain.mp3", "motorcycle")
@@ -167,9 +168,9 @@ function init(){
 	requestID = requestAnimationFrame(animate);
 
 	// acquire data for signs
-	getPoolData(blockchairCashUrl, xhrCash, true);
-	getPoolData(blockchairCoreUrl, xhrCore, false);
-	getCoreConfTime(blockchainCoreUrl, xhrBlockchain);
+	getPoolData(urlBlockchairCash, xhrCash, true);
+	getPoolData(urlBlockchairCore, xhrCore, false);
+	getCoreConfTime(urlBlockchainCore, xhrBlockchain);
 
 }
 
@@ -179,45 +180,69 @@ function formatNumbersWithCommas(x){
 }
 
 // notify users when a new block is found
-function blockNotify(blockId, type){
+function blockNotify(blockId, isCash){
 	let xhr = new XMLHttpRequest();
 	let url = "";
 	let t = 0;
+	let ticker = "";
 
-	if(type == "BCH"){
-		t = parseInt(cashPoolInfo.textContent);		
-		url = "https://cashexplorer.bitcoin.com/insight-api/block/" + blockId;
-		getPoolData(blockchairCashUrl, xhrCash, true);		
+	if(isCash){
+		ticker = "BCH";
+		t = parseInt(cashPoolInfo.textContent.replace(/\,/g,''));
+		url = urlCash + "insight-api/block/" + blockId;
+		cashPoolInfo.textContent = "UPDATING";
 	} else {
-		t = parseInt(corePoolInfo.textContent);
-		url = "http://cors-proxy.htmldriven.com/?url=https://https://insight.bitpay.com/insight-api/block/" + blockId;
-		getPoolData(blockchairCoreUrl, xhrCore, false);	
+		ticker = "BTC";
+		t = parseInt(corePoolInfo.textContent.replace(/\,/g,''));
+		url = urlCore + "api/block/" + blockId;
+		corePoolInfo.textContent = "UPDATING";		
 	}
 
-	xhr.onreadystatechange = function(){
+	xhr.onload = function(){
 		if (this.readyState == 4 && this.status == 200) {
 			let obj = JSON.parse(this.responseText);
 			let tx = obj.tx;
 			let amount = tx.length;
+
+			if (isCash){
+				cashPoolInfo.textContent = t - amount;
+			} else {
+				corePoolInfo.textContent = t - amount;
+			}
+			
 			if (amount == t){
 				amount = "ALL";
 			}
-			confirmedAmount.textContent = amount + " " + type;
+			confirmedAmount.textContent = amount + " " + ticker;
 			confirmedNotify.style.display = "block"; //no pun intended
+
 			if (isVisible) playSound(audioChaChing);
+
 			setTimeout(() => {
 				confirmedNotify.style.display = "none";
+				getPoolData(urlBlockchairCore, xhrCore, false);	
+				getPoolData(urlBlockchairCash, xhrCash, true);				
+				
 			}, 5000);
+		} else if (this.status === 404 || this.status === 500){
+			if(isCash){
+				cashPoolInfo.textContent = "UPDATING";		
+			} else {
+				corePoolInfo.textContent = "UPDATING";
+			}
+			setTimeout(() => {
+				blockNotify(blockId, isCash);
+			}, 3000);
 		}
 	}
-
+	
 	xhr.open("GET", url, true);
 	xhr.send(null);
 }
 
 // retrieve pool information for signs
 function getPoolData(url, xhr, isCash){
-	xhr.onreadystatechange = function () {
+	xhr.onload = function () {
 		if (this.readyState == 4 && this.status == 200) {
 			let obj = JSON.parse(this.responseText);
 			let info = JSON.parse(obj.body);
@@ -230,7 +255,7 @@ function getPoolData(url, xhr, isCash){
 					}
 				}
 			});
-		}
+		} 
 	}
 
 	xhr.open('GET', url, true);
