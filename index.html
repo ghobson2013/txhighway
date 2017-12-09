@@ -51,12 +51,16 @@
     </div>
 
     <div class="nav">
-      <a href="#" class="mute">
+      <a href="#" class="settings" data-modal='modal-settings'>
+        <i class="fa fa-cog" aria-hidden="true"></i>
+      </a>
+      <!-- <a href="#" class="mute">
         <i class="fa fa-volume-up" aria-hidden="true"></i>
-      </a>
-      <a href="#" class="overlay">
+      </a> -->
+      <!-- <a href="#" class="overlay">
         <i class="fa fa-window-maximize" aria-hidden="true"></i>
-      </a>
+      </a> -->
+
       <a href="#" class="legend" data-modal='modal-legend'>
         <i class="fa fa-car" aria-hidden="true"></i>
       </a>
@@ -64,17 +68,88 @@
       <a href="#" class="donate" data-modal='modal-donate'>
         <i class="fa fa-heart" aria-hidden="true"></i>
       </a>
-      <a href="#" class="search" data-modal='modal-search'>
+      <!-- <a href="#" class="search" data-modal='modal-search'>
         <i class="fa fa-search" aria-hidden="true"></i>
-      </a>
+      </a> -->
     </div>
 
 
-    <div class="core-nav">
+    <!-- <div class="core-nav">
       <a href="#" class="core-mute">
         <i class="fa fa-volume-up" aria-hidden="true"></i>
       </a>
       
+    </div> -->
+
+    <div id="modal-settings" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <span class="close">×</span>
+          <h2>Settings</h2>
+          <p>Modify audio, speed, and monitor a receiving address.</p>
+        </div>
+        <div class="modal-body">
+          <div class="two-col">
+            <!-- Rectangular switch -->
+            <div class="switch-wrap">
+              <label class="switch">
+                <input type="checkbox" class="cash-mute">
+                <span class="switcher"></span>
+              </label>
+              <h5>BCH Sound On/Off</h5>
+            </div>
+            <div class="switch-wrap">
+              <label class="switch">
+                <input type="checkbox" class="core-mute">
+                <span class="switcher"></span>
+              </label>
+              <h5>BTC Sound On/Off</h5>
+            </div>
+            <div class="switch-wrap">
+              <label class="switch">
+                <input type="checkbox" class="overlay-switch">
+                <span class="switcher"></span>
+              </label>
+                <h5>Overlays Show/Hide</h5>
+            </div>
+
+          </div>
+
+          <div class="two-col">
+
+            <div id="slidecontainer">
+              <label>Vehicle Speed</label>
+              <input type="range" min="1" max="100" value="50" class="slider" id="speedSlider">
+              <label>Volume</label>
+              <input type="range" min="1" max="100" value="100" class="slider" id="volumeSlider">
+            </div>
+
+          </div>
+
+          <div class="full-col text-center">
+            <hr>
+            <h4>Address Monitoring</h4>  
+          </div>
+            <div class="two-col">
+              <fieldset>
+                <img src="assets/bch.png" class="logo-label" alt="Bitcoin Cash">
+                <label><i class="fa fa-search" aria-hidden="true"></i> Bitcoin Cash Address</label>
+                <input id="cash-address-input" placeholder="Input BCH Wallet Adddress" size="34" type="text" />
+              </fieldset>
+            </div>
+            <div class="two-col">
+              <fieldset>
+                  <img src="assets/btc.png" class="logo-label" alt="Bitcoin Core">
+
+                <label><i class="fa fa-search" aria-hidden="true"></i> Bitcoin Segwit Address</label>
+                <input id="core-address-input" placeholder="Input BTC Wallet Adddress" size="34" type="text" />
+              </fieldset>
+            </div>
+        </div>
+        <div class="full-col text-center">
+          <p>Input your public wallet address to monitor for incoming transactions.</p>
+        </div>
+      </div>
     </div>
 
 
@@ -99,7 +174,6 @@
                 <h6>5 - 10 BCH/BTC</h6>
                 <img src="assets/sprites/bch-medium.png" alt="medium">
               </td>
-
 
               <tr>
                 <td>
@@ -137,12 +211,12 @@
       </div>
     </div>
 
-    <div id="slidecontainer">
+    <!-- <div id="slidecontainer">
       <label>Speed</label>
       <input type="range" min="1" max="100" value="50" class="slider" id="speedSlider">
       <label>Volume</label>
       <input type="range" min="1" max="100" value="100" class="slider" id="volumeSlider">
-    </div>
+    </div> -->
 
 <div id="modal-search" class="modal">
   <div class="modal-content">
@@ -250,9 +324,9 @@
 
   <script src="js/txhighway.js">
   </script>
-<!--
+
   <script>document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')</script>
--->
+
 </body>
 
 </html>
