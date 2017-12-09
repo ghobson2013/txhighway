@@ -56,7 +56,8 @@ let audioCar = null,
 	audioSemi = null,
 	audioMercy = null,
 	audioRide = null,
-	audioChaChing = null;
+	audioChaChing = null,
+	audioWoohoo = null;
 
 // mute variables
 let isCashMuted = false;
@@ -128,7 +129,7 @@ function init(){
 	carLargeCash.src = "assets/sprites/bch-large.png";
 	carXLargeCash.src = "assets/sprites/bch-xlarge.png";
 	carWhaleCash.src = "assets/sprites/bch-whale.png";
-	carUserCash.src = "";
+	carUserCash.src = "assets/sprites/lambo.png"; // to change
 	carLambo.src = "assets/sprites/lambo.png";
 
 	//core vehicles
@@ -137,7 +138,7 @@ function init(){
 	carLargeCore.src = "assets/sprites/core-xlarge.png";
 	carXLargeCore.src = "assets/sprites/core-large.png";
 	carWhaleCore.src = "assets/sprites/core-whale.png";
-	carUserCore.src = "";
+	carUserCore.src = "assets/sprites/lambo.png"; // to change
 
 	// acquire data for signs
 	getPoolData(blockchairCashUrl, xhrCash, true);
@@ -151,6 +152,7 @@ function init(){
 	loadSound("assets/audio/mercy-6s.mp3", "mercy");
 	loadSound("assets/audio/ride-dirty-7s.mp3", "ride");
 	loadSound("assets/audio/cha-ching.mp3", "cha-ching")
+	loadSound("assets/audio/woohoo.mp3", "woohoo");
 
 	onReady(function () {
 		show('page', true);
@@ -158,6 +160,7 @@ function init(){
 	});
 
 	requestID = requestAnimationFrame(animate);
+
 }
 
 // adds thousands seperator to large numbers
@@ -318,7 +321,8 @@ function addTxToList(isCash, txid, valueOut, car){
 function createVehicle(type, arr, txInfo, lane, isCash){
 	let donation = checkForDonation(txInfo);
 	let userTx = isUserTx(txInfo);
-	let car = getCar(txInfo.valueOut, donation, isCash);
+	
+	let car = getCar(txInfo.valueOut, donation, isCash, userTx);
 	let width = SINGLE_LANE * (car.width / car.height);
 	let x = -width - carWhaleCash.width;
 
@@ -334,6 +338,7 @@ function createVehicle(type, arr, txInfo, lane, isCash){
 	arr.push({
 		type:type,
 		id: txInfo.txid,
+		car: car,
 		x: x,
 		lane: lane,
 		h: SINGLE_LANE,
@@ -356,9 +361,9 @@ function getCar(valueOut, donation, isCash, userTx){
 	// user tx vehicles need to go here
 	if (userTx){
 		if (isCash){
-			return carSmallCash;
+			return carUserCash;
 		} else {
-			return carSmallCore;
+			return carUserCore;
 		}
 	}
 
@@ -400,9 +405,7 @@ function getCar(valueOut, donation, isCash, userTx){
 function addSounds(carType){
 	if (!isVisible) return;
 
-	/**
-	 * NEED TO ADD CODE FOR USER TX
-	 */
+	if (carType == carUserCash || carType == carUserCore) playSound(audioWoohoo);
 
 	if (carType == carLambo){
 		let randSong = Math.floor(Math.random() * 2) + 1;
@@ -462,6 +465,8 @@ function loadSound(url, sound){
 				audioRide = buffer;
 			} else if (sound == "cha-ching"){
 				audioChaChing = buffer;
+			} else if (sound == "woohoo"){
+				audioWoohoo = buffer;
 			}
 		});
 	}
@@ -484,17 +489,21 @@ let checkForDonation = function(txInfo){
 }
 
 // check for transactions to user's addresses
-function isUserTx(txInfo){
+let isUserTx = function(txInfo){
 	let vouts = txInfo.vout;
+	let isUserTx = false;
+
+	//if (cashAddress.value.length < 34 && coreAddress.value.length < 34 ) return isUserTx;
 
 	vouts.forEach((key)=>{
 		let keys = Object.keys(key);
 		keys.forEach((k)=>{
-			if (k == cashAddress.value || k == coreAddress.value) return true;
+			if (k == cashAddress.value || k == coreAddress.value){
+				isUserTx = true;
+			} 
 		})
 	});
-
-	return false;
+	return isUserTx;
 }
 
 /** Draw the background */
@@ -528,7 +537,7 @@ function drawVehicles(arr){
 	let y = null;
 	let width = null;
 	arr.forEach(function(item, index, object){
-		car = getCar(item.valueOut,item.donation,item.isCash, item.userTx);
+		car = item.car;
 		
 		if (item.x > -car.width){
 			if (!item.isPlaying){
