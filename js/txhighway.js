@@ -166,11 +166,11 @@ function init(){
 
 	requestID = requestAnimationFrame(animate);
 
-		// acquire data for signs
-		getPoolData(blockchairCashUrl, xhrCash, true);
-		getPoolData(blockchairCoreUrl, xhrCore, false);
-		getCoreConfTime(blockchainCoreUrl, xhrBlockchain);
-	
+	// acquire data for signs
+	getPoolData(blockchairCashUrl, xhrCash, true);
+	getPoolData(blockchairCoreUrl, xhrCore, false);
+	getCoreConfTime(blockchainCoreUrl, xhrBlockchain);
+
 }
 
 // adds thousands seperator to large numbers
@@ -204,7 +204,7 @@ function blockNotify(blockId, type){
 			}
 			confirmedAmount.textContent = amount + " " + type;
 			confirmedNotify.style.display = "block"; //no pun intended
-			playSound(audioChaChing);
+			if (isVisible) playSound(audioChaChing);
 			setTimeout(() => {
 				confirmedNotify.style.display = "none";
 			}, 5000);

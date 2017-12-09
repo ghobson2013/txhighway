@@ -1201,11 +1201,17 @@ input[type=range]:focus::-ms-fill-upper {
   table tr td .qmark {
     font-size:2rem;
   }
+  
   .modal-content {
     width:96%;
     left: 2%;
-
   }
+
+  #modal-settings .modal-content{
+    height: 90%;
+    overflow: auto;
+  } 
+
   .qmark {
     margin:0;
   }
