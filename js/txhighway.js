@@ -3,8 +3,9 @@
 // urls
 const urlCash = "https://cashexplorer.bitcoin.com/",
 	urlCore = "https://insight.bitpay.com/",
-	urlBlockchairCash = "http://cors-proxy.htmldriven.com/?url=https://api.blockchair.com/bitcoin-cash/mempool/",
-	urlBlockchairCore = "http://cors-proxy.htmldriven.com/?url=https://api.blockchair.com/bitcoin/mempool/",
+	urlCors = "https://cors-anywhere.herokuapp.com/",
+	urlBlockchairCash = urlCors + "https://api.blockchair.com/bitcoin-cash/mempool/",
+	urlBlockchairCore = urlCors + "https://api.blockchair.com/bitcoin/mempool/",
 	urlBlockchainCore = "https://api.blockchain.info/charts/avg-confirmation-time?format=json&cors=true";
 
 // sockets
@@ -194,7 +195,7 @@ function blockNotify(blockId, isCash){
 	} else {
 		ticker = "BTC";
 		t = parseInt(corePoolInfo.textContent.replace(/\,/g,''));
-		url = urlCore + "api/block/" + blockId;
+		url = urlCors + urlCore + "api/block/" + blockId;
 		corePoolInfo.textContent = "UPDATING";		
 	}
 
@@ -245,8 +246,8 @@ function getPoolData(url, xhr, isCash){
 	xhr.onload = function () {
 		if (this.readyState == 4 && this.status == 200) {
 			let obj = JSON.parse(this.responseText);
-			let info = JSON.parse(obj.body);
-			info.data.forEach((key)=>{
+
+			obj.data.forEach((key)=>{
 				if (key.e =="mempool_transactions"){
 					if (isCash){
 						cashPoolInfo.textContent = key.c;
