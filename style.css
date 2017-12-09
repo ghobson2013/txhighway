@@ -1079,7 +1079,7 @@ input[type=range]:focus::-ms-fill-upper {
 
 
 #tx-wrap {
-  position: absolute;
+  position: fixed;
   top: 0px;
   height: 100%;
   margin: 0;

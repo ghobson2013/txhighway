@@ -126,6 +126,7 @@ function init(){
 	window.addEventListener("load", resize, false);
 	window.addEventListener("resize", resize, false);
 
+	
 	//cash vehicles
 	carMicroCash.src = "assets/sprites/bch-micro.png";
 	carSmallCash.src = "assets/sprites/bch-small.png";
@@ -145,10 +146,6 @@ function init(){
 	carWhaleCore.src = "assets/sprites/core-whale.png";
 	carUserCore.src = "assets/sprites/tx-taxi.png";
 
-	// acquire data for signs
-	getPoolData(blockchairCashUrl, xhrCash, true);
-	getPoolData(blockchairCoreUrl, xhrCore, false);
-	getCoreConfTime(blockchainCoreUrl, xhrBlockchain);
 
 	// assign sounds to variables
 	loadSound("assets/audio/motorcycle-lowergain.mp3", "motorcycle")
@@ -163,10 +160,17 @@ function init(){
 	onReady(function () {
 		show('page', true);
 		show('loading', false);
+		//resize();
+		
 	});
 
 	requestID = requestAnimationFrame(animate);
 
+		// acquire data for signs
+		getPoolData(blockchairCashUrl, xhrCash, true);
+		getPoolData(blockchairCoreUrl, xhrCore, false);
+		getCoreConfTime(blockchainCoreUrl, xhrBlockchain);
+	
 }
 
 // adds thousands seperator to large numbers
