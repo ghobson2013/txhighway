@@ -9,8 +9,8 @@ Design
 - [ ] (maybe) Make Tuktuk (see first item in development. HURRAY!)
 - [X] Create legend for identifying vehicles
 - [ ] Create speed limit signs (3tx/sec BTC versus 24tx/sec - 96tx/sec BCH)
-- [ ] Create sprites for transactions where user enters address
-- [ ] Create sprites for micro-transactions
+- [X] Create sprites for transactions where user enters address
+- [X] Create sprites for micro-transactions
 
 Development 
 ===
@@ -27,7 +27,7 @@ Development
 - [X] Loading overlay to give the cars a chance to catch up before fading away.
 - [X] Options (Mute/Hide overlays)
 - [X] Fix number format to thousands
-- [ ] Fix bug where signs don't update number of unconfirmed transactions when a block is found
+- [X] Fix bug where signs don't update number of unconfirmed transactions when a block is found
 - [ ] (Maybe) On click pause / reposition vehicle so it floats above the rest, data infowindow (tx id, fee, etc)
 - [X] Map audio to sprites
 - [ ] Add mobile styles
