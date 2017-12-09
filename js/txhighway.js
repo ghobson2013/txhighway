@@ -2,7 +2,7 @@
 
 /* create variables */
 const socketCash = io("https://cashexplorer.bitcoin.com/");
-const socketCore = io("https://search.bitaccess.co/");
+const socketCore = io("https://insight.bitpay.com/");
 const blockchairCashUrl = "http://cors-proxy.htmldriven.com/?url=https://api.blockchair.com/bitcoin-cash/mempool/";
 const blockchairCoreUrl = "http://cors-proxy.htmldriven.com/?url=https://api.blockchair.com/bitcoin/mempool/";
 const blockchainCoreUrl = "https://api.blockchain.info/charts/avg-confirmation-time?format=json&cors=true";
@@ -190,7 +190,7 @@ function blockNotify(blockId, type){
 		getPoolData(blockchairCashUrl, xhrCash, true);		
 	} else {
 		t = parseInt(corePoolInfo.textContent);
-		url = "https://search.bitaccess.co/insight-api/block/" + blockId;
+		url = "https://insight.bitpay.com/insight-api/block/" + blockId;
 		getPoolData(blockchairCoreUrl, xhrCore, false);	
 	}
 
