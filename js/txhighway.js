@@ -32,12 +32,14 @@ const xhrCash = new XMLHttpRequest(),
 
 // sprites
 const carCore = new Image(),
+	carMicroCash = new Image(),
 	carSmallCash = new Image(),
 	carMediumCash = new Image(),
 	carLargeCash = new Image(),
 	carXLargeCash = new Image(),
 	carWhaleCash = new Image(),
 	carUserCash = new Image(),
+	carMicroCore = new Image(),
 	carSmallCore = new Image(),
 	carMediumCore = new Image(),
 	carLargeCore = new Image(),
@@ -124,21 +126,23 @@ function init(){
 	window.addEventListener("resize", resize, false);
 
 	//cash vehicles
+	carMicroCash.src = "assets/sprites/bch-micro.png";
 	carSmallCash.src = "assets/sprites/bch-small.png";
 	carMediumCash.src = "assets/sprites/bch-medium.png";
 	carLargeCash.src = "assets/sprites/bch-large.png";
 	carXLargeCash.src = "assets/sprites/bch-xlarge.png";
 	carWhaleCash.src = "assets/sprites/bch-whale.png";
-	carUserCash.src = "assets/sprites/lambo.png"; // to change
+	carUserCash.src = "assets/sprites/tx-taxi.png"; 
 	carLambo.src = "assets/sprites/lambo.png";
 
 	//core vehicles
+	carMicroCore.src = "assets/sprites/core-micro.png";
 	carSmallCore.src = "assets/sprites/core-small.png";
 	carMediumCore.src = "assets/sprites/core-medium.png";
 	carLargeCore.src = "assets/sprites/core-xlarge.png";
 	carXLargeCore.src = "assets/sprites/core-large.png";
 	carWhaleCore.src = "assets/sprites/core-whale.png";
-	carUserCore.src = "assets/sprites/lambo.png"; // to change
+	carUserCore.src = "assets/sprites/tx-taxi.png";
 
 	// acquire data for signs
 	getPoolData(blockchairCashUrl, xhrCash, true);
@@ -367,12 +371,22 @@ function getCar(valueOut, donation, isCash, userTx){
 		}
 	}
 
-	if (valueOut <= 5){
+	if (valueOut <= 0.008){
+		//~11.50 BCH to USD
+		//~120 BTC to USD **** We might want to run this amount through fiat conversion before checking condition. That way its always watching for TX under say $10 no matter the value. 
 		if (isCash){
+			return carMicroCash;
+		} else {
+			return carMicroCore;
+		}
+
+	} else if (valueOut > 0.008 && valueOut <= 5){
+			if (isCash){
 			return carSmallCash;
 		} else {
 			return carSmallCore;
 		}
+
 	} else if (valueOut > 5 && valueOut <= 10){
 		if (isCash){
 			return carMediumCash;
@@ -417,7 +431,7 @@ function addSounds(carType){
 		}
 	}
 
-	if (carType == carSmallCash ||
+	if (carType == carMicroCash || carType == carMicroCore || carType == carSmallCash ||
 		carType == carSmallCore){
 			playSound(audioCar);
 	} else if (carType == carMediumCash ||
