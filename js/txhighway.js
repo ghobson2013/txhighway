@@ -50,7 +50,10 @@ const carCore = new Image(),
 	carXLargeCore = new Image(),
 	carWhaleCore = new Image(),
 	carUserCore = new Image(),
-	carLambo = new Image();
+	carLambo = new Image(),
+	carSpam = new Image();
+
+	
 
 // sound system
 let context = new AudioContext();
@@ -64,7 +67,9 @@ let audioMotorcycle = null,
 	audioMercy = null,
 	audioRide = null,
 	audioChaChing = null,
-	audioWoohoo = null;
+	audioWoohoo = null,
+	konamiActive = null;
+
 
 // mutes
 let isCashMuted = false,
@@ -148,6 +153,13 @@ function init(){
 	carXLargeCore.src = "assets/sprites/core-large.png";
 	carWhaleCore.src = "assets/sprites/core-whale.png";
 	carUserCore.src = "assets/sprites/tx-taxi.png";
+	carSpam.src = "assets/sprites/spam.png";
+
+
+
+
+
+
 
 	// assign sounds to variables
 	loadSound("assets/audio/motorcycle-lowergain.mp3", "motorcycle")
@@ -586,7 +598,12 @@ function drawVehicles(arr){
 	let y = null;
 	let width = null;
 	arr.forEach(function(item, index, object){
-		car = item.car;
+
+		if(!item.isCash && konamiActive) { 
+				car = carSpam;
+			} else {
+				car = item.car;
+		}
 		
 		if (item.x > -car.width){
 			if (!item.isPlaying){
@@ -770,9 +787,21 @@ $('.close').on('click', function(){
 
 //konami
 
-var easter_egg = new Konami(function() { alert('Konami Code!')});
+var easter_egg = new Konami(function() { 
 
 
+if (konamiActive == false || konamiActive == null) {
+  konamiActive = true;
+	  $( ".core-mode" ).fadeToggle( "slow", "linear" );
+
+} else if (konamiActive == true) {
+  konamiActive = false;
+	  $( ".core-mode" ).fadeToggle( "slow", "linear" );
+
+}
+
+ 
+});
 
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function(event) {

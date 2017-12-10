@@ -59,6 +59,7 @@ span {
   top:100px;
   position:absolute;
   display:block;
+  z-index:999;
 }
 @-moz-document url-prefix() { 
     .nav {top:92px;}
@@ -393,6 +394,13 @@ table tr td h6 {
   width:100%;
   background:url('assets/bg/ln.png') no-repeat;
   background-size: contain;
+}
+.core-mode {
+  display:none;
+  position:absolute;
+  top:-40px;
+  left:-20px;
+  z-index:997;
 }
 .options {
   top: 10px;
