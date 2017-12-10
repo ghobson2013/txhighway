@@ -768,6 +768,10 @@ $('.close').on('click', function(){
 })
 
 
+//konami
+
+var easter_egg = new Konami(function() { alert('Konami Code!')});
+
 
 
 // When the user clicks anywhere outside of the modal, close it
