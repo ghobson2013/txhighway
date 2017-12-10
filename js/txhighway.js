@@ -403,16 +403,16 @@ function getCar(valueOut, donation, isCash, userTx){
 		}
 	}
 
-	if (valueOut <= 0.008){
-		//~11.50 BCH to USD
-		//~120 BTC to USD **** We might want to run this amount through fiat conversion before checking condition. That way its always watching for TX under say $10 no matter the value. 
+	if (valueOut <= 0.0004){
+		//~0.50 USD Dec 10/17
+		//~5.41 USD Dec 10/17
 		if (isCash){
 			return carMicroCash;
 		} else {
 			return carMicroCore;
 		}
 
-	} else if (valueOut > 0.008 && valueOut <= 5){
+	} else if (valueOut > 0.0004 && valueOut <= 5){
 			if (isCash){
 			return carSmallCash;
 		} else {
