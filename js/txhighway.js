@@ -787,19 +787,16 @@ $('.close').on('click', function(){
 
 //konami
 
-var easter_egg = new Konami(function() { 
+let easter_egg = new Konami(function() { 
+	if (konamiActive == false || konamiActive == null) {
+	konamiActive = true;
+		$( ".core-mode" ).fadeToggle( "slow", "linear" );
 
+	} else if (konamiActive == true) {
+	konamiActive = false;
+		$( ".core-mode" ).fadeToggle( "slow", "linear" );
 
-if (konamiActive == false || konamiActive == null) {
-  konamiActive = true;
-	  $( ".core-mode" ).fadeToggle( "slow", "linear" );
-
-} else if (konamiActive == true) {
-  konamiActive = false;
-	  $( ".core-mode" ).fadeToggle( "slow", "linear" );
-
-}
-
+	}
  
 });
 
