@@ -155,11 +155,11 @@ function init(){
 	carUserCore.src = "assets/sprites/tx-taxi.png";
 	carSpam.src = "assets/sprites/spam.png";
 
-
-
-
-
-
+	// hide signes on small screens
+	if(canvas.width <= 800 && canvas.height <= 600) {
+		$("input.overlay-switch")[0].checked = true;
+		$( ".sign" ).fadeToggle( "slow", "linear" );
+	  }
 
 	// assign sounds to variables
 	loadSound("assets/audio/motorcycle-lowergain.mp3", "motorcycle")
