@@ -9,8 +9,8 @@ const urlCash = "https://cashexplorer.bitcoin.com/",
 	urlBlockchainCore = "https://api.blockchain.info/charts/avg-confirmation-time?format=json&cors=true";
 
 // sockets
-const socketCash = io(urlCash);
-const socketCore = io(urlCore);
+const socketCash = io(urlCash),
+	socketCore = io(urlCore);
 
 // DOM elements
 const canvas = document.getElementById("renderCanvas"),
@@ -65,12 +65,7 @@ let audioMotorcycle = null,
 	audioMercy = null,
 	audioRide = null,
 	audioChaChing = null,
-	audioWoohoo = null,
-	konamiActive = null;
-
-// mutes
-let isCashMuted = false,
-	isCoreMuted = false;
+	audioWoohoo = null;
 
 // constants
 let WIDTH = canvas.width;
@@ -82,11 +77,15 @@ let VOLUME = 1;
 // animation
 let requestID = null;
 
-let isVisible = true;
+// booleans
+let isVisible = true,
+	konamiActive = false,
+	isCashMuted = false,
+	isCoreMuted = false;
 
-// arrays
-let txCash = [];
-let txCore = []
+// arrays for vehicles
+let txCash = [],
+	txCore = [];
 
 /* connect to socket */
 socketCash.on("connect", function () {
@@ -168,20 +167,18 @@ function init(){
 	loadSound("assets/audio/cha-ching.mp3", "cha-ching")
 	loadSound("assets/audio/woohoo.mp3", "woohoo");
 
-	onReady(function () {
-		show('page', true);
-		show('loading', false);
-		//resize();
-		
-	});
-
-	requestID = requestAnimationFrame(animate);
-
 	// acquire data for signs
 	getPoolData(urlBlockchairCash, xhrCash, true);
 	getPoolData(urlBlockchairCore, xhrCore, false);
 	getCoreConfTime(urlBlockchainCore, xhrBlockchain);
+	
+	// remove loading screen
+	onReady(function () {
+		show('page', true);
+		show('loading', false);
+	});
 
+	requestID = requestAnimationFrame(animate);
 }
 
 // adds thousands seperator to large numbers
@@ -369,16 +366,24 @@ function createVehicle(type, arr, txInfo, lane, isCash){
 	
 	let car = getCar(txInfo.valueOut, donation, isCash, userTx);
 	let width = SINGLE_LANE * (car.width / car.height);
-	let x = -width - carWhaleCash.width;
+	let x = -width;
 
+	// fix vehicle positioning to prevent pile ups.
 	if (arr.length > 0){
-		let last = arr[arr.length -1];
-		let front = width;
+		arr.forEach((key) => {
+			if (width >= key.x && lane == key.lane){
+				x = key.x - width - 10;
+			}
+		});
+	}
 
-		if (front >= last.x && lane == last.lane){
+	// fix btc vehicle positioning to prevent pile ups. <-- use this if above causes performance issues
+/*  	if (arr.length > 0 && !isCash){
+		let last = arr[arr.length -1];
+		if (width >= last.x && lane == last.lane){
 			x = last.x - width - 10;
 		}
-	}
+	} */
 
 	arr.push({
 		type:type,
