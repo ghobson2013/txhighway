@@ -655,7 +655,7 @@ function drawVehicles(arr){
 			car = item.car;
 		}
 		
-		if (item.x > -car.width){
+		if (item.x > -car.width - SPEED -10){
 			if (!item.isPlaying){
 				addTxToList(item.isCash, item.id, item.valueOut, car);
 				if ((item.isCash && !isCashMuted) || (!item.isCash && !isCoreMuted)) addSounds(car);
