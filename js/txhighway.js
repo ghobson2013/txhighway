@@ -65,7 +65,9 @@ let audioMotorcycle = null,
 	audioMercy = null,
 	audioRide = null,
 	audioChaChing = null,
-	audioWoohoo = null;
+	audioWoohoo = null,
+	audioSpam = null,
+	audioAllSpam = null;
 
 // constants
 let WIDTH = canvas.width;
@@ -166,6 +168,8 @@ function init(){
 	loadSound("assets/audio/ride-dirty-7s.mp3", "ride");
 	loadSound("assets/audio/cha-ching.mp3", "cha-ching")
 	loadSound("assets/audio/woohoo.mp3", "woohoo");
+	loadSound("assets/audio/spam.mp3", "spam");
+	loadSound("assets/audio/allspam.mp3", "allspam");
 
 	// acquire data for signs
 	getPoolData(urlBlockchairCash, xhrCash, true);
@@ -476,6 +480,7 @@ function addSounds(carType){
 			playSound(audioRide);
 		}
 	}
+
 	if (carType == carMicroCash || carType == carMicroCore){
 		playSound(audioMotorcycle);
 	} else if (carType == carMicroCash || carType == carMicroCore || carType == carSmallCash ||
@@ -493,6 +498,8 @@ function addSounds(carType){
 		carType == carWhaleCore){
 			audioSemi.playbackRate = 1.8;
 			playSound(audioSemi);
+	} else if (carType == carSpam){
+		playSound(audioSpam);
 	}
 }
 
@@ -530,6 +537,10 @@ function loadSound(url, sound){
 				audioChaChing = buffer;
 			} else if (sound == "woohoo"){
 				audioWoohoo = buffer;
+			} else if (sound == "spam"){
+				audioSpam = buffer;
+			} else if (sound == "allspam"){
+				audioAllSpam = buffer;
 			}
 		});
 	}
@@ -757,10 +768,12 @@ $('.close').on('click', function(){
 //konami
 let easter_egg = new Konami(function() { 
 	if (konamiActive == false || konamiActive == null) {
-	konamiActive = true;
+		playSound(audioAllSpam);
+		
+		konamiActive = true;
 		$( ".core-mode" ).fadeToggle( "slow", "linear" );
 	} else if (konamiActive == true) {
-	konamiActive = false;
+		konamiActive = false;
 		$( ".core-mode" ).fadeToggle( "slow", "linear" );
 	}
 });
