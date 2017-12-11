@@ -53,11 +53,9 @@ const carCore = new Image(),
 	carLambo = new Image(),
 	carSpam = new Image();
 
-	
-
 // sound system
-let context = new AudioContext();
-let gainNode = context.createGain();
+let audioContext = new AudioContext();
+let gainNode = audioContext.createGain();
 
 // sound variables
 let audioMotorcycle = null,
@@ -69,7 +67,6 @@ let audioMotorcycle = null,
 	audioChaChing = null,
 	audioWoohoo = null,
 	konamiActive = null;
-
 
 // mutes
 let isCashMuted = false,
@@ -300,7 +297,7 @@ function resize(){
 
 // pause everything when window loses focus
 let vis = (function(){
-    var stateKey, eventKey, keys = {
+    let stateKey, eventKey, keys = {
         hidden: "visibilitychange",
         webkitHidden: "webkitvisibilitychange",
         mozHidden: "mozvisibilitychange",
@@ -496,12 +493,12 @@ function addSounds(carType){
 
 // plays the sound
 function playSound(buffer) {
-	let source = context.createBufferSource();
+	let source = audioContext.createBufferSource();
 	source.buffer = buffer;
 	source.playbackRate.value = speedSlider.value/100 + 0.5;
 
 	source.connect(gainNode);
-	gainNode.connect(context.destination);
+	gainNode.connect(audioContext.destination);
 	source.start(0);
 }
 
@@ -511,7 +508,7 @@ function loadSound(url, sound){
 	request.open('GET', url, true);
 	request.responseType = 'arraybuffer';
 	request.onload = function(){
-		context.decodeAudioData(request.response, function(buffer){
+		audioContext.decodeAudioData(request.response, function(buffer){
 			if (sound == "motorcycle"){
 				audioMotorcycle = buffer;
 			} else if (sound=="car") {
@@ -769,7 +766,7 @@ window.onclick = function(event) {
 }
 
 function onReady(callback) {
-    var intervalID = window.setInterval(checkReady, 1500);
+    let intervalID = window.setInterval(checkReady, 1500);
 
     function checkReady() {
         if (document.getElementsByTagName('body')[0] !== undefined) {
