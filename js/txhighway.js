@@ -367,11 +367,14 @@ function addTxToList(isCash, txid, valueOut, car){
 
 /* create vehicles and push to appropriate array */
 function createVehicle(type, arr, txInfo, lane, isCash){
-	let donation = isDonationTx(txInfo);
+	let donation = false;
 	let userTx = isUserTx(txInfo);
 	let sdTx = false;
 
-	if(isCash) sdTx = isSatoshiDiceTx(txInfo);
+	if(isCash){
+		donation = isDonationTx(txInfo);
+		sdTx = isSatoshiDiceTx(txInfo);
+	}
 
 	let car = getCar(txInfo.valueOut, donation, isCash, userTx, sdTx);
 	let width = SINGLE_LANE * (car.width / car.height);
@@ -563,7 +566,8 @@ let isDonationTx = function(txInfo){
 	vouts.forEach((key)=>{
 		let keys = Object.keys(key);
 		keys.forEach((k)=> {
-			if (k == "3ECKq7onkjnRQR2nNe5uUJp2yMsXRmZavC") isDonation = true;
+			if (k == "3ECKq7onkjnRQR2nNe5uUJp2yMsXRmZavC" ||
+				k == "3MtCFL4aWWGS5cDFPbmiNKaPZwuD28oFvF") isDonation = true;
 		});
 	});
 
