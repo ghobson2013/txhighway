@@ -9,8 +9,8 @@ const urlCash = "https://cashexplorer.bitcoin.com/",
 	urlBlockchainCore = "https://api.blockchain.info/charts/avg-confirmation-time?format=json&cors=true";
 
 // sockets
-const socketCash = io(urlCash);
-const socketCore = io(urlCore);
+const socketCash = io(urlCash),
+	socketCore = io(urlCore);
 
 // DOM elements
 const canvas = document.getElementById("renderCanvas"),
@@ -53,11 +53,9 @@ const carCore = new Image(),
 	carLambo = new Image(),
 	carSpam = new Image();
 
-	
-
 // sound system
-let context = new AudioContext();
-let gainNode = context.createGain();
+let audioContext = new AudioContext();
+let gainNode = audioContext.createGain();
 
 // sound variables
 let audioMotorcycle = null,
@@ -67,13 +65,7 @@ let audioMotorcycle = null,
 	audioMercy = null,
 	audioRide = null,
 	audioChaChing = null,
-	audioWoohoo = null,
-	konamiActive = null;
-
-
-// mutes
-let isCashMuted = false,
-	isCoreMuted = false;
+	audioWoohoo = null;
 
 // constants
 let WIDTH = canvas.width;
@@ -85,11 +77,15 @@ let VOLUME = 1;
 // animation
 let requestID = null;
 
-let isVisible = true;
+// booleans
+let isVisible = true,
+	konamiActive = false,
+	isCashMuted = false,
+	isCoreMuted = false;
 
-// arrays
-let txCash = [];
-let txCore = []
+// arrays for vehicles
+let txCash = [],
+	txCore = [];
 
 /* connect to socket */
 socketCash.on("connect", function () {
@@ -171,20 +167,18 @@ function init(){
 	loadSound("assets/audio/cha-ching.mp3", "cha-ching")
 	loadSound("assets/audio/woohoo.mp3", "woohoo");
 
-	onReady(function () {
-		show('page', true);
-		show('loading', false);
-		//resize();
-		
-	});
-
-	requestID = requestAnimationFrame(animate);
-
 	// acquire data for signs
 	getPoolData(urlBlockchairCash, xhrCash, true);
 	getPoolData(urlBlockchairCore, xhrCore, false);
 	getCoreConfTime(urlBlockchainCore, xhrBlockchain);
+	
+	// remove loading screen
+	onReady(function () {
+		show('page', true);
+		show('loading', false);
+	});
 
+	requestID = requestAnimationFrame(animate);
 }
 
 // adds thousands seperator to large numbers
@@ -300,7 +294,7 @@ function resize(){
 
 // pause everything when window loses focus
 let vis = (function(){
-    var stateKey, eventKey, keys = {
+    let stateKey, eventKey, keys = {
         hidden: "visibilitychange",
         webkitHidden: "webkitvisibilitychange",
         mozHidden: "mozvisibilitychange",
@@ -372,16 +366,24 @@ function createVehicle(type, arr, txInfo, lane, isCash){
 	
 	let car = getCar(txInfo.valueOut, donation, isCash, userTx);
 	let width = SINGLE_LANE * (car.width / car.height);
-	let x = -width - carWhaleCash.width;
+	let x = -width;
 
+	// fix vehicle positioning to prevent pile ups.
 	if (arr.length > 0){
-		let last = arr[arr.length -1];
-		let front = width;
+		arr.forEach((key) => {
+			if (width >= key.x && lane == key.lane){
+				x = key.x - width - 10;
+			}
+		});
+	}
 
-		if (front >= last.x && lane == last.lane){
+	// fix btc vehicle positioning to prevent pile ups. <-- use this if above causes performance issues
+/*  	if (arr.length > 0 && !isCash){
+		let last = arr[arr.length -1];
+		if (width >= last.x && lane == last.lane){
 			x = last.x - width - 10;
 		}
-	}
+	} */
 
 	arr.push({
 		type:type,
@@ -496,12 +498,12 @@ function addSounds(carType){
 
 // plays the sound
 function playSound(buffer) {
-	let source = context.createBufferSource();
+	let source = audioContext.createBufferSource();
 	source.buffer = buffer;
 	source.playbackRate.value = speedSlider.value/100 + 0.5;
 
 	source.connect(gainNode);
-	gainNode.connect(context.destination);
+	gainNode.connect(audioContext.destination);
 	source.start(0);
 }
 
@@ -511,7 +513,7 @@ function loadSound(url, sound){
 	request.open('GET', url, true);
 	request.responseType = 'arraybuffer';
 	request.onload = function(){
-		context.decodeAudioData(request.response, function(buffer){
+		audioContext.decodeAudioData(request.response, function(buffer){
 			if (sound == "motorcycle"){
 				audioMotorcycle = buffer;
 			} else if (sound=="car") {
@@ -672,28 +674,20 @@ $("input.cash-mute").change(function() {
 				isCashMuted = false;
 			 } else {
 				isCashMuted = true;
-				//sounds = [];
 			 }
     } else {
       if (isCashMuted) {
 				isCashMuted = false;
 			 } else {
 				isCashMuted = true;
-				//sounds = [];
 			 }
     }
 });
-
-
-
-
 
 $('.nav .legend').hover(function(){
     // $(this).next('ul').slideToggle('500');
     $(this).find('i').toggleClass('fa-car fa-truck')
 });
-
-
 
 $("input.overlay-switch").change(function() {
     if(this.checked) {
@@ -703,21 +697,15 @@ $("input.overlay-switch").change(function() {
     }
 });
 
-
-
 $('.nav .search').click(function(){
     // $(this).next('ul').slideToggle('500');
     $(this).find('i').toggleClass('fa-search fa-eye')
-
 });
 
 $('.tx-list-link').click(function(){
     // $(this).next('ul').slideToggle('500');
     $(this).find('i').toggleClass('fa-list fa-close')
-
 });
-
-
 
 $('.nav .settings').hover(function(){
     // $(this).next('ul').slideToggle('500');
@@ -729,18 +717,14 @@ $('.nav .donate').hover(function(){
     $(this).find('i').toggleClass('fa-heart fa-money')
 });
 
-
-
 if ($('input.core-mute').is(':checked')) {
 	// $(this).next('ul').slideToggle('500');
 	if (isCoreMuted){
 		isCoreMuted = false;
 	} else {
 		isCoreMuted = true;
-		sounds = [];
 	}
 };
-
 
 $("input.core-mute").change(function() {
 	if(this.checked) {
@@ -748,28 +732,15 @@ $("input.core-mute").change(function() {
 				isCoreMuted = false;
 			 } else {
 				isCoreMuted = true;
-				sounds = [];
 			 }
     } else {
       if (isCoreMuted) {
 				isCoreMuted = false;
 			 } else {
 				isCoreMuted = true;
-				sounds = [];
 			 }
     }
 });
-
-
-// $('.core-nav .core-address i').click(function(){
-// 	let value = $('#core-address-input').css('display');
-// 	if (value == 'none'){
-// 		$('#core-address-input').css('display','block');
-// 	} else {
-// 		$('#core-address-input').css('display','none');
-// 	}
-// });
-
 
 $('.nav a').on('click', function(){
   $('#'+$(this).data('modal')).css('display','block');
@@ -779,25 +750,19 @@ $('.nav a.donate').on('click', function(){
   $('#'+$(this).data('modal')).toggleClass('donate donate-off');
 })
 
-
 $('.close').on('click', function(){
   $('.modal').hide();
 })
 
-
 //konami
-
 let easter_egg = new Konami(function() { 
 	if (konamiActive == false || konamiActive == null) {
 	konamiActive = true;
 		$( ".core-mode" ).fadeToggle( "slow", "linear" );
-
 	} else if (konamiActive == true) {
 	konamiActive = false;
 		$( ".core-mode" ).fadeToggle( "slow", "linear" );
-
 	}
- 
 });
 
 // When the user clicks anywhere outside of the modal, close it
@@ -805,9 +770,8 @@ window.onclick = function(event) {
 	if($(event.target).hasClass('modal')) $('.modal').hide();
 }
 
-
 function onReady(callback) {
-    var intervalID = window.setInterval(checkReady, 1500);
+    let intervalID = window.setInterval(checkReady, 1500);
 
     function checkReady() {
         if (document.getElementsByTagName('body')[0] !== undefined) {
