@@ -51,7 +51,8 @@ const carCore = new Image(),
 	carWhaleCore = new Image(),
 	carUserCore = new Image(),
 	carLambo = new Image(),
-	carSpam = new Image();
+	carSpam = new Image(),
+	carSatoshiDice = new Image();
 
 // sound system
 let audioContext = new AudioContext();
@@ -142,6 +143,7 @@ function init(){
 	carWhaleCash.src = "assets/sprites/bch-whale.png";
 	carUserCash.src = "assets/sprites/tx-taxi.png"; 
 	carLambo.src = "assets/sprites/lambo.png";
+	carSatoshiDice.src = "assets/sprites/dice.png";
 
 	//core vehicles
 	carMicroCore.src = "assets/sprites/core-micro.png";
@@ -365,10 +367,13 @@ function addTxToList(isCash, txid, valueOut, car){
 
 /* create vehicles and push to appropriate array */
 function createVehicle(type, arr, txInfo, lane, isCash){
-	let donation = checkForDonation(txInfo);
+	let donation = isDonationTx(txInfo);
 	let userTx = isUserTx(txInfo);
-	
-	let car = getCar(txInfo.valueOut, donation, isCash, userTx);
+	let sdTx = false;
+
+	if(isCash) sdTx = isSatoshiDiceTx(txInfo);
+
+	let car = getCar(txInfo.valueOut, donation, isCash, userTx, sdTx);
 	let width = SINGLE_LANE * (car.width / car.height);
 	let x = -width;
 
@@ -406,11 +411,14 @@ function createVehicle(type, arr, txInfo, lane, isCash){
 /* end new transaction */
 
 /* return car based upon transaction size*/
-function getCar(valueOut, donation, isCash, userTx){
+function getCar(valueOut, donation, isCash, userTx, sdTx){
 	if (donation == true){
 		SPEED = 4;
 		return carLambo;
 	}
+
+	// satoshi dice tx
+	if(sdTx) return carSatoshiDice;	
 
 	// user tx vehicles need to go here
 	if (userTx){
@@ -548,7 +556,7 @@ function loadSound(url, sound){
 }
 
 // check for donations into the BCF
-let checkForDonation = function(txInfo){
+let isDonationTx = function(txInfo){
 	let vouts = txInfo.vout;
 	let isDonation = false;
 
@@ -560,6 +568,31 @@ let checkForDonation = function(txInfo){
 	});
 
 	return isDonation;
+}
+
+// check for satoshi dice tx
+let isSatoshiDiceTx = function(txInfo){
+	let vouts = txInfo.vout;
+	let satoshiDiceTx = false;
+
+	vouts.forEach((key)=>{
+		let keys = Object.keys(key);
+		keys.forEach((k)=>{
+			if(k == "1DiceoejxZdTrYwu3FMP2Ldew91jq9L2u" ||
+			k == "1Dice115YcjDrPM9gXFW8iFV9S3j9MtERm" ||
+			k == "1Dice1FZk6Ls5LKhnGMCLq47tg1DFG763e" ||
+			k == "1Dice1cF41TGRLoCTbtN33DSdPtTujzUzx" ||
+			k == "1Dice1wBBY22stCobuE1LJxHX5FNZ7U97N" ||
+			k == "1Dice2wTatMqebSPsbG4gKgT3HfHznsHWi" ||
+			k == "1Dice5ycHmxDHUFVkdKGgrwsDDK1mPES3U" ||
+			k == "1Dice7JNVnvzyaenNyNcACuNnRVjt7jBrC" ||
+			k == "1Dice7v1M3me7dJGtTX6cqPggwGoRADVQJ" ||
+			k == "1Dice81SKu2S1nAzRJUbvpr5LiNTzn7MDV" ||
+			k == "1Dice9GgmweQWxqdiu683E7bHfpb7MUXGd") satoshiDiceTx = true;
+		});
+	});
+
+	return satoshiDiceTx;
 }
 
 // check for transactions to user's addresses
@@ -613,9 +646,9 @@ function drawVehicles(arr){
 	arr.forEach(function(item, index, object){
 
 		if(!item.isCash && konamiActive) { 
-				car = carSpam;
-			} else {
-				car = item.car;
+			car = carSpam;
+		} else {
+			car = item.car;
 		}
 		
 		if (item.x > -car.width){
