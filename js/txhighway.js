@@ -672,28 +672,20 @@ $("input.cash-mute").change(function() {
 				isCashMuted = false;
 			 } else {
 				isCashMuted = true;
-				//sounds = [];
 			 }
     } else {
       if (isCashMuted) {
 				isCashMuted = false;
 			 } else {
 				isCashMuted = true;
-				//sounds = [];
 			 }
     }
 });
-
-
-
-
 
 $('.nav .legend').hover(function(){
     // $(this).next('ul').slideToggle('500');
     $(this).find('i').toggleClass('fa-car fa-truck')
 });
-
-
 
 $("input.overlay-switch").change(function() {
     if(this.checked) {
@@ -703,21 +695,15 @@ $("input.overlay-switch").change(function() {
     }
 });
 
-
-
 $('.nav .search').click(function(){
     // $(this).next('ul').slideToggle('500');
     $(this).find('i').toggleClass('fa-search fa-eye')
-
 });
 
 $('.tx-list-link').click(function(){
     // $(this).next('ul').slideToggle('500');
     $(this).find('i').toggleClass('fa-list fa-close')
-
 });
-
-
 
 $('.nav .settings').hover(function(){
     // $(this).next('ul').slideToggle('500');
@@ -729,18 +715,14 @@ $('.nav .donate').hover(function(){
     $(this).find('i').toggleClass('fa-heart fa-money')
 });
 
-
-
 if ($('input.core-mute').is(':checked')) {
 	// $(this).next('ul').slideToggle('500');
 	if (isCoreMuted){
 		isCoreMuted = false;
 	} else {
 		isCoreMuted = true;
-		sounds = [];
 	}
 };
-
 
 $("input.core-mute").change(function() {
 	if(this.checked) {
@@ -748,28 +730,15 @@ $("input.core-mute").change(function() {
 				isCoreMuted = false;
 			 } else {
 				isCoreMuted = true;
-				sounds = [];
 			 }
     } else {
       if (isCoreMuted) {
 				isCoreMuted = false;
 			 } else {
 				isCoreMuted = true;
-				sounds = [];
 			 }
     }
 });
-
-
-// $('.core-nav .core-address i').click(function(){
-// 	let value = $('#core-address-input').css('display');
-// 	if (value == 'none'){
-// 		$('#core-address-input').css('display','block');
-// 	} else {
-// 		$('#core-address-input').css('display','none');
-// 	}
-// });
-
 
 $('.nav a').on('click', function(){
   $('#'+$(this).data('modal')).css('display','block');
@@ -779,32 +748,25 @@ $('.nav a.donate').on('click', function(){
   $('#'+$(this).data('modal')).toggleClass('donate donate-off');
 })
 
-
 $('.close').on('click', function(){
   $('.modal').hide();
 })
 
-
 //konami
-
 let easter_egg = new Konami(function() { 
 	if (konamiActive == false || konamiActive == null) {
 	konamiActive = true;
 		$( ".core-mode" ).fadeToggle( "slow", "linear" );
-
 	} else if (konamiActive == true) {
 	konamiActive = false;
 		$( ".core-mode" ).fadeToggle( "slow", "linear" );
-
 	}
- 
 });
 
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function(event) {
 	if($(event.target).hasClass('modal')) $('.modal').hide();
 }
-
 
 function onReady(callback) {
     var intervalID = window.setInterval(checkReady, 1500);
