@@ -12,6 +12,17 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.slim.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="icon" type="image/png" href="assets/favicon.png" />
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-110960886-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-110960886-1');
+  </script>
+
+
 </head>
 
 <body>
@@ -54,32 +65,22 @@
       <a href="#" class="settings" data-modal='modal-settings'>
         <i class="fa fa-cog" aria-hidden="true"></i>
       </a>
-      <!-- <a href="#" class="mute">
-        <i class="fa fa-volume-up" aria-hidden="true"></i>
-      </a> -->
-      <!-- <a href="#" class="overlay">
-        <i class="fa fa-window-maximize" aria-hidden="true"></i>
-      </a> -->
+      
 
       <a href="#" class="legend" data-modal='modal-legend'>
         <i class="fa fa-car" aria-hidden="true"></i>
       </a>
-      
-      <a href="#" class="donate" data-modal='modal-donate'>
-        <i class="fa fa-heart" aria-hidden="true"></i>
+
+      <a href="#" class="info" data-modal='modal-info'>
+        <i class="fa fa-question-circle" aria-hidden="true"></i>
       </a>
-      <!-- <a href="#" class="search" data-modal='modal-search'>
-        <i class="fa fa-search" aria-hidden="true"></i>
+      
+      <!-- <a href="#" class="donate" data-modal='modal-donate'>
+        <i class="fa fa-heart" aria-hidden="true"></i>
       </a> -->
+      
     </div>
 
-
-    <!-- <div class="core-nav">
-      <a href="#" class="core-mute">
-        <i class="fa fa-volume-up" aria-hidden="true"></i>
-      </a>
-      
-    </div> -->
 
     <div id="modal-settings" class="modal">
       <div class="modal-content">
@@ -206,10 +207,13 @@
                   <img src="assets/sprites/bch-whale.png" alt="whale">
                 </td>
                 <td>
-                  <h6>Donation to
+                  <!-- <h6>Donation to
                     <a href="http://thebitcoincash.fund" target="_blank">The Bitcoin Cash Fund</a>
                   </h6>
-                  <h4 class="qmark">?</h4>
+                  <h4 class="qmark">?</h4> -->
+                  <h6>Satoshi Dice</h6>
+                  <img src="assets/sprites/dice.png" alt="Satoshi Dice">
+
                 </td>
 
               </tr>
@@ -224,34 +228,35 @@
       </div>
     </div>
 
-    <!-- <div id="slidecontainer">
-      <label>Speed</label>
-      <input type="range" min="1" max="100" value="50" class="slider" id="speedSlider">
-      <label>Volume</label>
-      <input type="range" min="1" max="100" value="100" class="slider" id="volumeSlider">
-    </div> -->
 
-<div id="modal-search" class="modal">
-  <div class="modal-content">
-    <div class="modal-header">
-      <span class="close">×</span>
-      <h2>Monitor Addresses</h2>
-    </div>
-    <div class="modal-body">
-      <p>Input your public wallet address to monitor for incoming transactions.</p>
-        <fieldset>
-          <label><i class="fa fa-search" aria-hidden="true"></i> Bitcoin Cash Address</label>
-          <input id="cash-address-input" size="34" type="text" />
-        </fieldset>
+   <div id="modal-info" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <span class="close">×</span>
+          <h2>What is TX Highway?</h2>
+          <p>Learn about our visualizer &amp; Bitcoin Cash.</p>
+        </div>
+        <div class="modal-body">
+          <p>TX Highway is a blockchain visualizer created by two Bitcoin Cash fans. We wanted to find a simple way for ordinary users to visualize transactions on both chains, and provide a comparison of the two competing chains of Bitcoin. We strongly feel Bitcoin Cash's big blocks, on chain scalability, fast confirmations and extremely low fees allow for Bitcoin to become the peer to peer electronic cash that it was always meant to be. It's wide open highways with Bitcoin Cash, and complete gridlock on Bitcoin Legacy.
+          </p>
+          <h3>What is Bitcoin Cash?</h3>
+          <p>
+            Bitcoin Cash is peer-to-peer electronic cash for the Internet. It is fully decentralized, with no central bank and requires no trusted third parties to operate. Bitcoin Cash is the continuation of the Bitcoin project as peer-to-peer digital cash. It is a fork of the Bitcoin blockchain ledger, with upgraded consensus rules that allow it to grow and scale.
+          </p>
+          <h3>Donate to the developers</h3>
+          <img alt="Donate to the development team" src="assets/dev_qr_code.png" class="qr">
 
-        <fieldset>
-          <label><i class="fa fa-search" aria-hidden="true"></i> Bitcoin Segwit Address</label>
-          <input id="core-address-input" size="34" type="text" />
-        </fieldset>
+          <p>Love our idea? Please donate to help support ongoing projects and development! We've got several other ideas for projects to support Bitcoin Cash and appreciate any help you can provide.</p>
+          <p class="label">3MtCFL4aWWGS5cDFPbmiNKaPZwuD28oFvF</p>
+          <h5>Technology &amp; Credit</h5>
+          <p>Thanks to cashexplorer.bitcoin.com, insight.bitpay.com, cors-anywhere.herokuapp.com, api.blockchair.com, and api.blockchain.info, github pages, and the growing Bitcoin Cash community of makers, developers, and supporters.</p>
+        </div>
+        <div class="modal-footer">
+          <h3>Visit
+            <a href="http://bitcoin.com" target="_blank">Bitcoin.com</a> to create a Bitcoin wallet today!</h3>
+        </div>
+      </div>
     </div>
-    
-  </div>
-</div>
 
     <div id="modal-donate" class="modal">
       <!-- Modal content 2 -->
@@ -336,7 +341,7 @@
   <img src="assets/core-mode.png" alt="Core mode" class="core-mode">
   <script src="js/konami.js"></script>
   <script src="js/txhighway.js"></script>
-
+  
 </body>
 
 </html>

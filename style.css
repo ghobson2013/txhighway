@@ -224,9 +224,9 @@ color:#444;
 }
 
 .modal-footer a, .modal-footer a:visited {
-  color:#149347;
-  text-decoration:none;
-}
+  color:#fff;
+/*  text-decoration:none;
+*/}
 
 .modal-footer a:hover {
   text-decoration: underline;
@@ -265,12 +265,12 @@ table tr td h6 {
   margin: 0 0 3rem;
 }
 
-#modal-donate .qr {
+#modal-donate .qr, #modal-info .qr {
   float:left;
   width:120px;
   padding:1rem 2rem 1rem 0;
 }
-#modal-donate .modal-body p.label {
+#modal-donate .modal-body p.label, #modal-info .modal-body p.label {
   background:#eee;
   border-radius:3px;
   line-height:1;
@@ -279,10 +279,14 @@ table tr td h6 {
   text-align:center;
 }
 
+#modal-info .modal-body p {
+  margin:1rem 0;
+}
+
 #modal-donate .modal-body p {
   margin:1.5rem 0 0.5rem;
 }
-#modal-donate .modal-footer {
+#modal-donate .modal-footer, #modal-info .modal-footer {
   clear:both;
 }
 
@@ -1227,14 +1231,14 @@ input[type=range]:focus::-ms-fill-upper {
   .modal-header h2 {
     font-size:1.2rem;
   }
-  #modal-donate .qr {
+  #modal-donate .qr, #modal-info .qr {
     width:90px;
     padding:1rem 1rem 1rem 0;
   }
-  #modal-donate .modal-header p {
+  #modal-donate .modal-header p, #modal-info .modal-header p {
     display:none;
   }
-  #modal-donate .modal-header h2 {
+  #modal-donate .modal-header h2, #modal-info .modal-header h2 {
     margin:5px 0 5px;
   }
 }
@@ -1276,7 +1280,7 @@ input[type=range]:focus::-ms-fill-upper {
   #modal-search fieldset {
     padding:5px;
   }
-  #modal-donate p.label {
+  #modal-donate p.label, #modal-info p.label {
     font-size:11px;
   }
   table tr td h6 {
