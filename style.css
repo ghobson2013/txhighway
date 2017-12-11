@@ -167,7 +167,7 @@ color:#444;
     -webkit-animation-duration: 0.4s;
     animation-name: animatetop;
     animation-duration: 0.4s;
-    bottom:0;
+    bottom:1%;
     left:10%;
 }
 
