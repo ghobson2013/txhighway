@@ -1224,6 +1224,11 @@ input[type=range]:focus::-ms-fill-upper {
     overflow: auto;
   } 
 
+  #modal-info .modal-content{
+    height: 90%;
+    overflow: auto;
+  } 
+
   .qmark {
     margin:0;
   }
