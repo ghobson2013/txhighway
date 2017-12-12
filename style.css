@@ -283,8 +283,10 @@ table tr td h6 {
   margin:1rem 0;
 }
 
+#modal-info .modal-body p, #modal-info .modal-body ul {font-size:13px;}
+
 #modal-donate .modal-body p {
-  margin:1.5rem 0 0.5rem;
+  margin:0.7rem 0 0.5rem;
 }
 #modal-donate .modal-footer, #modal-info .modal-footer {
   clear:both;
