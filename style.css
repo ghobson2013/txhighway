@@ -190,7 +190,9 @@ color:#444;
 /* The Close Button */
 .close {
     color: white;
-    float: right;
+    position:absolute;
+    top:5px;
+    right:15px;
     font-size: 28px;
     font-weight: bold;
 }
@@ -1158,6 +1160,9 @@ input[type=range]:focus::-ms-fill-upper {
 }
 
 @media only screen and (max-width:767px) {
+  #modal-info .modal-body p, #modal-info .modal-body ul {
+    font-size:13px;
+  }
   .nav {
     top:50px;
   }
