@@ -75,6 +75,7 @@ let WIDTH = canvas.width;
 let HEIGHT = canvas.height;
 let SINGLE_LANE = HEIGHT/14;
 let SPEED = 8;
+let SPEED_MODIFIER = 0.5;
 let VOLUME = 1;
 
 // animation
@@ -116,7 +117,7 @@ socketCore.on("tx", function(data){
 });
 
 socketCash.on("block", function(data){
-	blockNotify(data, true);	
+	blockNotify(data, true);
 });
 
 socketCore.on("block", function(data){
@@ -217,10 +218,21 @@ function blockNotify(blockId, isCash){
 			let tx = obj.tx;
 			let amount = tx.length;
 
+			// sets speed modifier for btc lane
+			if (!isCash) {
+				let mod = t/amount/100;
+				if (mod >= 0.9){
+					SPEED_MODIFIER = 0.9;
+				} else {
+					SPEED_MODIFIER = 1 - mod;
+				}
+			}
+
+			// assigns data to signs
 			if (isCash){
-				cashPoolInfo.textContent = t - amount;
+				cashPoolInfo.textContent = formatNumbersWithCommas(t - amount);
 			} else {
-				corePoolInfo.textContent = t - amount;
+				corePoolInfo.textContent = formatNumbersWithCommas(t - amount);
 			}
 			
 			if (amount == t){
@@ -262,9 +274,15 @@ function getPoolData(url, xhr, isCash){
 			obj.data.forEach((key)=>{
 				if (key.e =="mempool_transactions"){
 					if (isCash){
-						cashPoolInfo.textContent = key.c;
+						cashPoolInfo.textContent = formatNumbersWithCommas(key.c);
 					} else {
-						corePoolInfo.textContent = key.c;
+						corePoolInfo.textContent = formatNumbersWithCommas(key.c);
+						let mod = key.c/2400/100;
+						if (mod >= 0.9){
+							SPEED_MODIFIER = 0.9;
+						} else {
+							SPEED_MODIFIER = 1 - mod;
+						}
 					}
 				}
 			});
@@ -384,7 +402,7 @@ function createVehicle(type, arr, txInfo, lane, isCash){
 	if (arr.length > 0){
 		arr.forEach((key) => {
 			if (width >= key.x && lane == key.lane){
-				x = key.x - width - 10;
+				x = key.x - width - 2;
 			}
 		});
 	}
@@ -668,7 +686,12 @@ function drawVehicles(arr){
 			ctx.drawImage(car, item.x, y, width, SINGLE_LANE);
 			
 		}
-		item.x += SPEED;
+
+		if(item.isCash){
+			item.x += SPEED;
+		} else {
+			item.x += SPEED * SPEED_MODIFIER;
+		}
 	});
 }
 
