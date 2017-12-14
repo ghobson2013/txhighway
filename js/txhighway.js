@@ -719,6 +719,16 @@ function drawVehicles(arr){
 			y = (item.lane * SINGLE_LANE) - SINGLE_LANE;
 			width = SINGLE_LANE * (car.width / car.height);
 
+			// segwit swerving
+			if (item.car == carSegwit){
+				if (!item.y) item.y = y;
+				if (!item.d) item.d = 0.3;
+				if (item.y > y + 10) item.d = -0.3;
+				if (item.y < y - 10) item.d = 0.3;
+				item.y += item.d;
+				y = item.y;
+			}
+
 			ctx.drawImage(car, item.x, y, width, SINGLE_LANE);
 			
 		}
