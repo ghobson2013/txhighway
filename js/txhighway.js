@@ -97,14 +97,9 @@ socketCash.on("connect", function () {
 	socketCash.emit("subscribe", "inv");
 });
 
-/* socketCore.on("connect", function () {
-	socketCore.emit("op", "unconfirmed_sub");
-});
- */
 socketCore.onopen = ()=> {
 	socketCore.send(JSON.stringify({"op":"unconfirmed_sub"}));
 	socketCore.send(JSON.stringify({"op":"blocks_sub"}));
-	
 }
 
 socketCash.on("tx", function(data){
@@ -128,6 +123,9 @@ socketCore.onmessage = (onmsg)=> {
 		let sw = false;
 		let valueOut = 0;
 		let vout = [];
+		let t = parseInt(corePoolInfo.textContent.replace(/\,/g,''));			
+		corePoolInfo.textContent = formatNumbersWithCommas(t +1);	
+	
 		//console.log(res);
 		inputs.forEach(i => {
 			if (JSON.stringify(i.script).length < 120){
@@ -152,8 +150,8 @@ socketCore.onmessage = (onmsg)=> {
 
 		newTX("core", data);
 	} else {
-		blockNotify(res.x.hash, false);			
-
+		blockNotify(res.x, false);	// not getting block data from wss need to work this out
+		console.log(res);
 	}
 }
 
@@ -232,7 +230,7 @@ function formatNumbersWithCommas(x){
 }
 
 // notify users when a new block is found
-function blockNotify(blockId, isCash){
+function blockNotify(data, isCash){
 	let xhr = new XMLHttpRequest();
 	let url = "";
 	let t = 0;
@@ -241,13 +239,35 @@ function blockNotify(blockId, isCash){
 	if(isCash){
 		ticker = "BCH";
 		t = parseInt(cashPoolInfo.textContent.replace(/\,/g,''));
-		url = urlCash + "insight-api/block/" + blockId;
+		url = urlCash + "insight-api/block/" + data;
 		cashPoolInfo.textContent = "UPDATING";
+		xhr.open("GET", url, true);
+		xhr.send(null);
 	} else {
+
 		ticker = "BTC";
 		t = parseInt(corePoolInfo.textContent.replace(/\,/g,''));
-		url = urlCors + urlCore + "api/block/" + blockId;
-		corePoolInfo.textContent = "UPDATING";		
+		let amount = data.nTx;
+
+		// sets speed modifier for btc lane
+		let mod = t/amount/100;
+		if (mod >= 0.9){
+			SPEED_MODIFIER = 0.9;
+		} else {
+			SPEED_MODIFIER = 1 - mod;
+		}
+
+		corePoolInfo.textContent = formatNumbersWithCommas(t - amount);
+		
+		if (isVisible) playSound(audioChaChing);
+		
+		confirmedAmount.textContent = amount + " " + ticker;
+		confirmedNotify.style.display = "block"; //no pun intended
+		setTimeout(() => {
+			confirmedNotify.style.display = "none";
+			getPoolData(urlBlockchairCash, xhrCash, true);
+		}, 5000);
+		//getPoolData(urlBlockchairCore, xhrCore, false);			
 	}
 
 	xhr.onload = function(){
@@ -256,23 +276,9 @@ function blockNotify(blockId, isCash){
 			let tx = obj.tx;
 			let amount = tx.length;
 
-			// sets speed modifier for btc lane
-			if (!isCash) {
-				let mod = t/amount/100;
-				if (mod >= 0.9){
-					SPEED_MODIFIER = 0.9;
-				} else {
-					SPEED_MODIFIER = 1 - mod;
-				}
-			}
-
 			// assigns data to signs
-			if (isCash){
-				cashPoolInfo.textContent = formatNumbersWithCommas(t - amount);
-			} else {
-				corePoolInfo.textContent = formatNumbersWithCommas(t - amount);
-			}
-			
+			cashPoolInfo.textContent = formatNumbersWithCommas(t - amount);
+
 			if (amount == t){
 				amount = "ALL";
 			}
@@ -283,24 +289,17 @@ function blockNotify(blockId, isCash){
 
 			setTimeout(() => {
 				confirmedNotify.style.display = "none";
-				getPoolData(urlBlockchairCore, xhrCore, false);	
-				getPoolData(urlBlockchairCash, xhrCash, true);				
-				
+				getPoolData(urlBlockchairCash, xhrCash, true);
 			}, 5000);
 		} else if (this.status === 404 || this.status === 500){
-			if(isCash){
-				cashPoolInfo.textContent = "UPDATING";		
-			} else {
-				corePoolInfo.textContent = "UPDATING";
-			}
+			cashPoolInfo.textContent = "UPDATING";		
 			setTimeout(() => {
-				blockNotify(blockId, isCash);
+				blockNotify(data, isCash);
 			}, 3000);
 		}
 	}
 	
-	xhr.open("GET", url, true);
-	xhr.send(null);
+
 }
 
 // retrieve pool information for signs
