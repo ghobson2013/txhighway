@@ -2,7 +2,7 @@
 
 // urls
 const urlCash = "https://cashexplorer.bitcoin.com/",
-	urlCore = "https://insight.bitpay.com/",
+	urlCore = "wss://ws.blockchain.info/inv",
 	urlCors = "https://cors-anywhere.herokuapp.com/",
 	urlBlockchairCash = urlCors + "https://api.blockchair.com/bitcoin-cash/mempool/",
 	urlBlockchairCore = urlCors + "https://api.blockchair.com/bitcoin/mempool/",
@@ -10,7 +10,7 @@ const urlCash = "https://cashexplorer.bitcoin.com/",
 
 // sockets
 const socketCash = io(urlCash),
-	socketCore = io(urlCore);
+	socketCore = new WebSocket(urlCore); //io(urlCore);
 
 // DOM elements
 const canvas = document.getElementById("renderCanvas"),
@@ -52,7 +52,8 @@ const carCore = new Image(),
 	carUserCore = new Image(),
 	carLambo = new Image(),
 	carSpam = new Image(),
-	carSatoshiDice = new Image();
+	carSatoshiDice = new Image(),
+	carSegwit = new Image();
 
 // sound system
 let audioContext = new AudioContext();
@@ -96,33 +97,84 @@ socketCash.on("connect", function () {
 	socketCash.emit("subscribe", "inv");
 });
 
-socketCore.on("connect", function () {
-	socketCore.emit("subscribe", "inv");
+/* socketCore.on("connect", function () {
+	socketCore.emit("op", "unconfirmed_sub");
 });
+ */
+socketCore.onopen = ()=> {
+	socketCore.send(JSON.stringify({"op":"unconfirmed_sub"}));
+	socketCore.send(JSON.stringify({"op":"blocks_sub"}));
+	
+}
 
 socketCash.on("tx", function(data){
 	if (cashPoolInfo.textContent != "UPDATING"){
 		let t = parseInt(cashPoolInfo.textContent.replace(/\,/g,''));			
 		cashPoolInfo.textContent = formatNumbersWithCommas(t +1);			
 	} 
+	//console.log(data.vout);
 	newTX("cash", data);
 });
 
-socketCore.on("tx", function(data){
+
+socketCore.onmessage = (onmsg)=> {
+	
+	let res = JSON.parse(onmsg.data);
+
+	// transaction
+	if (res.op == "utx"){
+		let inputs = res.x.inputs;
+		let outputs = res.x.out;
+		let sw = false;
+		let valueOut = 0;
+		let vout = [];
+		//console.log(res);
+		inputs.forEach(i => {
+			if (JSON.stringify(i.script).length < 120){
+				sw = true;
+			}
+		});
+
+		outputs.forEach((key)=> {
+			let arr = [];
+			valueOut += key.value/100000000;
+			arr[key.addr] = key.value;
+			vout.push(arr);
+		});
+
+		//console.log(vout);
+		let data = {
+			valueOut: valueOut,
+			txid: res.x.hash,
+			vout: vout,
+			sw: sw
+		}
+
+		newTX("core", data);
+	} else {
+		blockNotify(res.x.hash, false);			
+		//console.log(res);
+	}
+}
+
+/* socketCore.on("tx", function(data){
 	if (corePoolInfo.textContent != "UPDATING"){
 		let t = parseInt(corePoolInfo.textContent.replace(/\,/g,''));
 		corePoolInfo.textContent = formatNumbersWithCommas(t +1);
 	}
 	newTX("core", data);
-});
+}); */
 
 socketCash.on("block", function(data){
 	blockNotify(data, true);
 });
 
-socketCore.on("block", function(data){
+
+/* socketCore.on("block", function(data){
 	blockNotify(data, false);	
-});
+}); */
+
+
 /* End connect to socket */
 
 // initialise everything
@@ -155,6 +207,7 @@ function init(){
 	carWhaleCore.src = "assets/sprites/core-whale.png";
 	carUserCore.src = "assets/sprites/tx-taxi.png";
 	carSpam.src = "assets/sprites/spam.png";
+	carSegwit.src = "assets/sprites/segwit.png";
 
 	// hide signes on small screens
 	if(canvas.width <= 800 && canvas.height <= 600) {
@@ -394,7 +447,7 @@ function createVehicle(type, arr, txInfo, lane, isCash){
 		sdTx = isSatoshiDiceTx(txInfo);
 	}
 
-	let car = getCar(txInfo.valueOut, donation, isCash, userTx, sdTx);
+	let car = getCar(txInfo.valueOut, donation, isCash, userTx, sdTx, txInfo.sw);
 	let width = SINGLE_LANE * (car.width / car.height);
 	let x = -width;
 
@@ -432,12 +485,13 @@ function createVehicle(type, arr, txInfo, lane, isCash){
 /* end new transaction */
 
 /* return car based upon transaction size*/
-function getCar(valueOut, donation, isCash, userTx, sdTx){
+function getCar(valueOut, donation, isCash, userTx, sdTx, sw){
 	if (donation == true){
 		SPEED = 4;
 		return carLambo;
 	}
 
+	if(sw) return carSegwit;
 	// satoshi dice tx
 	if(sdTx) return carSatoshiDice;	
 
@@ -624,6 +678,7 @@ let isUserTx = function(txInfo){
 
 	//if (cashAddress.value.length < 34 && coreAddress.value.length < 34 ) return isUserTx;
 
+	//console.log(vouts);
 	vouts.forEach((key)=>{
 		let keys = Object.keys(key);
 		keys.forEach((k)=>{
