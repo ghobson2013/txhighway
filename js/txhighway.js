@@ -126,7 +126,6 @@ socketCore.onmessage = (onmsg)=> {
 		let t = parseInt(corePoolInfo.textContent.replace(/\,/g,''));			
 		corePoolInfo.textContent = formatNumbersWithCommas(t +1);	
 	
-		//console.log(res);
 		inputs.forEach(i => {
 			if (JSON.stringify(i.script).length < 120){
 				sw = true;
@@ -140,7 +139,6 @@ socketCore.onmessage = (onmsg)=> {
 			vout.push(arr);
 		});
 
-		//console.log(vout);
 		let data = {
 			valueOut: valueOut,
 			txid: res.x.hash,
@@ -150,8 +148,7 @@ socketCore.onmessage = (onmsg)=> {
 
 		newTX("core", data);
 	} else {
-		blockNotify(res.x, false);	// not getting block data from wss need to work this out
-		console.log(res);
+		blockNotify(res.x, false);
 	}
 }
 
