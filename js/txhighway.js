@@ -85,8 +85,8 @@ let requestID = null;
 // booleans
 let isVisible = true,
 	konamiActive = false,
-	isCashMuted = false,
-	isCoreMuted = false;
+	isCashMuted = true,
+	isCoreMuted = true;
 
 // arrays for vehicles
 let txCash = [],
@@ -153,28 +153,13 @@ socketCore.onmessage = (onmsg)=> {
 		newTX("core", data);
 	} else {
 		blockNotify(res.x.hash, false);			
-		//console.log(res);
+
 	}
 }
-
-/* socketCore.on("tx", function(data){
-	if (corePoolInfo.textContent != "UPDATING"){
-		let t = parseInt(corePoolInfo.textContent.replace(/\,/g,''));
-		corePoolInfo.textContent = formatNumbersWithCommas(t +1);
-	}
-	newTX("core", data);
-}); */
 
 socketCash.on("block", function(data){
 	blockNotify(data, true);
 });
-
-
-/* socketCore.on("block", function(data){
-	blockNotify(data, false);	
-}); */
-
-
 /* End connect to socket */
 
 // initialise everything
@@ -213,7 +198,7 @@ function init(){
 	if(canvas.width <= 800 && canvas.height <= 600) {
 		$("input.overlay-switch")[0].checked = true;
 		$( ".sign" ).fadeToggle( "slow", "linear" );
-	  }
+	}
 
 	// assign sounds to variables
 	loadSound("assets/audio/motorcycle-lowergain.mp3", "motorcycle")
@@ -842,15 +827,6 @@ $('.nav .donate').hover(function(){
     // $(this).next('ul').slideToggle('500');
     $(this).find('i').toggleClass('fa-heart fa-money')
 });
-
-if ($('input.core-mute').is(':checked')) {
-	// $(this).next('ul').slideToggle('500');
-	if (isCoreMuted){
-		isCoreMuted = false;
-	} else {
-		isCoreMuted = true;
-	}
-};
 
 $("input.core-mute").change(function() {
 	if(this.checked) {
