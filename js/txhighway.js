@@ -1,7 +1,7 @@
 "use strict";
 
 // urls
-const urlCash = "https://cashexplorer.bitcoin.com/",
+const urlCash = "wss://ws.blockchain.info/bch/inv",
 	urlCore = "wss://ws.blockchain.info/inv",
 	urlCors = "https://cors-anywhere.herokuapp.com/",
 	urlBlockchairCash = urlCors + "https://api.blockchair.com/bitcoin-cash/mempool/",
@@ -9,7 +9,7 @@ const urlCash = "https://cashexplorer.bitcoin.com/",
 	urlBlockchainCore = "https://api.blockchain.info/charts/avg-confirmation-time?format=json&cors=true";
 
 // sockets
-const socketCash = io(urlCash),
+const socketCash = new WebSocket(urlCash), // io(urlCash),
 	socketCore = new WebSocket(urlCore); //io(urlCore);
 
 // DOM elements
@@ -78,6 +78,7 @@ let SINGLE_LANE = HEIGHT/14;
 let SPEED = 8;
 let SPEED_MODIFIER = 0.5;
 let VOLUME = 1;
+let MICRO_TX = 0.0004; 	//BCH ~0.50 USD Dec 10/17 - BTC ~5.41 USD Dec 10/17
 
 // animation
 let requestID = null;
@@ -92,70 +93,40 @@ let isVisible = true,
 let txCash = [],
 	txCore = [];
 
-/* connect to socket */
-socketCash.on("connect", function () {
-	socketCash.emit("subscribe", "inv");
-});
+// connect to sockets
+socketCash.onopen = ()=>{
+	socketCash.send(JSON.stringify({"op":"unconfirmed_sub"}));
+	socketCash.send(JSON.stringify({"op":"blocks_sub"}));
+}
 
 socketCore.onopen = ()=> {
 	socketCore.send(JSON.stringify({"op":"unconfirmed_sub"}));
 	socketCore.send(JSON.stringify({"op":"blocks_sub"}));
 }
 
-socketCash.on("tx", function(data){
-	if (cashPoolInfo.textContent != "UPDATING"){
-		let t = parseInt(cashPoolInfo.textContent.replace(/\,/g,''));			
-		cashPoolInfo.textContent = formatNumbersWithCommas(t +1);			
-	} 
-	//console.log(data.vout);
-	newTX("cash", data);
-});
-
-
-socketCore.onmessage = (onmsg)=> {
-	
+socketCash.onmessage = (onmsg) =>{
 	let res = JSON.parse(onmsg.data);
 
-	// transaction
 	if (res.op == "utx"){
-		let inputs = res.x.inputs;
-		let outputs = res.x.out;
-		let sw = false;
-		let valueOut = 0;
-		let vout = [];
+		let t = parseInt(cashPoolInfo.textContent.replace(/\,/g,''));			
+		cashPoolInfo.textContent = formatNumbersWithCommas(t +1);	
+		newTX(true, res.x);
+	} else {
+		blockNotify(res.x, true);
+	}
+}
+
+socketCore.onmessage = (onmsg)=> {
+	let res = JSON.parse(onmsg.data);
+
+	if (res.op == "utx"){
 		let t = parseInt(corePoolInfo.textContent.replace(/\,/g,''));			
 		corePoolInfo.textContent = formatNumbersWithCommas(t +1);	
-	
-		inputs.forEach(i => {
-			if (JSON.stringify(i.script).length < 120){
-				sw = true;
-			}
-		});
-
-		outputs.forEach((key)=> {
-			let arr = [];
-			valueOut += key.value/100000000;
-			arr[key.addr] = key.value;
-			vout.push(arr);
-		});
-
-		let data = {
-			valueOut: valueOut,
-			txid: res.x.hash,
-			vout: vout,
-			sw: sw
-		}
-
-		newTX("core", data);
+		newTX(false, res.x);
 	} else {
 		blockNotify(res.x, false);
 	}
 }
-
-socketCash.on("block", function(data){
-	blockNotify(data, true);
-});
-/* End connect to socket */
 
 // initialise everything
 function init(){
@@ -228,23 +199,21 @@ function formatNumbersWithCommas(x){
 
 // notify users when a new block is found
 function blockNotify(data, isCash){
-	let xhr = new XMLHttpRequest();
-	let url = "";
+	//let xhr = new XMLHttpRequest();
+	//let url = "";
 	let t = 0;
 	let ticker = "";
+	let amount = 0;
 
 	if(isCash){
 		ticker = "BCH";
 		t = parseInt(cashPoolInfo.textContent.replace(/\,/g,''));
-		url = urlCash + "insight-api/block/" + data;
-		cashPoolInfo.textContent = "UPDATING";
-		xhr.open("GET", url, true);
-		xhr.send(null);
+		amount = data.nTx;
+		cashPoolInfo.textContent = formatNumbersWithCommas(t - amount);//"UPDATING";
 	} else {
-
 		ticker = "BTC";
 		t = parseInt(corePoolInfo.textContent.replace(/\,/g,''));
-		let amount = data.nTx;
+		amount = data.nTx;
 
 		// sets speed modifier for btc lane
 		let mod = t/amount/100;
@@ -255,48 +224,17 @@ function blockNotify(data, isCash){
 		}
 
 		corePoolInfo.textContent = formatNumbersWithCommas(t - amount);
-		
-		if (isVisible) playSound(audioChaChing);
-		
-		confirmedAmount.textContent = amount + " " + ticker;
-		confirmedNotify.style.display = "block"; //no pun intended
-		setTimeout(() => {
-			confirmedNotify.style.display = "none";
-			getPoolData(urlBlockchairCash, xhrCash, true);
-		}, 5000);
-		//getPoolData(urlBlockchairCore, xhrCore, false);			
 	}
 
-	xhr.onload = function(){
-		if (this.readyState == 4 && this.status == 200) {
-			let obj = JSON.parse(this.responseText);
-			let tx = obj.tx;
-			let amount = tx.length;
-
-			// assigns data to signs
-			cashPoolInfo.textContent = formatNumbersWithCommas(t - amount);
-
-			if (amount == t){
-				amount = "ALL";
-			}
-			confirmedAmount.textContent = amount + " " + ticker;
-			confirmedNotify.style.display = "block"; //no pun intended
-
-			if (isVisible) playSound(audioChaChing);
-
-			setTimeout(() => {
-				confirmedNotify.style.display = "none";
-				getPoolData(urlBlockchairCash, xhrCash, true);
-			}, 5000);
-		} else if (this.status === 404 || this.status === 500){
-			cashPoolInfo.textContent = "UPDATING";		
-			setTimeout(() => {
-				blockNotify(data, isCash);
-			}, 3000);
-		}
-	}
+	if (isVisible) playSound(audioChaChing);
 	
-
+	confirmedAmount.textContent = amount + " " + ticker;
+	confirmedNotify.style.display = "block"; //no pun intended
+	setTimeout(() => {
+		confirmedNotify.style.display = "none";
+		getPoolData(urlBlockchairCash, xhrCash, true);
+		getPoolData(urlBlockchairCore, xhrCore, false);
+	}, 5000);
 }
 
 // retrieve pool information for signs
@@ -384,12 +322,12 @@ vis(function(){
 });
 
 // create a new transaction
-function newTX(type, txInfo){
-	if (type == "cash"){
+function newTX(isCash, txInfo){
+	if (isCash){
 		let randLane = Math.floor(Math.random() * 8) + 1;
-		createVehicle(type, txCash, txInfo, randLane, true);
+		createVehicle(isCash, txCash, txInfo, randLane, true);
 	} else {
-		createVehicle(type, txCore, txInfo, 10, false);
+		createVehicle(isCash, txCore, txInfo, 10, false);
 	}
 }
 
@@ -417,7 +355,7 @@ function addTxToList(isCash, txid, valueOut, car){
 	}
 }
 
-/* create vehicles and push to appropriate array */
+// create vehicles and push to an array
 function createVehicle(type, arr, txInfo, lane, isCash){
 	let donation = false;
 	let userTx = isUserTx(txInfo);
@@ -428,7 +366,13 @@ function createVehicle(type, arr, txInfo, lane, isCash){
 		sdTx = isSatoshiDiceTx(txInfo);
 	}
 
-	let car = getCar(txInfo.valueOut, donation, isCash, userTx, sdTx, txInfo.sw);
+	let val = 0;
+	txInfo.out.forEach((tx)=>{
+		let v = tx.value/100000000;
+		val += v;
+	});
+
+	let car = getCar(val, donation, isCash, userTx, sdTx, txInfo.sw);
 	let width = SINGLE_LANE * (car.width / car.height);
 	let x = -width;
 
@@ -451,19 +395,18 @@ function createVehicle(type, arr, txInfo, lane, isCash){
 
 	arr.push({
 		type:type,
-		id: txInfo.txid,
+		id: txInfo.hash,
 		car: car,
 		x: x,
 		lane: lane,
 		h: SINGLE_LANE,
 		w: width,
-		valueOut: txInfo.valueOut,
+		valueOut: val,
 		donation: donation,
 		userTx: userTx,
 		isCash: isCash
 	});
 }
-/* end new transaction */
 
 /* return car based upon transaction size*/
 function getCar(valueOut, donation, isCash, userTx, sdTx, sw){
@@ -485,16 +428,14 @@ function getCar(valueOut, donation, isCash, userTx, sdTx, sw){
 		}
 	}
 
-	if (valueOut <= 0.0004){
-		//~0.50 USD Dec 10/17
-		//~5.41 USD Dec 10/17
+	if (valueOut <= MICRO_TX){
 		if (isCash){
 			return carMicroCash;
 		} else {
 			return carMicroCore;
 		}
 
-	} else if (valueOut > 0.0004 && valueOut <= 5){
+	} else if (valueOut > MICRO_TX && valueOut <= 5){
 			if (isCash){
 			return carSmallCash;
 		} else {
@@ -613,7 +554,7 @@ function loadSound(url, sound){
 
 // check for donations into the BCF
 let isDonationTx = function(txInfo){
-	let vouts = txInfo.vout;
+	let vouts = txInfo.out;//.vout;
 	let isDonation = false;
 
 	vouts.forEach((key)=>{
@@ -629,7 +570,7 @@ let isDonationTx = function(txInfo){
 
 // check for satoshi dice tx
 let isSatoshiDiceTx = function(txInfo){
-	let vouts = txInfo.vout;
+	let vouts = txInfo.out;//.vout;
 	let satoshiDiceTx = false;
 
 	vouts.forEach((key)=>{
@@ -654,7 +595,7 @@ let isSatoshiDiceTx = function(txInfo){
 
 // check for transactions to user's addresses
 let isUserTx = function(txInfo){
-	let vouts = txInfo.vout;
+	let vouts = txInfo.out;//.vout;
 	let isUserTx = false;
 
 	//if (cashAddress.value.length < 34 && coreAddress.value.length < 34 ) return isUserTx;
