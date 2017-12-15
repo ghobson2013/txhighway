@@ -6,7 +6,9 @@ const urlCash = "wss://ws.blockchain.info/bch/inv",
 	urlCors = "https://cors-anywhere.herokuapp.com/",
 	urlBlockchairCash = urlCors + "https://api.blockchair.com/bitcoin-cash/mempool/",
 	urlBlockchairCore = urlCors + "https://api.blockchair.com/bitcoin/mempool/",
-	urlBlockchainCore = "https://api.blockchain.info/charts/avg-confirmation-time?format=json&cors=true";
+	urlBlockchainCore = "https://api.blockchain.info/charts/avg-confirmation-time?format=json&cors=true",
+	urlPriceCash = "https://api.coinmarketcap.com/v1/ticker/bitcoin-cash/",
+	urlPriceCore = "https://api.coinmarketcap.com/v1/ticker/bitcoin/";
 
 // sockets
 const socketCash = new WebSocket(urlCash), // io(urlCash),
@@ -78,7 +80,15 @@ let SINGLE_LANE = HEIGHT/14;
 let SPEED = 8;
 let SPEED_MODIFIER = 0.5;
 let VOLUME = 1;
-let MICRO_TX = 0.0004; 	//BCH ~0.50 USD Dec 10/17 - BTC ~5.41 USD Dec 10/17
+let PRICE_BCH = 0;
+let PRICE_BTC = 0;
+
+// max value for vehicle types
+let TX_MICRO = 50,
+	TX_SMALL = 100,
+	TX_MEDIUM = 500,
+	TX_LARGE = 1000,
+	TX_WHALE = 10000; 	//BCH ~0.50 USD Dec 10/17 - BTC ~5.41 USD Dec 10/17
 
 // animation
 let requestID = null;
@@ -190,7 +200,9 @@ function init(){
 	getPoolData(urlBlockchairCash, xhrCash, true);
 	getPoolData(urlBlockchairCore, xhrCore, false);
 	getCoreConfTime(urlBlockchainCore, xhrBlockchain);
-	
+	getPriceData(urlPriceCash);
+	getPriceData(urlPriceCore);
+
 	// remove loading screen
 	onReady(function () {
 		show('page', true);
@@ -200,6 +212,26 @@ function init(){
 	requestID = requestAnimationFrame(animate);
 }
 
+function getPriceData(url){
+	let xhr = new XMLHttpRequest();
+
+	xhr.onload = function(){
+		if (this.readyState == 4 && this.status == 200) {		
+			let res = JSON.parse(this.responseText);
+			if (res[0].symbol == "BCH"){
+				PRICE_BCH = res[0].price_usd;
+				document.getElementById("price_bch").textContent = "1 BCH = $" + formatNumbersWithCommas(PRICE_BCH);
+			} else {
+				PRICE_BTC = res[0].price_usd;
+				document.getElementById("price_btc").textContent = "1 BTC = $" + formatNumbersWithCommas(PRICE_BTC);
+			}
+		}
+	}
+
+	xhr.open('GET', url, true);
+	xhr.send(null);
+}
+
 // adds thousands seperator to large numbers
 function formatNumbersWithCommas(x){
 	return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");	
@@ -207,8 +239,6 @@ function formatNumbersWithCommas(x){
 
 // notify users when a new block is found
 function blockNotify(data, isCash){
-	//let xhr = new XMLHttpRequest();
-	//let url = "";
 	let t = 0;
 	let ticker = "";
 	let amount = 0;
@@ -242,6 +272,8 @@ function blockNotify(data, isCash){
 		confirmedNotify.style.display = "none";
 		getPoolData(urlBlockchairCash, xhrCash, true);
 		getPoolData(urlBlockchairCore, xhrCore, false);
+		getPriceData(urlPriceCash);
+		getPriceData(urlPriceCore);
 	}, 5000);
 }
 
@@ -436,39 +468,46 @@ function getCar(valueOut, donation, isCash, userTx, sdTx, sw){
 		}
 	}
 
-	if (valueOut <= MICRO_TX){
+	let val = 0;
+	if (isCash){
+		val = valueOut * PRICE_BCH;
+	} else {
+		val = valueOut * PRICE_BTC;
+	}
+	
+	if (val <= TX_MICRO){
 		if (isCash){
 			return carMicroCash;
 		} else {
 			return carMicroCore;
 		}
 
-	} else if (valueOut > MICRO_TX && valueOut <= 5){
+	} else if (val > TX_MICRO && val <= TX_SMALL){
 			if (isCash){
 			return carSmallCash;
 		} else {
 			return carSmallCore;
 		}
 
-	} else if (valueOut > 5 && valueOut <= 10){
+	} else if (val > TX_SMALL && val <= TX_MEDIUM){
 		if (isCash){
 			return carMediumCash;
 		} else {
 			return carMediumCore;
 		}
-	} else if (valueOut > 10 && valueOut <= 15){
+	} else if (val > TX_MEDIUM && val <= TX_LARGE){
 		if (isCash){
 			return carLargeCash;
 		} else {
 			return carLargeCore;
 		}
-	} else if (valueOut > 15 && valueOut <= 25){
+	} else if (val > TX_LARGE && val <= TX_WHALE){
 		if (isCash){
 			return carXLargeCash;
 		} else {
 			return carXLargeCore;
 		}
-	} else if (valueOut > 25){
+	} else if (val > TX_WHALE){
 		if (isCash){
 			return carWhaleCash;
 		} else {
