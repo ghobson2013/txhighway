@@ -109,7 +109,8 @@ socketCash.onmessage = (onmsg) =>{
 
 	if (res.op == "utx"){
 		let t = parseInt(cashPoolInfo.textContent.replace(/\,/g,''));			
-		cashPoolInfo.textContent = formatNumbersWithCommas(t +1);	
+		cashPoolInfo.textContent = formatNumbersWithCommas(t +1);
+
 		newTX(true, res.x);
 	} else {
 		blockNotify(res.x, true);
@@ -121,7 +122,14 @@ socketCore.onmessage = (onmsg)=> {
 
 	if (res.op == "utx"){
 		let t = parseInt(corePoolInfo.textContent.replace(/\,/g,''));			
-		corePoolInfo.textContent = formatNumbersWithCommas(t +1);	
+		corePoolInfo.textContent = formatNumbersWithCommas(t +1);
+
+		res.x.inputs.forEach(i => {
+            if (JSON.stringify(i.script).length < 120){
+				res.x["sw"] = true;
+            }
+		});	
+		
 		newTX(false, res.x);
 	} else {
 		blockNotify(res.x, false);
