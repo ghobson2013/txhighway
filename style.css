@@ -1108,14 +1108,14 @@ input[type=range]:focus::-ms-fill-upper {
     -o-transition: all 350ms ease-in-out;
     transition: all 350ms ease-in-out;
     overflow:visible;
-    border-left:1px solid #444;
-    background:#009444;
+    border-left:1px solid #999;
+    background:#f9f9f9;
 }
 #transactions{
   list-style:none;
   margin: 0;
   padding: 0;
-  background-color: #fff;
+  background-color: #eee;
   text-align:center;
   overflow-y: scroll;
   
@@ -1139,21 +1139,27 @@ input[type=range]:focus::-ms-fill-upper {
 }
 
 .txinfo-cash{
-  background: #F0952D url('assets/bch.png') no-repeat 5px center;
+  background: #fff url('assets/bch.png') no-repeat 5px center;
   white-space: pre;
-  border-bottom: solid 1px #555;
+  border-bottom: solid 2px #F0952D;
   background-size:24px;
   text-align:right;
   padding-right:3px;
+  font-family:sans-serif;
+  font-size:12px;
+  padding:5px;
 }
 
 .txinfo-core{
-  background: #888 url('assets/btc.png') no-repeat 5px center;
+  background: #ddd url('assets/btc.png') no-repeat 5px center;
   white-space: pre;
-  border-bottom: solid 1px #555;
+  border-bottom: solid 1px #999;
   background-size:24px;
   text-align:right;
   padding-right:3px;
+  font-family:sans-serif;
+  font-size:12px;
+  padding:5px;
 }
 .txinfo-core:before {
 

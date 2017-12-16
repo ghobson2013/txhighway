@@ -159,6 +159,7 @@ function init(){
 	//cash vehicles
 	carMicroCash.src = "assets/sprites/bch-micro.png";
 	carSmallCash.src = "assets/sprites/bch-small.png";
+	carSmallMedCash.src = "assets/sprites/bch-small-med.png";
 	carMediumCash.src = "assets/sprites/bch-medium.png";
 	carLargeCash.src = "assets/sprites/bch-large.png";
 	carXLargeCash.src = "assets/sprites/bch-xlarge.png";
@@ -170,6 +171,7 @@ function init(){
 	//core vehicles
 	carMicroCore.src = "assets/sprites/core-micro.png";
 	carSmallCore.src = "assets/sprites/core-small.png";
+	carSmallMedCore.src = "assets/sprites/core-small-med.png";
 	carMediumCore.src = "assets/sprites/core-medium.png";
 	carLargeCore.src = "assets/sprites/core-xlarge.png";
 	carXLargeCore.src = "assets/sprites/core-large.png";
