@@ -184,7 +184,7 @@ function init(){
 	carSegwit.src = "assets/sprites/segwit.png";
 
 	// hide signes on small screens
-	if(canvas.width <= 800 && canvas.height <= 600) {
+	if(canvas.width <= 800 && canvas.height <= 640) {
 		$("input.overlay-switch")[0].checked = true;
 		$( ".sign" ).fadeToggle( "slow", "linear" );
 	}
@@ -726,8 +726,10 @@ function drawVehicles(arr){
 			if (item.car == carSegwit){
 				if (!item.y) item.y = y;
 				if (!item.d) item.d = 0.3;
-				if (item.y > y + 10) item.d = -0.3;
-				if (item.y < y - 10) item.d = 0.3;
+				let top = SINGLE_LANE * 9 - SINGLE_LANE/4;
+				let bottom = SINGLE_LANE * 9 + SINGLE_LANE/4;
+				if (item.y > bottom) item.d = -0.3;
+				if (item.y < top) item.d = 0.3;
 				item.y += item.d;
 				y = item.y;
 			}
