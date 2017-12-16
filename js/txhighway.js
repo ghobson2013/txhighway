@@ -40,6 +40,7 @@ const xhrCash = new XMLHttpRequest(),
 const carCore = new Image(),
 	carMicroCash = new Image(),
 	carSmallCash = new Image(),
+	carSmallMedCash = new Image(),
 	carMediumCash = new Image(),
 	carLargeCash = new Image(),
 	carXLargeCash = new Image(),
@@ -47,6 +48,7 @@ const carCore = new Image(),
 	carUserCash = new Image(),
 	carMicroCore = new Image(),
 	carSmallCore = new Image(),
+	carSmallMedCore = new Image(),
 	carMediumCore = new Image(),
 	carLargeCore = new Image(),
 	carXLargeCore = new Image(),
@@ -84,11 +86,12 @@ let PRICE_BCH = 0;
 let PRICE_BTC = 0;
 
 // max value for vehicle types
-let TX_MICRO = 50,
-	TX_SMALL = 100,
-	TX_MEDIUM = 500,
-	TX_LARGE = 1000,
-	TX_WHALE = 10000; 	//BCH ~0.50 USD Dec 10/17 - BTC ~5.41 USD Dec 10/17
+let TX_MICRO = 10,
+	TX_SMALL = 1000,
+	TX_SMALL_MED = 10000,
+	TX_MEDIUM = 100000,
+	TX_LARGE = 500000,
+	TX_WHALE = 1000000; 	//BCH ~0.50 USD Dec 10/17 - BTC ~5.41 USD Dec 10/17
 
 // animation
 let requestID = null;
@@ -159,6 +162,7 @@ function init(){
 	//cash vehicles
 	carMicroCash.src = "assets/sprites/bch-micro.png";
 	carSmallCash.src = "assets/sprites/bch-small.png";
+	carSmallMedCash.src = "assets/sprites/bch-small-med.png";
 	carMediumCash.src = "assets/sprites/bch-medium.png";
 	carLargeCash.src = "assets/sprites/bch-large.png";
 	carXLargeCash.src = "assets/sprites/bch-xlarge.png";
@@ -170,6 +174,7 @@ function init(){
 	//core vehicles
 	carMicroCore.src = "assets/sprites/core-micro.png";
 	carSmallCore.src = "assets/sprites/core-small.png";
+	carSmallMedCore.src = "assets/sprites/core-small-med.png";
 	carMediumCore.src = "assets/sprites/core-medium.png";
 	carLargeCore.src = "assets/sprites/core-xlarge.png";
 	carXLargeCore.src = "assets/sprites/core-large.png";
@@ -455,6 +460,7 @@ function getCar(valueOut, donation, isCash, userTx, sdTx, sw){
 		return carLambo;
 	}
 
+	
 	if(sw) return carSegwit;
 	// satoshi dice tx
 	if(sdTx) return carSatoshiDice;	
@@ -483,13 +489,18 @@ function getCar(valueOut, donation, isCash, userTx, sdTx, sw){
 		}
 
 	} else if (val > TX_MICRO && val <= TX_SMALL){
-			if (isCash){
+		if (isCash){
 			return carSmallCash;
 		} else {
 			return carSmallCore;
 		}
-
-	} else if (val > TX_SMALL && val <= TX_MEDIUM){
+	} else if (val > TX_SMALL && val <= TX_SMALL_MED){	
+		if (isCash){
+			return carSmallMedCash;
+		} else {
+			return carSmallMedCore;
+		}
+	} else if (val > TX_SMALL_MED && val <= TX_MEDIUM){
 		if (isCash){
 			return carMediumCash;
 		} else {
@@ -535,8 +546,12 @@ function addSounds(carType){
 
 	if (carType == carMicroCash || carType == carMicroCore){
 		playSound(audioMotorcycle);
-	} else if (carType == carMicroCash || carType == carMicroCore || carType == carSmallCash ||
-		carType == carSmallCore){
+	} else if (carType == carMicroCash ||
+		carType == carMicroCore ||
+		carType == carSmallCash ||
+		carType == carSmallCore ||
+		carType == carSmallMedCash ||
+		carType == carSmallMedCore){
 			playSound(audioCar);
 	} else if (carType == carMediumCash ||
 		carType == carMediumCore ||
