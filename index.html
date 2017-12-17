@@ -76,9 +76,9 @@
         <i class="fa fa-question-circle" aria-hidden="true"></i>
       </a>
       
-      <!-- <a href="#" class="donate" data-modal='modal-donate'>
+      <a href="#" class="donate" data-modal='modal-donate'>
         <i class="fa fa-heart" aria-hidden="true"></i>
-      </a> -->
+      </a>
       
     </div>
 
@@ -91,66 +91,70 @@
           <p>Modify audio, speed, and monitor a receiving address.</p>
         </div>
         <div class="modal-body">
-          <div class="two-col">
+          <div class="row">
+
+    <div class="col-6">
             <!-- Rectangular switch -->
-            <div class="switch-wrap">
-              <label class="switch">
-                <input type="checkbox" class="cash-mute" checked>
-                <span class="switcher"></span>
-              </label>
-              <h5>BCH Sound On/Off</h5>
-            </div>
-            <div class="switch-wrap">
-              <label class="switch">
-                <input type="checkbox" class="core-mute" checked>
-                <span class="switcher"></span>
-              </label>
-              <h5>BTC Sound On/Off</h5>
-            </div>
-            <div class="switch-wrap">
-              <label class="switch">
-                <input type="checkbox" class="overlay-switch">
-                <span class="switcher"></span>
-              </label>
-                <h5>Overlays Show/Hide</h5>
-            </div>
-
-          </div>
-
-          <div class="two-col">
-
-            <div id="slidecontainer">
-              <label>Vehicle Speed</label>
-              <input type="range" min="1" max="100" value="50" class="slider" id="speedSlider">
-              <label>Volume</label>
-              <input type="range" min="1" max="100" value="100" class="slider" id="volumeSlider">
-            </div>
-
-          </div>
-
-          <div class="full-col text-center">
-            <hr>
-            <h4>Address Monitoring</h4>  
-          </div>
-            <div class="two-col">
-              <fieldset>
-                <img src="assets/bch.png" class="logo-label" alt="Bitcoin Cash">
-                <label><i class="fa fa-search" aria-hidden="true"></i> Bitcoin Cash Address</label>
-                <input id="cash-address-input" placeholder="Input BCH Wallet Adddress" size="34" type="text" />
-              </fieldset>
-            </div>
-            <div class="two-col">
-              <fieldset>
-                  <img src="assets/btc.png" class="logo-label" alt="Bitcoin Core">
-
-                <label><i class="fa fa-search" aria-hidden="true"></i> Bitcoin Segwit Address</label>
-                <input id="core-address-input" placeholder="Input BTC Wallet Adddress" size="34" type="text" />
-              </fieldset>
-            </div>
+        <div class="switch-wrap">
+          <label class="switch">
+            <input type="checkbox" class="cash-mute" checked>
+            <span class="switcher"></span>
+          </label>
+          <h5>Mute BCH</h5>
         </div>
-        <div class="full-col text-center">
-          <p>Input your public wallet address to monitor for incoming transactions.</p>
+        <div class="switch-wrap">
+          <label class="switch">
+            <input type="checkbox" class="core-mute" checked>
+            <span class="switcher"></span>
+          </label>
+          <h5>Mute BTC</h5>
         </div>
+        <div class="switch-wrap">
+          <label class="switch">
+            <input type="checkbox" checked class="overlay-switch">
+            <span class="switcher"></span>
+          </label>
+            <h5>Hide Overlays</h5>
+        </div>
+
+      </div>
+
+      <div class="col-6">
+
+        <div id="slidecontainer">
+          <label>Vehicle Speed</label>
+          <input type="range" min="1" max="100" value="50" class="slider" id="speedSlider">
+          <label>Volume</label>
+          <input type="range" min="1" max="100" value="100" class="slider" id="volumeSlider">
+        </div>
+
+      </div>
+
+      <div class="col-12 text-center">
+        <hr>
+        <h4>Address Monitoring</h4>  
+      </div>
+        <div class="col-6">
+          <fieldset>
+            <img src="assets/bch.png" class="logo-label" alt="Bitcoin Cash">
+            <label><i class="fa fa-search" aria-hidden="true"></i> Bitcoin Cash Address</label>
+            <input id="cash-address-input" placeholder="Input BCH Wallet Adddress" size="34" type="text" />
+          </fieldset>
+        </div>
+        <div class="col-6">
+          <fieldset>
+              <img src="assets/btc.png" class="logo-label" alt="Bitcoin Core">
+
+            <label><i class="fa fa-search" aria-hidden="true"></i> Bitcoin Segwit Address</label>
+            <input id="core-address-input" placeholder="Input BTC Wallet Adddress" size="34" type="text" />
+          </fieldset>
+        </div>
+    </div>
+    <div class="col-12 text-center">
+      <p>Input your public wallet address to monitor for incoming transactions.</p>
+    </div>
+
+</div>
       </div>
     </div>
 
@@ -164,73 +168,75 @@
         </div>
         <div class="modal-body">
 
-          <table>
+                <div class="row">
+      
+      <div class="col-3 col-6-sm legend-item">
+        <h6>Micro TX 
+          <span>($0 - $10.00 USD)</span>
+        </h6>
+        <img src="assets/sprites/bch-micro.png" alt="Micro" />
+      </div>
+      <div class="col-3 col-6-sm legend-item">
+        <h6>Tiny TX 
+          <span>($10 - $1,000 USD)</span>
+        </h6>
+        <img src="assets/sprites/bch-small.png" alt="Tiny" />
+      </div>
+      <div class="col-3 col-6-sm legend-item">
+        <h6>Small TX 
+          <span>($1,000 - $10,000 USD)</span>
+        </h6>
+        <img src="assets/sprites/bch-small-med.png" alt="Small" />
+      </div>
+      <div class="col-3 col-6-sm legend-item">
+        <h6>Medium TX 
+          <span>($10,000 - $100,000 USD)</span>
+        </h6>
+        <img src="assets/sprites/bch-medium.png" alt="Medium" />
+      </div>
+      <div class="col-3 col-6-sm legend-item">
+        <h6>Large TX 
+          <span>($100,000 - $500,000 USD)</span>
+        </h6>
+        <img src="assets/sprites/bch-large.png" alt="Large" />
+      </div>
+      <div class="col-3 col-6-sm legend-item">
+        <h6>Extra Large TX 
+          <span>($500,000 - $100,000,000 USD)</span>
+        </h6>
+        <img src="assets/sprites/bch-xlarge.png" alt="Extra large" />
+      </div>
+      <div class="col-3 col-12-sm legend-item whale-col">
+        <h6>Whale TX 
+          <span>($100,000,000 + USD)</span>
+        </h6>
+        <img src="assets/sprites/bch-whale.png" alt="Whale" />
+      </div>
+      <div class="col-3 col-6-sm legend-item">
+          <h6>Satoshi Dice TX
+            <span>(Various Amounts)</span>
+          </h6>
+        <img src="assets/sprites/dice.png" alt="Satoshi Dice"/>
+      </div>
+      <div class="col-3 col-6-sm legend-item">
+        <h6>Monitored Address</h6>
+        <img src="assets/sprites/tx-taxi.png" alt="Monitored Address" />
+      </div>
+      <div class="col-3 col-12-sm legend-item">
+          <h6>Segwit TX</h6>
+        <img src="assets/sprites/segwit.png" alt="Segwit" />
+      </div>
+      <div class="col-3 col-6-sm legend-item">
+          <h6>BCF Fund Donation</h6>
+            <span class="qmark">?</span>
+      </div>
+      <div class="col-3 col-6-sm legend-item">
+          <h6>Developer Donation</h6>
+            <span class="qmark">?</span>
+      </div>
 
-            <tr>
-              <td>
-                <h6>Monitored Address</h6>
-                <img src="assets/sprites/tx-taxi.png" alt="Monitored Address">
-              </td>
 
-              <td>
-                <h6>Micro Transactions</h6>
-                <img src="assets/sprites/bch-micro.png" alt="Micro">
-              </td>
-            </tr>
-
-            <tr>
-              <td>
-                <h6>0 - 5 BCH/BTC</h6>
-                <img src="assets/sprites/bch-small.png" alt="small">
-              </td>
-
-              <td>
-                <h6>5 - 10 BCH/BTC</h6>
-                <img src="assets/sprites/bch-medium.png" alt="medium">
-              </td>
-            </tr>
-
-              <tr>
-                <td>
-                  <h6>10 - 15 BCH/BTC</h6>
-                  <img src="assets/sprites/bch-large.png" alt="large">
-                </td>
-
-                <td>
-                  <h6>15 - 25 BCH/BTC</h6>
-                  <img src="assets/sprites/bch-xlarge.png" alt="xlarge">
-                </td>
-              </tr>
-
-              <tr>
-                <td>
-                  <h6>25+ BCH/BTC</h6>
-                  <img src="assets/sprites/bch-whale.png" alt="whale">
-                </td>
-                <td>
-                  <!-- <h6>Donation to
-                    <a href="http://thebitcoincash.fund" target="_blank">The Bitcoin Cash Fund</a>
-                  </h6>
-                  <h4 class="qmark">?</h4> -->
-                  <h6>Satoshi Dice</h6>
-                  <img src="assets/sprites/dice.png" alt="Satoshi Dice">
-
-                </td>
-
-              </tr>
-
-              <tr>
-                <td>
-                  <h6>Segwit transaction</h6>
-                  <img src="assets/sprites/segwit.png" alt="Segwit">
-                </td>
-                <td>
-                  <h6>Donation to Developers</h6>
-                  <h6 class="qmark">?</h6>
-                </td>
-              </tr>
-
-          </table>
+      </div>
 
         </div>
         <div class="modal-footer">
@@ -253,7 +259,7 @@
           </p>
           <h4>What does all this represent?</h4>
           <p>
-            <ul style="margin-left:20px;">
+            <ul>
               <li>The highway comparison was originally shared by Eli Afram (<a href="https://twitter.com/justicemate" target="_blank">@justicemate</a>), a contributor for CoinGeek. This highway metaphor is what spawned this whole project. <a href="https://twitter.com/justicemate/status/923682942248927233" target="_blank">[Source]</a></li>
               <li>Eight lanes of Bitcoin Cash is 8MB block sizes while the single lane of Bitcoin Legacy is the limited 1MB block size. <a href="https://news.bitcoin.com/bitcoin-cash-8mb-block-479469-clears-over-37000-transactions/" target="_blank">[Source]</a> <a href="https://www.youtube.com/watch?v=l6Obc_cJba4&t=1s" target="_blank">[Video Source]</a> <a href="https://youtu.be/By0w43NQdiY?t=25m36s" target="_blank">[Video Source]</a></li>
               <li>NO2X Signs blocking a second lane is the failed NYA Segwith2x. <a href="https://www.reddit.com/r/btc/comments/7bmp4u/segwit2x_canceled/" target="_blank">[Source]</a></li>

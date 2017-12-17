@@ -1,3 +1,53 @@
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+  display: block;
+}
+body {
+  line-height: 1;
+}
+ol, ul {
+  list-style: none;
+}
+blockquote, q {
+  quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+  content: '';
+  content: none;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+
 html, body {
   overflow: hidden;
   width: 100%;
@@ -7,13 +57,15 @@ html, body {
 }
 * { margin: 0; padding: 0px; }
 
+@import url(https://fonts.googleapis.com/css?family=Lato:400,700);body,html{height:100%;width:100%;margin:0;padding:0;left:0;top:0;font-size:100%}.center,.container{margin-left:auto;margin-right:auto}*{font-family:Lato,'Lato', Helvetica, sans-serif;line-height:1.5}h1{font-size:2.5rem}h2{font-size:2rem}h3{font-size:1.375rem}h4{font-size:1.125rem}h5{font-size:1rem}h6{font-size:.575rem}p{font-size:1.125rem;font-weight:200;line-height:1.8}.font-light{font-weight:300}.font-regular{font-weight:400}.font-heavy{font-weight:700}.left{text-align:left}.right{text-align:right}.center{text-align:center}.justify{text-align:justify}.container{width:90%}.row{position:relative;width:100%}.row [class^=col]{float:left;margin:.5rem 2%;min-height:.125rem}.col-1,.col-10,.col-11,.col-12,.col-2,.col-3,.col-4,.col-5,.col-6,.col-7,.col-8,.col-9{width:96%}.col-1-sm{width:4.33%}.col-2-sm{width:12.66%}.col-3-sm{width:21%}.col-4-sm{width:29.33%}.col-5-sm{width:37.66%}.col-6-sm{width:46%}.col-7-sm{width:54.33%}.col-8-sm{width:62.66%}.col-9-sm{width:71%}.col-10-sm{width:79.33%}.col-11-sm{width:87.66%}.col-12-sm{width:96%}.row::after{content:"";display:table;clear:both}.hidden-sm{display:none}@media only screen and (min-width:33.75em){.container{width:80%}}@media only screen and (min-width:45em){.col-1{width:4.33%}.col-2{width:12.66%}.col-3{width:21%}.col-4{width:29.33%}.col-5{width:37.66%}.col-6{width:46%}.col-7{width:54.33%}.col-8{width:62.66%}.col-9{width:71%}.col-10{width:79.33%}.col-11{width:87.66%}.col-12{width:96%}.hidden-sm{display:block}}@media only screen and (min-width:60em){.container{width:75%;max-width:60rem}}
+
 
 body {
   background: #9A857A;
 }
 
 h1,h2,h3,h4,h5,h6 {
-  font-family:sans-serif;
+  font-family:'Lato', sans-serif;
 }
 
 #renderCanvas {
@@ -38,6 +90,7 @@ span {
   top: 5px;
   left: 5px;
   width: 300px;
+  padding-left:5px;
 }
 .title img {
   max-width: 100%;
@@ -46,12 +99,13 @@ span {
   font-size: 17px;
   color: #231F20;
   margin-top: 5px;
-  font-family: sans-serif;
+  font-family: 'Lato', sans-serif;
   text-align: center;
   text-transform: uppercase;
   line-height:1;
   margin-bottom:0;
   padding-bottom:0;
+  font-weight:700;
 }
 
 .nav {
@@ -253,6 +307,7 @@ table thead th.col-val {
 table tr td img {
   max-height:70px;
   padding:0;
+  max-width:90%;
 }
 
 table tr td h6 {
@@ -260,7 +315,12 @@ table tr td h6 {
   margin:0;
 
 }
-
+table tr td h6 span {
+  display:block;
+  font-size:0.7em;
+  margin-top:4px;
+  color:#777;
+}
 .qmark {
   font-size: 3rem;
   font-weight: bold;
@@ -285,8 +345,19 @@ table tr td h6 {
   margin:1rem 0;
 }
 
-#modal-info .modal-body p, #modal-info .modal-body ul {font-size:13px;}
+.modal-body h6 {
+  font-size:.875rem
+}
 
+#modal-info .modal-body p, #modal-info .modal-body ul {font-size:13px;}
+ #modal-info .modal-body ul{
+  list-style:circle;
+  margin-left:20px;
+ }
+
+  #modal-info .modal-body ul li {
+    padding:5px 0;
+  }
 #modal-donate .modal-body p {
   margin:0.7rem 0 0.5rem;
 }
@@ -306,7 +377,7 @@ table tr td h6 {
   font-size: 16px;
   text-transform: uppercase;
   z-index: 2;
-  font-family: sans-serif;
+  font-family: 'Lato', sans-serif;
 }
 .lane-size.one {
   top: 3%;
@@ -416,6 +487,44 @@ table tr td h6 {
   right: 10px;
 }
 
+.four-col {
+  width:19%;
+  float:left;
+  padding:5px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.four-col h6 span {
+  display:block;
+  font-size:0.7em;
+  margin-top:4px;
+  color:#777;
+}
+
+.legend-item img {
+  max-height:48px;
+  max-width:90%;
+}
+
+.legend-item h6 span {
+  display:block;
+  font-size:0.7em;
+  margin-top:4px;
+  color:#777;
+}
+
+.whale-col {
+  min-height:120px;
+}
+
+.four-col img {
+  max-height:60px;
+  padding:0;
+  max-width:90%;
+}
+
 .two-col {
     width:46%;
     float:left;
@@ -512,7 +621,7 @@ span.divider {
 .road-sign .highway-num {
   color: #F9D536;
   text-transform: uppercase;
-  font-family: sans-serif;
+  font-family: 'Lato', sans-serif;
   font-size: 0.7em;
   position: absolute;
   left: 10px;
@@ -522,7 +631,7 @@ span.divider {
 .road-sign .sign-title {
   color: #245A35;
   text-transform: uppercase;
-  font-family: sans-serif;
+  font-family: 'Lato', sans-serif;
   font-size: 0.7em;
   background: #fff;
   border-radius: 3px;
@@ -535,6 +644,7 @@ span.divider {
   margin: 0;
   display: inline-block;
   text-align: center;
+  font-weight:600;
 }
 
 /*.road-sign .sign-title .censored {
@@ -566,7 +676,7 @@ span.divider {
 .road-sign .cash-pool, .road-sign .core-pool {
   color: #fff;
   text-transform: uppercase;
-  font-family: sans-serif;
+  font-family: 'Lato', sans-serif;
   font-size: 0.7em;
   margin: 5px 0 0 5px;
   font-weight: bold;
@@ -583,7 +693,7 @@ span.divider {
   letter-spacing: 1px;
 }
 .road-sign .cash-pool h6, .road-sign .core-pool h6 {
-  margin: 0;
+  margin: 2px 0 3px;
   font-weight: normal;
   color: #F8D448;
 }
@@ -653,7 +763,7 @@ span.divider {
   padding:3px 2px 1px;
   font-size:7px;
   font-weight:bold;
-  font-family:sans-serif;
+  font-family:'Lato', sans-serif;
   margin:0;
 }
 
@@ -681,7 +791,7 @@ span.divider {
   text-decoration: none;
   color: #fff;
   font-weight: bold;
-  font-family: sans-serif;
+  font-family: 'Lato', sans-serif;
   bottom: 39%;
   left: 10px;
   z-index: 99;
@@ -728,7 +838,7 @@ span.divider {
   width: 70px;
   text-decoration: none;
   text-transform: uppercase;
-  font-family: sans-serif;
+  font-family: 'Lato', sans-serif;
   letter-spacing: 1px;
 }
 .modal-close:hover {
@@ -767,7 +877,7 @@ span.divider {
   z-index: 100;
   display: none;
   font-weight:bold;
-  font-family:sans-serif;
+  font-family:'Lato', sans-serif;
 }
 
 .confirmed-text{
@@ -780,7 +890,7 @@ span.divider {
   padding:1rem;
   color:#222;
   font-weight:bold;
-  font-family:sans-serif;
+  font-family:'Lato', sans-serif;
 }
 
 .confirmed-text p {
@@ -1072,7 +1182,7 @@ input[type=range]:focus::-ms-fill-upper {
 #modal-settings #slidecontainer label {
   color:#222;
   margin:0 0 -5px 0;
-  font-family:sans-serif;
+  font-family:'Lato', sans-serif;
   letter-spacing:1px;
 }
 
@@ -1146,7 +1256,7 @@ input[type=range]:focus::-ms-fill-upper {
   background-size:24px;
   text-align:right;
   padding-right:3px;
-  font-family:sans-serif;
+  font-family:'Lato', sans-serif;
   font-size:12px;
   padding:5px;
 }
@@ -1158,11 +1268,19 @@ input[type=range]:focus::-ms-fill-upper {
   background-size:24px;
   text-align:right;
   padding-right:3px;
-  font-family:sans-serif;
+  font-family:'Lato', sans-serif;
   font-size:12px;
   padding:5px;
 }
 .txinfo-core:before {
+
+}
+
+@media only screen and (max-width:850px) {
+
+  .mob-two-col {
+    width:44%;
+  }
 
 }
 
@@ -1182,6 +1300,8 @@ input[type=range]:focus::-ms-fill-upper {
     width:auto;
     float:none;
   }
+
+  
 
   .switch-wrap {
     padding-left:0;
@@ -1217,9 +1337,7 @@ input[type=range]:focus::-ms-fill-upper {
 
   
 
-  .modal-body {
-    overflow:hidden;
-  }
+
 
   table tr td img {
     max-height:28px;
@@ -1238,7 +1356,7 @@ input[type=range]:focus::-ms-fill-upper {
     overflow: auto;
   } 
 
-  #modal-info .modal-content{
+   .modal-content{
     height: 90%;
     overflow: auto;
   } 
@@ -1268,7 +1386,7 @@ input[type=range]:focus::-ms-fill-upper {
     
     right:auto;
     left:5px;
-    top:195px;
+    top:245px;
 
     }
 
