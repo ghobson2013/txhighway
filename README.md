@@ -8,13 +8,18 @@ Budget
 
 | Title         | Description           | Price  |
 | ------------- |:-------------:| -----:|
-| Design      | Creation of assets, including sprites, background, logo. Estimated hours: 6.5  | $200 |
-| Frontend      | Integrate design into markup, css, javascript. Estimated hours: 8  | $250 |
-| Development      | Integration to Bitcoin Cash Blockchain and Bitcoin Core blockchain. Monitor transactions, apply conditional sprites and audio files based on transaction size. Animate sprites on canvas. Map X-Y on lanes. Estimated hours: 20     |   $600 |
-| Project Management  | Manage git, milestones, debugging, cross browser testing. Estimated Hours: 7.5     |    $150 |
+| Design      | Creation of assets, including sprites, background, logo. Estimated hours: 13  | $400 |
+| Frontend      | Integrate design into markup, css, javascript. Estimated hours: 16  | $250 |
+| Development      | Integration to Bitcoin Cash Blockchain and Bitcoin Core blockchain. Monitor transactions, apply conditional sprites and audio files based on transaction size. Animate sprites on canvas. Map X-Y on lanes. Estimated hours: 40     |   $600 |
+| Project Management  | Manage git, milestones, debugging, cross browser testing. Estimated Hours: 15     |    $150 |
 | Marketing campaign | 1 month marketing campaign on reddit, targetting: /r/bitcoin /r/bitcoinmarkets /r/btc /r/bitcoinbeginners /r/cryptocurrency | $350|
 |Domain Purchase | Purchase domain | $20 |
 | | **Total** | **$1,570.00**|
+
+Donated Hours
+===
+
+Please note that 50% of all design, development, and project management hours have been donated by our team, and pricing above reflects the discounted price. 
 
 Timeline
 ===
