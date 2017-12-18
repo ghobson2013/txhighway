@@ -19,7 +19,13 @@ Budget
 Donated Hours
 ===
 
-Please note that 50% of all design, development, and project management hours have been donated by our team, and pricing above reflects the discounted price. 
+Please note that 50% of all design, frontend, development, and project management hours have been donated by our team, and pricing above reflects the discounted price. 
+
+Payout Address: 
+===
+Please make payment to our teams multisig address: 
+
+```3MtCFL4aWWGS5cDFPbmiNKaPZwuD28oFvF```
 
 Timeline
 ===
