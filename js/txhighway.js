@@ -99,8 +99,8 @@ let requestID = null;
 // booleans
 let isVisible = true,
 	konamiActive = false,
-	isCashMuted = true,
-	isCoreMuted = true;
+	isCashMuted = false,
+	isCoreMuted = false;
 
 // arrays for vehicles
 let txCash = [],
@@ -805,15 +805,15 @@ $('#tx-list-button').click(function(){
 $("input.cash-mute").change(function() {
 	if(this.checked) {
       if (isCashMuted) {
-				isCashMuted = true;
-			 } else {
 				isCashMuted = false;
+			 } else {
+				isCashMuted = true;
 			 }
     } else {
       if (isCashMuted) {
-				isCashMuted = true;
-			 } else {
 				isCashMuted = false;
+			 } else {
+				isCashMuted = true;
 			 }
     }
 });
