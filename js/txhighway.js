@@ -81,7 +81,7 @@ let HEIGHT = canvas.height;
 let SINGLE_LANE = HEIGHT/14;
 let SPEED = 8;
 let SPEED_MODIFIER = 0;
-let VOLUME = 1;
+let VOLUME = 0.5;
 let PRICE_BCH = 0;
 let PRICE_BTC = 0;
 
@@ -289,7 +289,7 @@ function blockNotify(data, isCash){
 		getPoolData(urlBlockchairCore, xhrCore, false);
 		getPriceData(urlPriceCash);
 		getPriceData(urlPriceCore);
-	}, 5000);
+	}, 4000);
 }
 
 // retrieve pool information for signs

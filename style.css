@@ -59,6 +59,10 @@ html, body {
 
 @import url(https://fonts.googleapis.com/css?family=Lato:400,700);body,html{height:100%;width:100%;margin:0;padding:0;left:0;top:0;font-size:100%}.center,.container{margin-left:auto;margin-right:auto}*{font-family:Lato,'Lato', Helvetica, sans-serif;line-height:1.5}h1{font-size:2.5rem}h2{font-size:2rem}h3{font-size:1.375rem}h4{font-size:1.125rem}h5{font-size:1rem}h6{font-size:.575rem}p{font-size:1.125rem;font-weight:200;line-height:1.8}.font-light{font-weight:300}.font-regular{font-weight:400}.font-heavy{font-weight:700}.left{text-align:left}.right{text-align:right}.center{text-align:center}.justify{text-align:justify}.container{width:90%}.row{position:relative;width:100%}.row [class^=col]{float:left;margin:.5rem 2%;min-height:.125rem}.col-1,.col-10,.col-11,.col-12,.col-2,.col-3,.col-4,.col-5,.col-6,.col-7,.col-8,.col-9{width:96%}.col-1-sm{width:4.33%}.col-2-sm{width:12.66%}.col-3-sm{width:21%}.col-4-sm{width:29.33%}.col-5-sm{width:37.66%}.col-6-sm{width:46%}.col-7-sm{width:54.33%}.col-8-sm{width:62.66%}.col-9-sm{width:71%}.col-10-sm{width:79.33%}.col-11-sm{width:87.66%}.col-12-sm{width:96%}.row::after{content:"";display:table;clear:both}.hidden-sm{display:none}@media only screen and (min-width:33.75em){.container{width:80%}}@media only screen and (min-width:45em){.col-1{width:4.33%}.col-2{width:12.66%}.col-3{width:21%}.col-4{width:29.33%}.col-5{width:37.66%}.col-6{width:46%}.col-7{width:54.33%}.col-8{width:62.66%}.col-9{width:71%}.col-10{width:79.33%}.col-11{width:87.66%}.col-12{width:96%}.hidden-sm{display:block}}@media only screen and (min-width:60em){.container{width:75%;max-width:60rem}}
 
+.row [class^=col] img {
+  max-width:100%;
+  height:auto;
+}
 
 body {
   background: #9A857A;
@@ -327,7 +331,11 @@ table tr td h6 span {
   margin: 0 0 3rem;
 }
 
-#modal-donate .qr, #modal-info .qr {
+.qr {
+  padding-top:1rem;
+}
+
+#modal-info .qr {
   float:left;
   width:120px;
   padding:1rem 2rem 1rem 0;
@@ -525,23 +533,11 @@ table tr td h6 span {
   max-width:90%;
 }
 
-.two-col {
-    width:46%;
-    float:left;
-    padding:5px 10px;
-    text-align:center;
-}
-.two-col img, img.logo-label {
+img.logo-label {
   width:60px;
 }
 
-.two-col h3 {font-size:1rem;}
 
-.full-col {
-  width:auto;
-  clear:both;
-  padding:5px 10px 10px;
-}
 
 
 /*
@@ -583,6 +579,8 @@ span.divider {
 }
 .bs {
   background: #9EA0A3 url(assets/bg/bs.png) no-repeat center 0;
+    /*background: #9EA0A3 url(assets/bg/core.png) no-repeat 50% -15px;*/
+
   background-size: 18.5%;
   height: 14.4%;
   width: 100%;
@@ -784,6 +782,64 @@ span.divider {
   display:block;
 }
 
+.adspot {
+  background:#fff;
+  border-bottom:1px solid #999;
+  position:absolute;
+  z-index:8;
+  bottom:37.8%;
+  left:40%;
+  border-radius:3px;
+}
+
+.adspot:before {
+  position:absolute;
+  top:100%;
+  content:"";
+  background:#333;
+  height:12px;
+  width:2px;
+  border-right:2px solid #000;
+  left:50%;
+  margin-left:-1px;
+  z-index:3;
+
+}
+.adspot a {
+  display:block;
+  border-bottom:1px solid #111;
+  color:#111;
+  font-weight:700;
+  text-decoration:none;
+}
+
+.adspot a h6 {
+  padding:6px;
+  border-bottom:1px solid #222;
+  text-transform:uppercase;
+  letter-spacing:1px;
+}
+
+.adspot.ad-one {
+  left:32%;
+
+}
+
+.adspot.ad-two {
+  left:48%;
+  /*display:none;*/
+}
+
+.adspot.ad-three {
+  left:66%;
+}
+
+.ad-logo img {
+  width:49px;
+  margin:0;
+  padding:3px 3px 0 3px;
+}
+
 .btn {
   background-color: #F0952D;
   padding: 10px 3em;
@@ -872,7 +928,7 @@ span.divider {
 
 #confirmed-notify {
   position: absolute;
-  top: 45%;
+  top: 31%;
   left: 50%;
   z-index: 100;
   display: none;
@@ -880,12 +936,25 @@ span.divider {
   font-family:'Lato', sans-serif;
 }
 
+#confirmed-notify img {
+  width:250px;
+}
+
 .confirmed-text{
   position:relative;
   top: -50%;
   left:-50%;
   text-align: center;
-  background: rgba(255,255,255,0.7);
+  
+  background: rgba(226,226,226,1);
+  background: -moz-linear-gradient(45deg, rgba(226,226,226,1) 0%, rgba(254,254,254,1) 100%);
+  background: -webkit-gradient(left bottom, right top, color-stop(0%, rgba(226,226,226,1)), color-stop(100%, rgba(254,254,254,1)));
+  background: -webkit-linear-gradient(45deg, rgba(226,226,226,1) 0%, rgba(254,254,254,1) 100%);
+  background: -o-linear-gradient(45deg, rgba(226,226,226,1) 0%, rgba(254,254,254,1) 100%);
+  background: -ms-linear-gradient(45deg, rgba(226,226,226,1) 0%, rgba(254,254,254,1) 100%);
+  background: linear-gradient(45deg, rgba(226,226,226,1) 0%, rgba(254,254,254,1) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e2e2e2', endColorstr='#fefefe', GradientType=1 );
+
   border-radius:3px;
   padding:1rem;
   color:#222;
@@ -1278,9 +1347,7 @@ input[type=range]:focus::-ms-fill-upper {
 
 @media only screen and (max-width:850px) {
 
-  .mob-two-col {
-    width:44%;
-  }
+  
 
 }
 
@@ -1295,13 +1362,6 @@ input[type=range]:focus::-ms-fill-upper {
   .nav a i {
     line-height:1;
   }
-
-  .two-col {
-    width:auto;
-    float:none;
-  }
-
-  
 
   .switch-wrap {
     padding-left:0;
@@ -1330,12 +1390,6 @@ input[type=range]:focus::-ms-fill-upper {
   .bitcoin-cash {
     background-position:50% 60%;
   }
-
-  
-
-  
-
-  
 
 
 
@@ -1368,7 +1422,7 @@ input[type=range]:focus::-ms-fill-upper {
   .modal-header h2 {
     font-size:1.2rem;
   }
-  #modal-donate .qr, #modal-info .qr {
+  #modal-info .qr {
     width:90px;
     padding:1rem 1rem 1rem 0;
   }
@@ -1402,6 +1456,15 @@ input[type=range]:focus::-ms-fill-upper {
     bottom: auto;
   }
 
+  .adspot.ad-one {
+    left:10%;
+  }
+
+  .adspot.ad-three {
+    right:10%;
+    left:auto;
+  }
+
   #modal-search fieldset {
     display:block;
     width:auto;
@@ -1427,8 +1490,7 @@ input[type=range]:focus::-ms-fill-upper {
   table tr td img {
     max-height:25px;
   }
-  
-  
+
   .ln {
     background-size: cover;
     background-position: 45% 0;

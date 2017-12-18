@@ -58,7 +58,7 @@
     <div class="bs"></div>
 
     <div class="title">
-      <img alt="Tx Highway Logo" id="logo" src="assets/tx-highway-logo.png">
+      <img alt="Tx Highway Logo BCH BTC Visualizer" id="logo" src="assets/tx-highway-logo.png">
       <h2>Bitcoin Cash vs Bitcoin Core Transaction Visualizer.</h2>
     </div>
 
@@ -97,14 +97,14 @@
             <!-- Rectangular switch -->
         <div class="switch-wrap">
           <label class="switch">
-            <input type="checkbox" class="cash-mute" checked>
+            <input type="checkbox" class="cash-mute">
             <span class="switcher"></span>
           </label>
           <h5>Mute BCH</h5>
         </div>
         <div class="switch-wrap">
           <label class="switch">
-            <input type="checkbox" class="core-mute" checked>
+            <input type="checkbox" class="core-mute">
             <span class="switcher"></span>
           </label>
           <h5>Mute BTC</h5>
@@ -125,7 +125,7 @@
           <label>Vehicle Speed</label>
           <input type="range" min="1" max="100" value="50" class="slider" id="speedSlider">
           <label>Volume</label>
-          <input type="range" min="1" max="100" value="100" class="slider" id="volumeSlider">
+          <input type="range" min="1" max="100" value="50" class="slider" id="volumeSlider">
         </div>
 
       </div>
@@ -143,9 +143,9 @@
         </div>
         <div class="col-6">
           <fieldset>
-              <img src="assets/btc.png" class="logo-label" alt="Bitcoin Core">
+              <img src="assets/btc_core.png" class="logo-label" alt="Bitcoin Core">
 
-            <label><i class="fa fa-search" aria-hidden="true"></i> Bitcoin Segwit Address</label>
+            <label><i class="fa fa-search" aria-hidden="true"></i> Bitcoin Core Address</label>
             <input id="core-address-input" placeholder="Input BTC Wallet Adddress" size="34" type="text" />
           </fieldset>
         </div>
@@ -202,13 +202,13 @@
       </div>
       <div class="col-3 col-6-sm legend-item">
         <h6>Extra Large TX 
-          <span>($500,000 - $100,000,000 USD)</span>
+          <span>($500,000 - $1,000,000 USD)</span>
         </h6>
         <img src="assets/sprites/bch-xlarge.png" alt="Extra large" />
       </div>
       <div class="col-3 col-12-sm legend-item whale-col">
         <h6>Whale TX 
-          <span>($100,000,000 + USD)</span>
+          <span>($1,000,000 + USD)</span>
         </h6>
         <img src="assets/sprites/bch-whale.png" alt="Whale" />
       </div>
@@ -293,11 +293,20 @@
           <p>Support Bitcoin Cash by donating to the marketing fund to help grow merchant and consumer adoption.</p>
         </div>
         <div class="modal-body">
-          <img alt="The Bitcoin Cash Fund" src="assets/qr_code.png" class="qr">
+          <div class="row">
+          <div class="col-2 col-3-sm">
+            <img alt="The Bitcoin Cash Fund" src="assets/qr_code.png" class="qr">
+          </div>
+          <div class="col-7 col-9-sm">
           <p>Support #BitcoinCash growth and make a donation to the
             <a href="https://thebitcoincash.fund/" target="_blank">The Bitcoin Cash Fund</a>. Stick around after your donation goes through for a bit of fun.
           </p>
           <p class="label">3ECKq7onkjnRQR2nNe5uUJp2yMsXRmZavC</p>
+          </div>
+          <div class="col-3">
+              <img alt="The Bitcoin Cash Fund" src="assets/bcf_large.png" class="bcf">
+          </div>
+        </div>
         </div>
         <div class="modal-footer">
           <h3>Visit
@@ -347,11 +356,28 @@
         </a>
       </div>
     
+      <div class="adspot ad-one">
+        <a href="#" title="Your Ad Here">
+          <h6>Your Ad Here</h6>
+        </a>
+      </div>
+
+      <div class="adspot ad-two ad-logo">
+        <a href="https://thebitcoincash.fund/" title="Your Ad Here">
+          <img src="assets/bcf.png" alt="BCF">
+        </a>
+      </div>
+
+      <div class="adspot ad-three">
+        <a href="" title="Your Ad Here">
+          <h6>Your Ad Here</h6>
+        </a>
+      </div>
       
     
       <div id="confirmed-notify">
-        <div class="confirmed-text">
-          <h4><i class="fa fa-flag-checkered" aria-hidden="true"></i></h4>
+        <div class="confirmed-text text-center">
+            <img src="assets/confirmed.png" alt="Confirmed">
           <span id="confirmed-amount">100 BTC</span> Transactions Confirmed
         </div>
       </div>
