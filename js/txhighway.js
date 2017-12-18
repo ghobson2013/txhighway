@@ -4,11 +4,9 @@
 const urlCash = "wss://ws.blockchain.info/bch/inv",
 	urlCore = "wss://ws.blockchain.info/inv",
 	urlCors = "https://cors-anywhere.herokuapp.com/",
-	urlBlockchairCash = urlCors + "https://api.blockchair.com/bitcoin-cash/mempool/",
-	urlBlockchairCore = urlCors + "https://api.blockchair.com/bitcoin/mempool/",
-	urlBlockchainCore = "https://api.blockchain.info/charts/avg-confirmation-time?format=json&cors=true",
-	urlPriceCash = "https://api.coinmarketcap.com/v1/ticker/bitcoin-cash/",
-	urlPriceCore = "https://api.coinmarketcap.com/v1/ticker/bitcoin/";
+	urlBlockchair = urlCors + "https://api.blockchair.com/",
+	urlBlockchainInfo = "https://api.blockchain.info/",
+	urlCoinMarketCap = "https://api.coinmarketcap.com/v1/ticker/";
 
 // sockets
 const socketCash = new WebSocket(urlCash), // io(urlCash),
@@ -29,7 +27,8 @@ const canvas = document.getElementById("renderCanvas"),
 	volumeSlider = document.getElementById("volumeSlider"),
 	page = document.getElementById("page"),
 	transactionWrap = document.getElementById("tx-wrap"),
-	transactionList = document.getElementById("transactions");
+	transactionList = document.getElementById("transactions"),
+	donationGoal = document.getElementById("donationGoal");
 
 // for ajax requests
 const xhrCash = new XMLHttpRequest(),
@@ -76,14 +75,15 @@ let audioMotorcycle = null,
 	audioAllSpam = null;
 
 // constants
-let WIDTH = canvas.width;
-let HEIGHT = canvas.height;
-let SINGLE_LANE = HEIGHT/14;
-let SPEED = 8;
-let SPEED_MODIFIER = 0;
-let VOLUME = 0.5;
-let PRICE_BCH = 0;
-let PRICE_BTC = 0;
+let WIDTH = null,
+	HEIGHT = null,
+	SINGLE_LANE = HEIGHT/14,
+	SPEED = 8,
+	SPEED_MODIFIER = 0,
+	VOLUME = 0.5,
+	PRICE_BCH = 0,
+	PRICE_BTC = 0,
+	DONATION_GOAL = 5000;
 
 // max value for vehicle types
 let TX_MICRO = 10,
@@ -202,11 +202,15 @@ function init(){
 	loadSound("assets/audio/allspam.mp3", "allspam");
 
 	// acquire data for signs
-	getPoolData(urlBlockchairCash, xhrCash, true);
-	getPoolData(urlBlockchairCore, xhrCore, false);
-	getCoreConfTime(urlBlockchainCore, xhrBlockchain);
-	getPriceData(urlPriceCash);
-	getPriceData(urlPriceCore);
+	getPoolData(urlBlockchair + "bitcoin-cash/mempool/", xhrCash, true);
+	getPoolData(urlBlockchair + "bitcoin/mempool/", xhrCore, false);
+	getCoreConfTime(urlBlockchainInfo + "charts/avg-confirmation-time?format=json&cors=true", xhrBlockchain);
+	getPriceData(urlCoinMarketCap + "bitcoin-cash/");
+	getPriceData(urlCoinMarketCap + "bitcoin/");
+
+	// set donation goal information
+	donationGoal.setAttribute("max", DONATION_GOAL);
+	getDevDonations();
 
 	// remove loading screen
 	onReady(function () {
@@ -214,8 +218,10 @@ function init(){
 		show('loading', false);
 	});
 
+	// set initial volume
 	gainNode.gain.setTargetAtTime(VOLUME, audioContext.currentTime, 0.015);
 
+	// start animation
 	requestID = requestAnimationFrame(animate);
 }
 
@@ -228,6 +234,25 @@ function mobileCheck(){
 	return check;
 }
 
+// get current balance of dev donation address
+function getDevDonations(){
+	let xhr = new XMLHttpRequest();
+	xhr.onload = function(){
+		if (this.readyState == 4 && this.status == 200) {
+			let res = JSON.parse(this.responseText);
+			let sumVal = res.data[0].sum_value;
+			sumVal /= 100000000;
+			sumVal *= PRICE_BCH;
+
+			donationGoal.setAttribute("value", sumVal);
+		}
+	}
+
+	xhr.open('GET', urlBlockchair + "bitcoin-cash/dashboards/address/3MtCFL4aWWGS5cDFPbmiNKaPZwuD28oFvF", true);
+	xhr.send(null);
+}
+
+// get price in usd for bch & btc
 function getPriceData(url){
 	let xhr = new XMLHttpRequest();
 
@@ -287,10 +312,10 @@ function blockNotify(data, isCash){
 	confirmedNotify.style.display = "block"; //no pun intended
 	setTimeout(() => {
 		confirmedNotify.style.display = "none";
-		getPoolData(urlBlockchairCash, xhrCash, true);
-		getPoolData(urlBlockchairCore, xhrCore, false);
-		getPriceData(urlPriceCash);
-		getPriceData(urlPriceCore);
+		getPoolData(urlBlockchair + "bitcoin-cash/mempool/", xhrCash, true);
+		getPoolData(urlBlockchair + "bitcoin/mempool/", xhrCore, false);
+		getPriceData(urlCoinMarketCap + "bitcoin-cash/");
+		getPriceData(urlCoinMarketCap + "bitcoin/");
 	}, 4000);
 }
 
