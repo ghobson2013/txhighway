@@ -805,15 +805,15 @@ $('#tx-list-button').click(function(){
 $("input.cash-mute").change(function() {
 	if(this.checked) {
       if (isCashMuted) {
-				isCashMuted = false;
-			 } else {
 				isCashMuted = true;
+			 } else {
+				isCashMuted = false;
 			 }
     } else {
       if (isCashMuted) {
-				isCashMuted = false;
-			 } else {
 				isCashMuted = true;
+			 } else {
+				isCashMuted = false;
 			 }
     }
 });
