@@ -214,6 +214,8 @@ function init(){
 		show('loading', false);
 	});
 
+	gainNode.gain.setTargetAtTime(VOLUME, audioContext.currentTime, 0.015);
+
 	requestID = requestAnimationFrame(animate);
 }
 
@@ -788,7 +790,9 @@ speedSlider.oninput = function(){
 volumeSlider.oninput = function(){
 	let newVol = this.value/100;
 	VOLUME = newVol;
-	gainNode.gain.value = VOLUME;
+	gainNode.gain.setTargetAtTime(VOLUME, audioContext.currentTime, 0.015);
+
+	//gainNode.gain.value = VOLUME;
 }
 
 $('#tx-list-button').click(function(){

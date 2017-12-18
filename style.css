@@ -205,7 +205,7 @@ color:#444;
     bottom: 0;
     width: 100%; /* Full width */
     height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
+    overflow: hidden; /* Enable scroll if needed */
 
     z-index:9999;
     /*background-color: rgb(0,0,0); 
