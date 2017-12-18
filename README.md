@@ -8,7 +8,7 @@ Budget
 
 | Title         | Description           | Price  |
 | ------------- |:-------------:| -----:|
-| Design      | Creation of assets, including sprites, background, logo. Estimated hours: 13  | $400 |
+| Design      | Creation of assets, including sprites, background, logo. Estimated hours: 13 | $400 |
 | Frontend      | Integrate design into markup, css, javascript. Estimated hours: 16  | $250 |
 | Development      | Integration to Bitcoin Cash Blockchain and Bitcoin Core blockchain. Monitor transactions, apply conditional sprites and audio files based on transaction size. Animate sprites on canvas. Map X-Y on lanes. Estimated hours: 40     |   $600 |
 | Project Management  | Manage git, milestones, debugging, cross browser testing. Estimated Hours: 15     |    $150 |
@@ -23,7 +23,7 @@ Please note that 50% of all design, frontend, development, and project managemen
 
 Payout Address: 
 ===
-Please make payment to our teams multisig address: 
+Please make payment to our team's multi-sig address: 
 
 ```3MtCFL4aWWGS5cDFPbmiNKaPZwuD28oFvF```
 
