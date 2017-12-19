@@ -219,7 +219,7 @@ color:#444;
     margin: auto;
     padding: 0;
     border: 1px solid #888;
-    width: 80%;
+    width: 85%;
     box-shadow: 0 15px 27px 0 rgba(0,0,0,0.3), 0 4px 38px 0 rgba(0,0,0,0.39);
     -webkit-animation-name: animatetop;
     -webkit-animation-duration: 0.4s;
@@ -334,6 +334,23 @@ table tr td h6 span {
 .qr {
   padding-top:1rem;
 }
+
+
+
+#modal-info input {
+margin:15px 0;display:block;
+}
+
+#modal-info span {
+  display:inline-block;
+  color:#149347;
+  font-weight:700;
+}
+
+#modal-info ul li {
+  font-size:12px;
+}
+
 
 #modal-info .qr {
   float:left;

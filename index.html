@@ -8,6 +8,7 @@
   <title>TX Highway - Bitcoin Cash vs Bitcoin Core Transaction Visualiser</title>
   <meta content="Analyze BCH and BTC transactions in our transaction highway." name="description">
   <link href="style.css?v=1.2" rel="stylesheet" type="text/css">
+  <link rel="author" href="humans.txt">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.slim.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -268,14 +269,28 @@
               <li>The tabs on the BTC road sign is the Blockstream CEO's suggestion to unreliable Bitcoin Legacy use. <a href="https://www.youtube.com/watch?v=DHc81OL_hk4&feature=youtu.be&t=21136" target="_blank">[Video Source]</a></li>
             </ul>
           </p>
-          <h4>Technology &amp; Credit</h4>
-          <p>Thanks to cors-anywhere.herokuapp.com, api.blockchair.com, api.blockchain.info, Snap Tortoise's Konami.js, github pages, Eli Afram for the superb metaphor, and the growing Bitcoin Cash community of makers, developers, and supporters. Audio provided by freesounds.org Creative Commons. Audio samples are covered under Fair Use for educational purposes.</p>
-         
+          
+         <div class="row">
+         <div class="col-7">
           <h4>Donate to the developers</h4>
           <img alt="Donate to the development team" src="assets/dev_qr_code.png" class="qr">
           <p>Love our idea? Please donate to help support ongoing projects and development! We have several other ideas for projects to support Bitcoin Cash and appreciate any help you can provide.</p>
           <p class="label">3MtCFL4aWWGS5cDFPbmiNKaPZwuD28oFvF</p>
-          <input type="range" min="0" max="1000" value="0.22" disabled id="donationGoal">
+          </div>
+          <div class="col-5">
+            <h4>Donate To Ongoing Development</h4>
+            <input type="range" min="0" max="1000" value="0.22" disabled id="donationGoal">
+            <h6><span class="donationamt">0.22 BCH</span> donated of 2 BCH Goal</h6>
+              <p>Our small team has some big ideas for this visualizer. Donations to ongoing development will go to:
+                  <ul>
+                    <li>Designing the visualizer to use isometric vehicles, in an isometric grid.</li>
+                    <li>Add in Segwit toll roads</li>
+                    <li>Build complimentary education materials</li>
+                    <li>and much more</li>
+                  </ul>
+              </p>
+          </div>
+          </div>
 
         </div>
         <div class="modal-footer">
@@ -358,19 +373,19 @@
       </div>
     
       <div class="adspot ad-one">
-        <a href="mailto:team@txhighway.com?subject=Purchase Ad Spot" title="Your Ad Here">
+        <a href="mailto:team@txhighway.com?subject=Purchase Ad Spot" title="Your Ad Here" target="_blank">
           <h6>Your Ad Here</h6>
         </a>
       </div>
 
       <div class="adspot ad-two ad-logo">
-        <a href="https://thebitcoincash.fund/" title="Your Ad Here">
+        <a href="https://thebitcoincash.fund/" title="Your Ad Here" target="_blank">
           <img src="assets/bcf.png" alt="BCF">
         </a>
       </div>
 
       <div class="adspot ad-three">
-        <a href="mailto:team@txhighway.com?subject=Purchase Ad Spot" title="Your Ad Here">
+        <a href="mailto:team@txhighway.com?subject=Purchase Ad Spot" title="Your Ad Here" target="_blank">
           <h6>Your Ad Here</h6>
         </a>
       </div>
