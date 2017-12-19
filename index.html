@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta content="IE=11" http-equiv="X-UA-Compatible">
+  <meta content="width=device-width, initial-scale=1" name="viewport">
+  <title>TX Highway - Bitcoin Cash vs Bitcoin Core Transaction Visualiser</title>
+  <meta content="Analyze BCH and BTC transactions in our transaction highway." name="description">
+  <link href="style.min.css?v=1.2" rel="stylesheet" type="text/css">
+  <link rel="author" href="humans.txt">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.slim.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="icon" type="image/png" href="assets/favicon.png" />
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-110960886-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-110960886-1');
+  </script>
+
+
+</head>
+
+<body>
+  <div id="loading"></div>
+
+  <div id="page">
+
+    <canvas id="renderCanvas"></canvas>
+    <span class="divider"></span>
+    <span class="lane-size one">1mb</span>
+    <span class="lane-size two">2mb</span>
+    <span class="lane-size three">3mb</span>
+    <span class="lane-size four">4mb</span>
+    <span class="lane-size five">5mb</span>
+    <span class="lane-size six">6mb</span>
+    <span class="lane-size seven">7mb</span>
+    <span class="lane-size eight">8mb</span>
+    <span class="lane-size one-core">1mb</span>
+    <span class="lane-size two-core">2mb</span>
+    <span class="block one"></span>
+    <span class="block two"></span>
+    <span class="caution one"></span>
+    <span class="caution two"></span>
+    <span class="no2x one"></span>
+    <span class="no2x two"></span>
+
+    <div class="ln"></div>
+
+    <div class="bitcoin-cash"></div>
+
+   
+
+    <div class="bs"></div>
+
+    <div class="title">
+      <img alt="Tx Highway Logo BCH BTC Visualizer" id="logo" src="assets/tx-highway-logo.png">
+      <h2>Bitcoin Cash vs Bitcoin Core Transaction Visualizer.</h2>
+    </div>
+
+    <div class="nav">
+      <a href="#" class="settings" data-modal='modal-settings'>
+        <i class="fa fa-cog" aria-hidden="true"></i>
+      </a>
+      
+
+      <a href="#" class="legend" data-modal='modal-legend'>
+        <i class="fa fa-car" aria-hidden="true"></i>
+      </a>
+
+      <a href="#" class="info" data-modal='modal-info'>
+        <i class="fa fa-question-circle" aria-hidden="true"></i>
+      </a>
+      
+      <a href="#" class="donate" data-modal='modal-donate'>
+        <i class="fa fa-heart" aria-hidden="true"></i>
+      </a>
+      
+    </div>
+
+
+    <div id="modal-settings" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <span class="close">×</span>
+          <h2>Settings</h2>
+          <p>Modify audio, speed, and monitor a receiving address.</p>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+
+    <div class="col-6">
+            <!-- Rectangular switch -->
+        <div class="switch-wrap">
+          <label class="switch">
+            <input type="checkbox" class="cash-mute">
+            <span class="switcher"></span>
+          </label>
+          <h5>Mute BCH</h5>
+        </div>
+        <div class="switch-wrap">
+          <label class="switch">
+            <input type="checkbox" class="core-mute">
+            <span class="switcher"></span>
+          </label>
+          <h5>Mute BTC</h5>
+        </div>
+        <div class="switch-wrap">
+          <label class="switch">
+            <input type="checkbox" checked class="overlay-switch">
+            <span class="switcher"></span>
+          </label>
+            <h5>Hide Overlays</h5>
+        </div>
+
+      </div>
+
+      <div class="col-6">
+
+        <div id="slidecontainer">
+          <label>Vehicle Speed</label>
+          <input type="range" min="1" max="100" value="50" class="slider" id="speedSlider">
+          <label>Volume</label>
+          <input type="range" min="1" max="100" value="50" class="slider" id="volumeSlider">
+        </div>
+
+      </div>
+
+      <div class="col-12 text-center">
+        <hr>
+        <h4>Address Monitoring</h4>  
+      </div>
+        <div class="col-6">
+          <fieldset>
+            <img src="assets/bch.png" class="logo-label" alt="Bitcoin Cash">
+            <label><i class="fa fa-search" aria-hidden="true"></i> Bitcoin Cash Address</label>
+            <input id="cash-address-input" placeholder="Input BCH Wallet Adddress" size="34" type="text" />
+          </fieldset>
+        </div>
+        <div class="col-6">
+          <fieldset>
+              <img src="assets/btc_core.png" class="logo-label" alt="Bitcoin Core">
+
+            <label><i class="fa fa-search" aria-hidden="true"></i> Bitcoin Core Address</label>
+            <input id="core-address-input" placeholder="Input BTC Wallet Adddress" size="34" type="text" />
+          </fieldset>
+        </div>
+    </div>
+    <div class="col-12 text-center">
+      <p>Input your public wallet address to monitor for incoming transactions.</p>
+    </div>
+
+</div>
+      </div>
+    </div>
+
+
+    <div id="modal-legend" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <span class="close">×</span>
+          <h2>Legend</h2>
+          <p>Spot the differences in the value of each transaction.</p>
+        </div>
+        <div class="modal-body">
+
+                <div class="row">
+      
+      <div class="col-3 col-6-sm legend-item">
+        <h6>Micro TX 
+          <span>($0 - $10.00 USD)</span>
+        </h6>
+        <img src="assets/sprites/bch-micro.png" alt="Micro" />
+      </div>
+      <div class="col-3 col-6-sm legend-item">
+        <h6>Tiny TX 
+          <span>($10 - $1,000 USD)</span>
+        </h6>
+        <img src="assets/sprites/bch-small.png" alt="Tiny" />
+      </div>
+      <div class="col-3 col-6-sm legend-item">
+        <h6>Small TX 
+          <span>($1,000 - $10,000 USD)</span>
+        </h6>
+        <img src="assets/sprites/bch-small-med.png" alt="Small" />
+      </div>
+      <div class="col-3 col-6-sm legend-item">
+        <h6>Medium TX 
+          <span>($10,000 - $100,000 USD)</span>
+        </h6>
+        <img src="assets/sprites/bch-medium.png" alt="Medium" />
+      </div>
+      <div class="col-3 col-6-sm legend-item">
+        <h6>Large TX 
+          <span>($100,000 - $500,000 USD)</span>
+        </h6>
+        <img src="assets/sprites/bch-large.png" alt="Large" />
+      </div>
+      <div class="col-3 col-6-sm legend-item">
+        <h6>Extra Large TX 
+          <span>($500,000 - $1,000,000 USD)</span>
+        </h6>
+        <img src="assets/sprites/bch-xlarge.png" alt="Extra large" />
+      </div>
+      <div class="col-3 col-12-sm legend-item whale-col">
+        <h6>Whale TX 
+          <span>($1,000,000 + USD)</span>
+        </h6>
+        <img src="assets/sprites/bch-whale.png" alt="Whale" />
+      </div>
+      <div class="col-3 col-6-sm legend-item">
+          <h6>Satoshi Dice TX
+            <span>(Various Amounts)</span>
+          </h6>
+        <img src="assets/sprites/dice.png" alt="Satoshi Dice"/>
+      </div>
+      <div class="col-3 col-6-sm legend-item">
+        <h6>Monitored Address</h6>
+        <img src="assets/sprites/tx-taxi.png" alt="Monitored Address" />
+      </div>
+      <div class="col-3 col-12-sm legend-item">
+          <h6>Segwit TX</h6>
+        <img src="assets/sprites/segwit.png" alt="Segwit" />
+      </div>
+      <div class="col-3 col-6-sm legend-item">
+          <h6>BCF Fund Donation</h6>
+            <span class="qmark">?</span>
+      </div>
+      <div class="col-3 col-6-sm legend-item">
+          <h6>Developer Donation</h6>
+            <span class="qmark">?</span>
+      </div>
+
+
+      </div>
+
+        </div>
+        <div class="modal-footer">
+          <h3>Donate to
+            <a href="http://thebitcoincash.fund" target="_blank">The Bitcoin Cash Fund</a> &amp; support Bitcoin Cash.</h3>
+        </div>
+      </div>
+    </div>
+
+
+   <div id="modal-info" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <span class="close">×</span>
+          <h2>What is TX Highway?</h2>
+          <p>Bitcoin Cash vs Bitcoin Core Transaction Visualiser</p>
+        </div>
+        <div class="modal-body">
+          <p>TX Highway is a blockchain visualizer created by two Bitcoin Cash fans. We wanted to find a simple way for ordinary users to visualize transactions on both chains, and provide a comparison of the two competing chains of Bitcoin. We strongly feel Bitcoin Cash's big blocks, on chain scalability, fast confirmations and extremely low fees allow for Bitcoin to become the peer to peer electronic cash that it was always meant to be. It's wide open highways with Bitcoin Cash, and complete gridlock on Bitcoin Legacy.
+          </p>
+          <h4>What does all this represent?</h4>
+          <p>
+            <ul>
+              <li>The highway comparison was originally shared by Eli Afram (<a href="https://twitter.com/justicemate" target="_blank">@justicemate</a>), a contributor for CoinGeek. This highway metaphor is what spawned this whole project. <a href="https://twitter.com/justicemate/status/923682942248927233" target="_blank">[Source]</a></li>
+              <li>Eight lanes of Bitcoin Cash is 8MB block sizes while the single lane of Bitcoin Legacy is the limited 1MB block size. <a href="https://news.bitcoin.com/bitcoin-cash-8mb-block-479469-clears-over-37000-transactions/" target="_blank">[Source]</a> <a href="https://www.youtube.com/watch?v=l6Obc_cJba4&t=1s" target="_blank">[Video Source]</a> <a href="https://youtu.be/By0w43NQdiY?t=25m36s" target="_blank">[Video Source]</a></li>
+              <li>NO2X Signs blocking a second lane is the failed NYA Segwith2x. <a href="https://www.reddit.com/r/btc/comments/7bmp4u/segwit2x_canceled/" target="_blank">[Source]</a></li>
+              <li>Unfinished tracks/future home of lightning under construction is the promised lightning network vaporware. <a href="https://www.youtube.com/watch?v=eCE2OzKIab8&feature=youtu.be&t=5h42m40s" target="_blank">[Source]</a></li>
+              <li>Commerce City censored on the BTC road sign is the censorship of public forums and the lack of utility of BTC. <a href="https://medium.com/@johnblocke/a-brief-and-incomplete-history-of-censorship-in-r-bitcoin-c85a290fe43" target="_blank">[Source]</a> <a href="https://medium.com/@johnblocke/r-bitcoin-censorship-revisited-58d5b1bdcd64" target="_blank">[Source]</a> <a href="https://www.youtube.com/watch?v=uL9VoxCFqT0" target="_blank">[Video Source]</a> <a href="https://www.youtube.com/watch?v=u3Tx9Pw1P0s" target="_blank">[Video Source]</a></li>
+              <li>The tabs on the BTC road sign is the Blockstream CEO's suggestion to unreliable Bitcoin Legacy use. <a href="https://www.youtube.com/watch?v=DHc81OL_hk4&feature=youtu.be&t=21136" target="_blank">[Video Source]</a></li>
+            </ul>
+          </p>
+          
+         <div class="row">
+         <div class="col-7">
+          <h4>Donate to the developers</h4>
+          <img alt="Donate to the development team" src="assets/dev_qr_code.png" class="qr">
+          <p>Love our idea? Please donate to help support ongoing projects and development! We have several other ideas for projects to support Bitcoin Cash and appreciate any help you can provide.</p>
+          <p class="label">3MtCFL4aWWGS5cDFPbmiNKaPZwuD28oFvF</p>
+          </div>
+          <div class="col-5">
+            <h4>Donate To Ongoing Development</h4>
+            <input type="range" min="0" max="1000" value="0" disabled id="donationGoal">
+            <h6><span id="donationAmt" class="donationamt">UPDATING</span> donated of <span id="donationTotal">UPDATING</span> Goal</h6>
+              <p>Our small team has some big ideas for this visualizer. Donations to ongoing development will go to:
+                  <ul>
+                    <li>Designing the visualizer to use isometric vehicles, in an isometric grid.</li>
+                    <li>Add in Segwit toll roads</li>
+                    <li>Build complimentary education materials</li>
+                    <li>and much more</li>
+                  </ul>
+              </p>
+          </div>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <h3>Visit
+            <a href="http://bitcoin.com" target="_blank">Bitcoin.com</a> to create a Bitcoin wallet today!</h3>
+        </div>
+      </div>
+    </div>
+
+    <div id="modal-donate" class="modal">
+      <!-- Modal content 2 -->
+      <div class="modal-content">
+        <div class="modal-header">
+          <span class="close">×</span>
+          <h2>Donate to The Bitcoin Cash Fund</h2>
+          <p>Support Bitcoin Cash by donating to the marketing fund to help grow merchant and consumer adoption.</p>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+          <div class="col-2 col-3-sm">
+            <img alt="The Bitcoin Cash Fund" src="assets/qr_code.png" class="qr">
+          </div>
+          <div class="col-7 col-9-sm">
+          <p>Support #BitcoinCash growth and make a donation to the
+            <a href="https://thebitcoincash.fund/" target="_blank">The Bitcoin Cash Fund</a>. Stick around after your donation goes through for a bit of fun.
+          </p>
+          <p class="label">3ECKq7onkjnRQR2nNe5uUJp2yMsXRmZavC</p>
+          </div>
+          <div class="col-3">
+              <img alt="The Bitcoin Cash Fund" src="assets/bcf_large.png" class="bcf">
+          </div>
+        </div>
+        </div>
+        <div class="modal-footer">
+          <h3>Visit
+            <a href="http://thebitcoincash.fund" target="_blank">The Bitcoin Cash Fund</a> for more information.</h3>
+        </div>
+      </div>
+    </div>
+
+    <div class="road-sign sign cash-road-sign">
+        <div class="sign-border">
+          <h4 class="sign-title">commerce city
+            <br />store of value town</h4>
+          <h5 class="highway-num">BCH</h5>
+          <div class="cash-pool">
+            <span id="cash-pool">UPDATING</span>TX in Transit
+            <h6>Arrival Confimation
+              <span id="cash-eta">
+                ~ 10MIN</span>
+            </h6>
+             <span id="price_bch">UPDATING</span>Price Per BCH
+          </div>
+        </div>
+      </div>
+    
+      <div class="road-sign sign core-road-sign">
+        <div class="sign-border">
+          <h4 class="sign-title">
+            <span class="censored"></span>commerce city
+            <br />store of value town</h4>
+          <h5 class="highway-num">BTC</h5>
+          <div class="core-pool">
+            <span id="core-pool">UPDATING</span>TX in Transit
+            <h6>Arrival Confimation
+              <span id="core-eta">24h</span>
+            </h6>
+            <span id="price_btc">UPDATING</span> Price Per BTC
+          </div>
+          <span class="tab tab-top">TAB</span>
+          <span class="tab tab-bottom">IOU</span>
+        </div>
+    
+      </div>
+    
+      <div class="whitepaper">
+        <a href="https://bitcoin.com/bitcoin.pdf" target="_blank" title="Whitepaper">
+          <i class="fa fa-file-text-o" aria-hidden="true"></i>
+        </a>
+      </div>
+    
+      <div class="adspot ad-one">
+        <a href="mailto:team@txhighway.com?subject=Purchase Ad Spot" title="Your Ad Here" target="_blank">
+          <h6>Your Ad Here</h6>
+        </a>
+      </div>
+
+      <div class="adspot ad-two ad-logo">
+        <a href="https://thebitcoincash.fund/" title="Your Ad Here" target="_blank">
+          <img src="assets/bcf.png" alt="BCF">
+        </a>
+      </div>
+
+      <div class="adspot ad-three">
+        <a href="mailto:team@txhighway.com?subject=Purchase Ad Spot" title="Your Ad Here" target="_blank">
+          <h6>Your Ad Here</h6>
+        </a>
+      </div>
+      
+    
+      <div id="confirmed-notify">
+        <div class="confirmed-text text-center">
+            <img src="assets/confirmed.png" alt="Confirmed">
+          <span id="confirmed-amount">100 BTC</span> Transactions Confirmed
+        </div>
+      </div>
+  </div>
+  </div>
+  </div>
+  
+  <div id="tx-wrap" style="right:-151px;">
+    <div id="tx-list-button">
+        <a href="#" class="tx-list-link">
+          <i class="fa fa-list" aria-hidden="true"></i>
+        </a>
+    </div>
+    <ul id="transactions"></ul>
+  </div>
+  <img src="assets/core-mode.png" alt="Core mode" class="core-mode">
+  <script src="js/konami.min.js"></script>
+  <script src="js/txhighway.min.js"></script>
+  
+</body>
+
+</html>
