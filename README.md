@@ -25,7 +25,7 @@ Payout Address:
 ===
 Please make payment to our team's multi-sig address: 
 
-```3MtCFL4aWWGS5cDFPbmiNKaPZwuD28oFvF```
+```3Kbwwa4jevMdjeJvkneStswyMp6tXhHYSv```
 
 Timeline
 ===
