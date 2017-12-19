@@ -83,7 +83,7 @@ let WIDTH = null,
 	VOLUME = 0.5,
 	PRICE_BCH = 0,
 	PRICE_BTC = 0,
-	DONATION_GOAL = 5000;
+	DONATION_GOAL = 2; // goal of donation in bch
 
 // max value for vehicle types
 let TX_MICRO = 10,
@@ -91,7 +91,7 @@ let TX_MICRO = 10,
 	TX_SMALL_MED = 10000,
 	TX_MEDIUM = 100000,
 	TX_LARGE = 500000,
-	TX_WHALE = 1000000; 	//BCH ~0.50 USD Dec 10/17 - BTC ~5.41 USD Dec 10/17
+	TX_WHALE = 1000000;
 
 // animation
 let requestID = null;
@@ -242,8 +242,9 @@ function getDevDonations(){
 			let res = JSON.parse(this.responseText);
 			let sumVal = res.data[0].sum_value;
 			sumVal /= 100000000;
-			sumVal *= PRICE_BCH;
 
+			document.getElementById("donationAmt").textContent = sumVal + " BCH";
+			document.getElementById("donationTotal").textContent = DONATION_GOAL + " BCH";
 			donationGoal.setAttribute("value", sumVal);
 		}
 	}
@@ -662,7 +663,10 @@ let isDonationTx = function(txInfo){
 		let keys = Object.keys(key);
 		keys.forEach((k)=> {
 			if (k == "3ECKq7onkjnRQR2nNe5uUJp2yMsXRmZavC" ||
-				k == "3MtCFL4aWWGS5cDFPbmiNKaPZwuD28oFvF") isDonation = true;
+				k == "3MtCFL4aWWGS5cDFPbmiNKaPZwuD28oFvF") {
+					isDonation = true;
+					setTimeout(getDevDonations(), 3000);
+				}
 		});
 	});
 
