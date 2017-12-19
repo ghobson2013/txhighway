@@ -595,8 +595,8 @@ span.divider {
   z-index: -1;
 }
 .bs {
-  background: #9EA0A3 url(assets/bg/bs.png) no-repeat center 0;
-    /*background: #9EA0A3 url(assets/bg/core.png) no-repeat 50% -15px;*/
+  /*background: #9EA0A3 url(assets/bg/bs.png) no-repeat center 0;*/
+    background: #9EA0A3 url(assets/bg/core.png) no-repeat 50% -15px;
 
   background-size: 18.5%;
   height: 14.4%;
@@ -1359,12 +1359,6 @@ input[type=range]:focus::-ms-fill-upper {
   padding:5px;
 }
 .txinfo-core:before {
-
-}
-
-@media only screen and (max-width:850px) {
-
-  
 
 }
 
