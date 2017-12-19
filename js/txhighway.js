@@ -59,7 +59,7 @@ const carCore = new Image(),
 	carSegwit = new Image();
 
 // sound system
-let audioContext = new AudioContext();
+let audioContext = new AudioContext() || new webkitAudioContext();
 let gainNode = audioContext.createGain();
 
 // sound variables
