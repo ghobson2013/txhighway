@@ -674,14 +674,12 @@ let isDonationTx = function(txInfo){
 	let isDonation = false;
 
 	vouts.forEach((key)=>{
-		let keys = Object.keys(key);
-		keys.forEach((k)=> {
-			if (k == "3ECKq7onkjnRQR2nNe5uUJp2yMsXRmZavC" ||
+		let k = key.addr;
+		if (k == "3ECKq7onkjnRQR2nNe5uUJp2yMsXRmZavC" ||
 				k == "3MtCFL4aWWGS5cDFPbmiNKaPZwuD28oFvF") {
 					isDonation = true;
 					setTimeout(getDevDonations(), 3000);
-				}
-		});
+		}
 	});
 
 	return isDonation;
