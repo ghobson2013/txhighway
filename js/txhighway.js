@@ -3,8 +3,9 @@
 // urls
 const urlCash = "wss://ws.blockchain.info/bch/inv",
 	urlCore = "wss://ws.blockchain.info/inv",
-	urlCors = "https://cors-anywhere.herokuapp.com/",
+	urlCors = "http://cors-proxy.htmldriven.com/?url=", //"https://cors-anywhere.herokuapp.com/",
 	urlBlockchair = urlCors + "https://api.blockchair.com/",
+	urlBtc = "api.btc.com/v3/",
 	urlBlockchainInfo = "https://api.blockchain.info/",
 	urlCoinMarketCap = "https://api.coinmarketcap.com/v1/ticker/";
 
@@ -59,8 +60,8 @@ const carCore = new Image(),
 	carSegwit = new Image();
 
 // sound system
-let audioContext = new AudioContext();
-let gainNode = audioContext.createGain();
+let audioContext = null;
+let gainNode = null;
 
 // sound variables
 let audioMotorcycle = null,
@@ -113,6 +114,7 @@ socketCash.onopen = ()=>{
 }
 
 socketCore.onopen = ()=> {
+	//console.log("is working?");
 	socketCore.send(JSON.stringify({"op":"unconfirmed_sub"}));
 	socketCore.send(JSON.stringify({"op":"blocks_sub"}));
 }
@@ -136,7 +138,7 @@ socketCore.onmessage = (onmsg)=> {
 	if (res.op == "utx"){
 		let t = parseInt(corePoolInfo.textContent.replace(/\,/g,''));			
 		corePoolInfo.textContent = formatWithCommas(t +1);
-
+		
 		res.x.inputs.forEach(i => {
             if (JSON.stringify(i.script).length < 120){
 				res.x["sw"] = true;
@@ -189,6 +191,16 @@ function init(){
 		$( ".sign" ).fadeToggle( "slow", "linear" );
 	}
 
+	// assign audio context for safari and other shit browsers-
+	let AudioContext = window.AudioContext || window.webkitAudioContext || false;
+	if (AudioContext) {
+		let audioContextCall = window.AudioContext || window.webkitAudioContext;
+		audioContext = new audioContextCall;
+		gainNode = audioContext.createGain();
+	} else {
+		alert("Get a better browser");
+	}
+
 	// assign sounds to variables
 	loadSound("assets/audio/motorcycle-lowergain.mp3", "motorcycle")
 	loadSound("assets/audio/car-pass-lowergain.mp3", "car");
@@ -204,6 +216,8 @@ function init(){
 	// acquire data for signs
 	getPoolData(urlBlockchair + "bitcoin-cash/mempool/", xhrCash, true);
 	getPoolData(urlBlockchair + "bitcoin/mempool/", xhrCore, false);
+	//getPoolData("https://bch-chain." + urlBtc + "tx/unconfirmed/summary", xhrCash, true);
+
 	getCoreConfTime(urlBlockchainInfo + "charts/avg-confirmation-time?format=json&cors=true", xhrBlockchain);
 	getPriceData(urlCoinMarketCap + "bitcoin-cash/");
 	getPriceData(urlCoinMarketCap + "bitcoin/");
@@ -240,6 +254,7 @@ function getDevDonations(){
 	xhr.onload = function(){
 		if (this.readyState == 4 && this.status == 200) {
 			let res = JSON.parse(this.responseText);
+			res = JSON.parse(res.body);
 			let sumVal = res.data[0].sum_value;
 			sumVal /= 100000000;
 
@@ -325,7 +340,8 @@ function getPoolData(url, xhr, isCash){
 	xhr.onload = function () {
 		if (this.readyState == 4 && this.status == 200) {
 			let obj = JSON.parse(this.responseText);
-
+			obj = JSON.parse(obj.body);
+			//console.log(JSON.parse(obj.body));
 			obj.data.forEach((key)=>{
 				if (key.e =="mempool_transactions"){
 					if (isCash){
@@ -477,7 +493,6 @@ function createVehicle(type, arr, txInfo, lane, isCash){
 			x = last.x - width - 10;
 		}
 	} */
-
 	arr.push({
 		type:type,
 		id: txInfo.hash,
@@ -500,7 +515,6 @@ function getCar(valueOut, donation, isCash, userTx, sdTx, sw){
 		return carLambo;
 	}
 
-	
 	if(sw) return carSegwit;
 	// satoshi dice tx
 	if(sdTx) return carSatoshiDice;	
@@ -776,6 +790,7 @@ function drawVehicles(arr){
 				item.y += item.d;
 				y = item.y;
 			}
+			//if(!item.isCash)console.log("new btc tx" + " "+ item.h);
 
 			ctx.drawImage(car, item.x, y, width, SINGLE_LANE);
 			
