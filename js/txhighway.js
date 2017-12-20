@@ -191,14 +191,14 @@ function init(){
 		$( ".sign" ).fadeToggle( "slow", "linear" );
 	}
 
-	// assign audio context for safari and other shit browsers-
+	// assign audio context
 	let AudioContext = window.AudioContext || window.webkitAudioContext || false;
 	if (AudioContext) {
 		let audioContextCall = window.AudioContext || window.webkitAudioContext;
 		audioContext = new audioContextCall;
 		gainNode = audioContext.createGain();
 	} else {
-		alert("Get a better browser");
+        alert("Sorry, but the Web Audio API is not supported by your browser. Please, consider upgrading to the latest version or downloading Google Chrome or Mozilla Firefox");
 	}
 
 	// assign sounds to variables
