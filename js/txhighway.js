@@ -59,8 +59,9 @@ const carCore = new Image(),
 	carSegwit = new Image();
 
 // sound system
-let audioContext = new AudioContext() || new webkitAudioContext();
-let gainNode = audioContext.createGain();
+
+let audioContext = null;
+let gainNode = null;
 
 // sound variables
 let audioMotorcycle = null,
@@ -188,6 +189,23 @@ function init(){
 		$("input.overlay-switch")[0].checked = true;
 		$( ".sign" ).fadeToggle( "slow", "linear" );
 	}
+
+//check supported browsers
+	var AudioContext = window.AudioContext // Default
+	    || window.webkitAudioContext // Safari and old versions of Chrome
+	    || false; 
+
+	if (AudioContext) {
+	    
+	    let audioContextCall = window.AudioContext || window.webkitAudioContext;
+			let audioContext = new audioContextCall
+
+	} else {
+	    // Web Audio API is not supported
+	    // Alert the user
+	    alert("Sorry, but the Web Audio API is not supported by your browser. Please, consider upgrading to the latest version or downloading Google Chrome or Mozilla Firefox");
+	}
+	
 
 	// assign sounds to variables
 	loadSound("assets/audio/motorcycle-lowergain.mp3", "motorcycle")
