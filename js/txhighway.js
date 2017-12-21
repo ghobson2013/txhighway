@@ -332,8 +332,8 @@ function blockNotify(data, isCash){
 		
 		// sets speed modifier for btc lane
 		let mod = t/amount/100;
-		if (mod >= 0.9){
-			SPEED_MODIFIER = 0.9;
+		if (mod >= 0.8){
+			SPEED_MODIFIER = 0.2;
 		} else {
 			SPEED_MODIFIER = 1 - mod;
 		}
@@ -370,10 +370,11 @@ function getPoolData(url, isCash){
 				cashPoolInfo.textContent = formatWithCommas(obj.data.count);
 			} else {
 				corePoolInfo.textContent = formatWithCommas(obj.data.count);
+				let mod = obj.data.count/2400/100;
+
 				if (SPEED_MODIFIER == 0){
-					let mod = obj.data.count/2400/100;
-					if (mod >= 0.9){
-						SPEED_MODIFIER = 0.9;
+					if (mod >= 0.8){
+						SPEED_MODIFIER = 0.2;
 					} else {
 						SPEED_MODIFIER = 1 - mod;
 					}
