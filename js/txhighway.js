@@ -4,7 +4,7 @@
 const urlCash = "wss://ws.blockchain.info/bch/inv",
 	urlCore = "wss://ws.blockchain.info/inv",
 	urlCors = "http://cors-proxy.htmldriven.com/?url=", //"https://cors-anywhere.herokuapp.com/",
-	urlBlockchair = urlCors + "https://api.blockchair.com/",
+	//urlBlockchair = urlCors + "https://api.blockchair.com/",
 	urlBtc = "api.btc.com/v3/",
 	urlBlockchainInfo = "https://api.blockchain.info/",
 	urlCoinMarketCap = "https://api.coinmarketcap.com/v1/ticker/";
@@ -32,8 +32,8 @@ const canvas = document.getElementById("renderCanvas"),
 	donationGoal = document.getElementById("donationGoal");
 
 // for ajax requests
-const xhrCash = new XMLHttpRequest(),
-	xhrCore = new XMLHttpRequest(),
+const //xhrCash = new XMLHttpRequest(),
+	//xhrCore = new XMLHttpRequest(),
 	xhrBlockchain = new XMLHttpRequest();
 
 // sprites
@@ -214,17 +214,20 @@ function init(){
 	loadSound("assets/audio/allspam.mp3", "allspam");
 
 	// acquire data for signs
-	getPoolData(urlBlockchair + "bitcoin-cash/mempool/", xhrCash, true);
-	getPoolData(urlBlockchair + "bitcoin/mempool/", xhrCore, false);
-	//getPoolData("https://bch-chain." + urlBtc + "tx/unconfirmed/summary", xhrCash, true);
+	//getPoolData(urlBlockchair + "bitcoin-cash/mempool/", xhrCash, true);
+	//getPoolData(urlBlockchair + "bitcoin/mempool/", xhrCore, false);
+	
+	updateMempoolData();
+	updatePriceData();
 
 	getCoreConfTime(urlBlockchainInfo + "charts/avg-confirmation-time?format=json&cors=true", xhrBlockchain);
-	getPriceData(urlCoinMarketCap + "bitcoin-cash/");
-	getPriceData(urlCoinMarketCap + "bitcoin/");
 
 	// set donation goal information
-	donationGoal.setAttribute("max", DONATION_GOAL);
-	getDevDonations();
+	//donationGoal.setAttribute("max", DONATION_GOAL);
+	setTimeout(() => {
+		getDevDonations();	
+	}, 3000);
+	
 
 	// remove loading screen
 	onReady(function () {
@@ -248,23 +251,39 @@ function mobileCheck(){
 	return check;
 }
 
+// gets latest utx count and sets it to signs
+function updateMempoolData(){
+	getPoolData(urlCors + "https://chain." + urlBtc + "tx/unconfirmed/summary", false);
+	getPoolData(urlCors + "https://bch-chain." + urlBtc + "tx/unconfirmed/summary", true);
+}
+
+function updatePriceData(){
+	getPriceData(urlCoinMarketCap + "bitcoin-cash/");
+	getPriceData(urlCoinMarketCap + "bitcoin/");
+}
 // get current balance of dev donation address
 function getDevDonations(){
 	let xhr = new XMLHttpRequest();
+	let url =  urlCors + "https://bch-chain." + urlBtc + "address/3MtCFL4aWWGS5cDFPbmiNKaPZwuD28oFvF";
+
 	xhr.onload = function(){
 		if (this.readyState == 4 && this.status == 200) {
 			let res = JSON.parse(this.responseText);
 			res = JSON.parse(res.body);
-			let sumVal = res.data[0].sum_value;
+			let sumVal = res.data.balance;
 			sumVal /= 100000000;
 
 			document.getElementById("donationAmt").textContent = sumVal + " BCH";
 			document.getElementById("donationTotal").textContent = DONATION_GOAL + " BCH";
+
+			sumVal = sumVal/DONATION_GOAL * 100;
 			donationGoal.setAttribute("value", sumVal);
 		}
 	}
 
-	xhr.open('GET', urlBlockchair + "bitcoin-cash/dashboards/address/3MtCFL4aWWGS5cDFPbmiNKaPZwuD28oFvF", true);
+	//xhr.open('GET', urlBlockchair + "bitcoin-cash/dashboards/address/3MtCFL4aWWGS5cDFPbmiNKaPZwuD28oFvF", true);
+
+	xhr.open('GET', url, true);
 	xhr.send(null);
 }
 
@@ -313,8 +332,8 @@ function blockNotify(data, isCash){
 		
 		// sets speed modifier for btc lane
 		let mod = t/amount/100;
-		if (mod >= 0.9){
-			SPEED_MODIFIER = 0.9;
+		if (mod >= 0.8){
+			SPEED_MODIFIER = 0.2;
 		} else {
 			SPEED_MODIFIER = 1 - mod;
 		}
@@ -328,21 +347,42 @@ function blockNotify(data, isCash){
 	confirmedNotify.style.display = "block"; //no pun intended
 	setTimeout(() => {
 		confirmedNotify.style.display = "none";
-		getPoolData(urlBlockchair + "bitcoin-cash/mempool/", xhrCash, true);
-		getPoolData(urlBlockchair + "bitcoin/mempool/", xhrCore, false);
-		getPriceData(urlCoinMarketCap + "bitcoin-cash/");
-		getPriceData(urlCoinMarketCap + "bitcoin/");
+		updateMempoolData();
+		updatePriceData();
+		//getPoolData(urlBlockchair + "bitcoin-cash/mempool/", xhrCash, true);
+		//getPoolData(urlBlockchair + "bitcoin/mempool/", xhrCore, false);
+		//getPriceData(urlCoinMarketCap + "bitcoin-cash/");
+		//getPriceData(urlCoinMarketCap + "bitcoin/");
 	}, 4000);
 }
 
 // retrieve pool information for signs
-function getPoolData(url, xhr, isCash){
+function getPoolData(url, isCash){
+	let xhr = new XMLHttpRequest();
+
 	xhr.onload = function () {
 		if (this.readyState == 4 && this.status == 200) {
 			let obj = JSON.parse(this.responseText);
 			obj = JSON.parse(obj.body);
-			//console.log(JSON.parse(obj.body));
-			obj.data.forEach((key)=>{
+			//console.log(obj.data);
+
+			if (isCash){
+				cashPoolInfo.textContent = formatWithCommas(obj.data.count);
+			} else {
+				corePoolInfo.textContent = formatWithCommas(obj.data.count);
+				let mod = obj.data.count/2400/100;
+
+				if (SPEED_MODIFIER == 0){
+					if (mod >= 0.8){
+						SPEED_MODIFIER = 0.2;
+					} else {
+						SPEED_MODIFIER = 1 - mod;
+					}
+				}
+			}
+
+
+			/* obj.data.forEach((key)=>{
 				if (key.e =="mempool_transactions"){
 					if (isCash){
 						cashPoolInfo.textContent = formatWithCommas(key.c);
@@ -358,7 +398,7 @@ function getPoolData(url, xhr, isCash){
 						}
 					}
 				}
-			});
+			}); */
 		} 
 	}
 
