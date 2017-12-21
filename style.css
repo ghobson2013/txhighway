@@ -851,8 +851,12 @@ span.divider {
   left:66%;
 }
 
+.ad-logo.dark {
+  background:#595959;
+}
+
 .ad-logo img {
-  width:49px;
+  width:59px;
   margin:0;
   padding:3px 3px 0 3px;
 }
