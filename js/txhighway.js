@@ -29,6 +29,7 @@ const canvas = document.getElementById("renderCanvas"),
 	page = document.getElementById("page"),
 	transactionWrap = document.getElementById("tx-wrap"),
 	transactionList = document.getElementById("transactions"),
+	transactionsWaiting = document.getElementById("tx-waiting"),
 	donationGoal = document.getElementById("donationGoal");
 
 // for ajax requests
@@ -799,6 +800,7 @@ function drawVehicles(arr){
 	let car = null;
 	let y = null;
 	let width = null;
+	let txWaiting = 0;
 	arr.forEach(function(item, index, object){
 
 		if(!item.isCash && konamiActive) { 
@@ -832,6 +834,8 @@ function drawVehicles(arr){
 
 			ctx.drawImage(car, item.x, y, width, SINGLE_LANE);
 			
+		} else {
+			if (!item.isCash) txWaiting += 1;
 		}
 
 		if(item.isCash){
@@ -839,7 +843,10 @@ function drawVehicles(arr){
 		} else {
 			item.x += SPEED * SPEED_MODIFIER;
 		}
+		
 	});
+
+	transactionsWaiting.textContent = txWaiting;
 }
 
 // remove vehicles that are off the map
