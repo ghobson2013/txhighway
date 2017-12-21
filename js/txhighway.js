@@ -214,13 +214,13 @@ function init(){
 	loadSound("assets/audio/allspam.mp3", "allspam");
 
 	// acquire data for signs
-	getPoolData(urlBlockchair + "bitcoin-cash/mempool/", xhrCash, true);
-	getPoolData(urlBlockchair + "bitcoin/mempool/", xhrCore, false);
-	//getPoolData("https://bch-chain." + urlBtc + "tx/unconfirmed/summary", xhrCash, true);
+	//getPoolData(urlBlockchair + "bitcoin-cash/mempool/", xhrCash, true);
+	//getPoolData(urlBlockchair + "bitcoin/mempool/", xhrCore, false);
+	
+	updateMempoolData();
+	updatePriceData();
 
 	getCoreConfTime(urlBlockchainInfo + "charts/avg-confirmation-time?format=json&cors=true", xhrBlockchain);
-	getPriceData(urlCoinMarketCap + "bitcoin-cash/");
-	getPriceData(urlCoinMarketCap + "bitcoin/");
 
 	// set donation goal information
 	donationGoal.setAttribute("max", DONATION_GOAL);
@@ -248,6 +248,16 @@ function mobileCheck(){
 	return check;
 }
 
+// gets latest utx count and sets it to signs
+function updateMempoolData(){
+	getPoolData(urlCors + "https://chain." + urlBtc + "tx/unconfirmed/summary", false);
+	getPoolData(urlCors + "https://bch-chain." + urlBtc + "tx/unconfirmed/summary", true);
+}
+
+function updatePriceData(){
+	getPriceData(urlCoinMarketCap + "bitcoin-cash/");
+	getPriceData(urlCoinMarketCap + "bitcoin/");
+}
 // get current balance of dev donation address
 function getDevDonations(){
 	let xhr = new XMLHttpRequest();
@@ -328,21 +338,41 @@ function blockNotify(data, isCash){
 	confirmedNotify.style.display = "block"; //no pun intended
 	setTimeout(() => {
 		confirmedNotify.style.display = "none";
-		getPoolData(urlBlockchair + "bitcoin-cash/mempool/", xhrCash, true);
-		getPoolData(urlBlockchair + "bitcoin/mempool/", xhrCore, false);
-		getPriceData(urlCoinMarketCap + "bitcoin-cash/");
-		getPriceData(urlCoinMarketCap + "bitcoin/");
+		updateMempoolData();
+		updatePriceData();
+		//getPoolData(urlBlockchair + "bitcoin-cash/mempool/", xhrCash, true);
+		//getPoolData(urlBlockchair + "bitcoin/mempool/", xhrCore, false);
+		//getPriceData(urlCoinMarketCap + "bitcoin-cash/");
+		//getPriceData(urlCoinMarketCap + "bitcoin/");
 	}, 4000);
 }
 
 // retrieve pool information for signs
-function getPoolData(url, xhr, isCash){
+function getPoolData(url, isCash){
+	let xhr = new XMLHttpRequest();
+
 	xhr.onload = function () {
 		if (this.readyState == 4 && this.status == 200) {
 			let obj = JSON.parse(this.responseText);
 			obj = JSON.parse(obj.body);
-			//console.log(JSON.parse(obj.body));
-			obj.data.forEach((key)=>{
+			//console.log(obj.data);
+
+			if (isCash){
+				cashPoolInfo.textContent = formatWithCommas(obj.data.count);
+			} else {
+				corePoolInfo.textContent = formatWithCommas(obj.data.count);
+				if (SPEED_MODIFIER == 0){
+					let mod = obj.data.count/2400/100;
+					if (mod >= 0.9){
+						SPEED_MODIFIER = 0.9;
+					} else {
+						SPEED_MODIFIER = 1 - mod;
+					}
+				}
+			}
+
+
+			/* obj.data.forEach((key)=>{
 				if (key.e =="mempool_transactions"){
 					if (isCash){
 						cashPoolInfo.textContent = formatWithCommas(key.c);
@@ -358,7 +388,7 @@ function getPoolData(url, xhr, isCash){
 						}
 					}
 				}
-			});
+			}); */
 		} 
 	}
 
