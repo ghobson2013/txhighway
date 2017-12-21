@@ -3,15 +3,14 @@
 // urls
 const urlCash = "wss://ws.blockchain.info/bch/inv",
 	urlCore = "wss://ws.blockchain.info/inv",
-	urlCors = "http://cors-proxy.htmldriven.com/?url=", //"https://cors-anywhere.herokuapp.com/",
-	//urlBlockchair = urlCors + "https://api.blockchair.com/",
+	urlCors = "http://cors-proxy.htmldriven.com/?url=",
 	urlBtc = "api.btc.com/v3/",
 	urlBlockchainInfo = "https://api.blockchain.info/",
 	urlCoinMarketCap = "https://api.coinmarketcap.com/v1/ticker/";
 
 // sockets
-const socketCash = new WebSocket(urlCash), // io(urlCash),
-	socketCore = new WebSocket(urlCore); //io(urlCore);
+const socketCash = new WebSocket(urlCash),
+	socketCore = new WebSocket(urlCore);
 
 // DOM elements
 const canvas = document.getElementById("renderCanvas"),
@@ -31,11 +30,6 @@ const canvas = document.getElementById("renderCanvas"),
 	transactionList = document.getElementById("transactions"),
 	transactionsWaiting = document.getElementById("tx-waiting"),
 	donationGoal = document.getElementById("donationGoal");
-
-// for ajax requests
-const //xhrCash = new XMLHttpRequest(),
-	//xhrCore = new XMLHttpRequest(),
-	xhrBlockchain = new XMLHttpRequest();
 
 // sprites
 const carCore = new Image(),
@@ -115,7 +109,6 @@ socketCash.onopen = ()=>{
 }
 
 socketCore.onopen = ()=> {
-	//console.log("is working?");
 	socketCore.send(JSON.stringify({"op":"unconfirmed_sub"}));
 	socketCore.send(JSON.stringify({"op":"blocks_sub"}));
 }
@@ -215,16 +208,11 @@ function init(){
 	loadSound("assets/audio/allspam.mp3", "allspam");
 
 	// acquire data for signs
-	//getPoolData(urlBlockchair + "bitcoin-cash/mempool/", xhrCash, true);
-	//getPoolData(urlBlockchair + "bitcoin/mempool/", xhrCore, false);
-	
 	updateMempoolData();
 	updatePriceData();
-
-	getCoreConfTime(urlBlockchainInfo + "charts/avg-confirmation-time?format=json&cors=true", xhrBlockchain);
+	getCoreConfTime(urlBlockchainInfo + "charts/avg-confirmation-time?format=json&cors=true");
 
 	// set donation goal information
-	//donationGoal.setAttribute("max", DONATION_GOAL);
 	setTimeout(() => {
 		getDevDonations();	
 	}, 3000);
@@ -281,8 +269,6 @@ function getDevDonations(){
 			donationGoal.setAttribute("value", sumVal);
 		}
 	}
-
-	//xhr.open('GET', urlBlockchair + "bitcoin-cash/dashboards/address/3MtCFL4aWWGS5cDFPbmiNKaPZwuD28oFvF", true);
 
 	xhr.open('GET', url, true);
 	xhr.send(null);
@@ -350,10 +336,6 @@ function blockNotify(data, isCash){
 		confirmedNotify.style.display = "none";
 		updateMempoolData();
 		updatePriceData();
-		//getPoolData(urlBlockchair + "bitcoin-cash/mempool/", xhrCash, true);
-		//getPoolData(urlBlockchair + "bitcoin/mempool/", xhrCore, false);
-		//getPriceData(urlCoinMarketCap + "bitcoin-cash/");
-		//getPriceData(urlCoinMarketCap + "bitcoin/");
 	}, 4000);
 }
 
@@ -365,7 +347,6 @@ function getPoolData(url, isCash){
 		if (this.readyState == 4 && this.status == 200) {
 			let obj = JSON.parse(this.responseText);
 			obj = JSON.parse(obj.body);
-			//console.log(obj.data);
 
 			if (isCash){
 				cashPoolInfo.textContent = formatWithCommas(obj.data.count);
@@ -381,25 +362,6 @@ function getPoolData(url, isCash){
 					}
 				}
 			}
-
-
-			/* obj.data.forEach((key)=>{
-				if (key.e =="mempool_transactions"){
-					if (isCash){
-						cashPoolInfo.textContent = formatWithCommas(key.c);
-					} else {
-						corePoolInfo.textContent = formatWithCommas(key.c);
-						if (SPEED_MODIFIER == 0){
-							let mod = key.c/2400/100;
-							if (mod >= 0.9){
-								SPEED_MODIFIER = 0.9;
-							} else {
-								SPEED_MODIFIER = 1 - mod;
-							}
-						}
-					}
-				}
-			}); */
 		} 
 	}
 
@@ -408,7 +370,8 @@ function getPoolData(url, isCash){
 }
 
 // get average confirmation time for btc
-function getCoreConfTime(url, xhr){
+function getCoreConfTime(url){
+	let xhr = new XMLHttpRequest();
 	xhr.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
 			let obj = JSON.parse(xhr.responseText);
@@ -756,8 +719,6 @@ let isUserTx = function(txInfo){
 	let vouts = txInfo.out;//.vout;
 	let isUserTx = false;
 
-	//if (cashAddress.value.length < 34 && coreAddress.value.length < 34 ) return isUserTx;
-
 	//console.log(vouts);
 	vouts.forEach((key)=>{
 		let keys = Object.keys(key);
@@ -830,7 +791,6 @@ function drawVehicles(arr){
 				item.y += item.d;
 				y = item.y;
 			}
-			//if(!item.isCash)console.log("new btc tx" + " "+ item.h);
 
 			ctx.drawImage(car, item.x, y, width, SINGLE_LANE);
 			
@@ -880,17 +840,13 @@ volumeSlider.oninput = function(){
 	let newVol = this.value/100;
 	VOLUME = newVol;
 	gainNode.gain.setTargetAtTime(VOLUME, audioContext.currentTime, 0.015);
-
-	//gainNode.gain.value = VOLUME;
 }
 
 $('#tx-list-button').click(function(){
 	if (transactionWrap.style.right == '0%'){
 		transactionWrap.style.right = '-151px';
-		// page.style.right = '0';
 	} else {
 		transactionWrap.style.right = '0%';
-		// page.style.width = '85%';
 	}
 });
 
