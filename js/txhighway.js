@@ -314,7 +314,10 @@ function blockNotify(data, isCash){
 		ticker = "BCH";
 		t = parseInt(cashPoolInfo.textContent.replace(/\,/g,''));
 		amount = data.nTx;
-		cashPoolInfo.textContent = formatWithCommas(t - amount);//"UPDATING";
+		cashPoolInfo.textContent = formatWithCommas(t - amount);
+		setTimeout(() => {
+			getPoolData(urlCors + "https://bch-chain." + urlBtc + "tx/unconfirmed/summary", true);
+		}, 1000);
 	} else {
 		ticker = "BTC";
 		t = parseInt(corePoolInfo.textContent.replace(/\,/g,''));
@@ -330,6 +333,9 @@ function blockNotify(data, isCash){
 		}
 
 		corePoolInfo.textContent = formatWithCommas(t - amount);
+		setTimeout(() => {
+			getPoolData(urlCors + "https://chain." + urlBtc + "tx/unconfirmed/summary", false);
+		}, 1000);
 	}
 
 	if (isVisible) playSound(audioChaChing);
@@ -338,7 +344,7 @@ function blockNotify(data, isCash){
 	confirmedNotify.style.display = "block"; //no pun intended
 	setTimeout(() => {
 		confirmedNotify.style.display = "none";
-		updateMempoolData();
+		//updateMempoolData();
 		updatePriceData();
 	}, 4000);
 }
@@ -754,7 +760,6 @@ function drawBackground(){
 	ctx.clearRect(0,0,WIDTH,HEIGHT);
 	ctx.fillStyle = "#9EA0A3";
 
-
 	// stroke
 	ctx.setLineDash([6]);
 	ctx.strokeStyle = "#FFF";
@@ -772,8 +777,6 @@ function drawBackground(){
 	ctx.strokeStyle = "#FFF";
 
 	ctx.strokeRect(-2, SINGLE_LANE * 12, WIDTH + 3, SINGLE_LANE);
-
-
 }
 
 // loop through transactions and draw them
