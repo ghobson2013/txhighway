@@ -602,7 +602,10 @@ function getCar(valueOut, donation, isCash, userTx, sdTx, sw){
 function addSounds(carType){
 	if (!isVisible) return;
 
-	if (carType == carUserCash || carType == carUserCore) playSound(audioLaCucaracha);
+	if (carType == carUserCash || carType == carUserCore) {
+		playSound(audioLaCucaracha);
+		console.log("usertx");
+	}
 
 	if (carType == carLambo){
 		let randSong = Math.floor(Math.random() * 2) + 1;
@@ -672,7 +675,7 @@ function loadSound(url, sound){
 				audioRide = buffer;
 			} else if (sound == "cha-ching"){
 				audioChaChing = buffer;
-			} else if (sound == "la-cucaracha.mp3"){
+			} else if (sound == "la-cucaracha"){
 				audioLaCucaracha = buffer;
 			} else if (sound == "spam"){
 				audioSpam = buffer;
@@ -738,11 +741,9 @@ let isUserTx = function(txInfo){
 	//console.log(vouts);
 	vouts.forEach((key)=>{
 		let keys = Object.keys(key);
-		keys.forEach((k)=>{
-			if (k == cashAddress.value || k == coreAddress.value){
-				isUserTx = true;
-			} 
-		})
+		if (key.addr == cashAddress.value || key.addr == coreAddress.value){
+			isUserTx = true;
+		} 
 	});
 	return isUserTx;
 }
