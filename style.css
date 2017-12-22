@@ -440,28 +440,33 @@ margin:15px 0;display:block;
   text-decoration: line-through;
 }
 .block {
-  position: absolute;
+  position: fixed;
   top: 81%;
   z-index: 2;
   background: url('assets/bg/block.png') no-repeat;
-  background-size: 100%;
-  width: 27px;
-  height: 6.67%;
+  background-size: auto 50%;
+  width: 100%;
+  height: 5%;
+  background-repeat-y: repeat;
+  background-repeat: space;
+  background-repeat-x: no-repeat;
+
 }
 .block.one {
   left: 55px;
 }
 .block.two {
   right: 80px;
+  background-position: right;
 }
 
 .caution {
-  position: absolute;
+  position: fixed;
   z-index: 2;
   background: url('assets/bg/caution.png') no-repeat;
-  background-size: 50% 50%;
-  width: 50px;
-  height: 50px;
+  background-size: contain;
+  width: 100%;
+  height: 4%;
   top: 81.5%;
 }
 .caution.one {
@@ -469,15 +474,16 @@ margin:15px 0;display:block;
 }
 
 .caution.two {
-  right: 20px;
+  right: 40px;
+  background-position-x: right;
 }
 
 .no2x {
-  position: absolute;
+  position: fixed;
   z-index: 2;
   background: url('assets/bg/no2x.png') no-repeat;
-  background-size: 80%;
-  width: 60px;
+  background-size: contain;
+  width: 100%;
   height: 6.67%;
   top: 80.01%;
 }
@@ -487,7 +493,8 @@ margin:15px 0;display:block;
 }
 
 .no2x.two {
-  right:115px;
+  right:125px;
+  background-position-x: right;
 }
 
 
@@ -497,6 +504,7 @@ margin:15px 0;display:block;
 
 .no2x.four {
   right:225px;
+  background-position-x: right;
 }
 
 
@@ -506,7 +514,7 @@ margin:15px 0;display:block;
   left:0;
   width:100%;
   height:13%;
-  width:100%;
+  width:73%;
   background:url('assets/bg/ln.png') no-repeat;
   background-size: contain;
 }
@@ -607,13 +615,13 @@ span.divider {
 .bitcoin-cash:before {
   content: "";
   width: 100%;
-  height: 100px;
+  height: 13.34%;
   background: #/*149347*/;
   background: #149347 url('assets/bg/divider.png') repeat-x;
   background-size: 800px 40px;
   background-position:100% 127%;
-  position: absolute;
-  top: -103px;
+  position: fixed;
+  top: 0;
   left: 0;
   z-index: -1;
   border-bottom:2px solid #666;
@@ -621,20 +629,20 @@ span.divider {
 .bs {
   /*background: #9EA0A3 url(assets/bg/bs.png) no-repeat center 0;*/
     background: #9EA0A3 url(assets/bg/core.png) no-repeat 50% -15px;
-
   background-size: 18.5%;
   height: 13.34%;
   width: 100%;
-  position: absolute;
+  position: fixed;
   bottom: 13.34%;
   left: 0;
   z-index: -1;
 }
 
 .road-sign.cash-road-sign  {
-  left:330px;
-  right:auto;
-  bottom:86%;
+/*   left:330px;
+  right:auto; */
+  bottom:auto;
+  top: 2%;
 }
 
 .core-road-sign.road-sign {
@@ -878,18 +886,21 @@ span.divider {
 }
 
 .adspot.ad-four {
-  left:82%;
+  left:auto;
+  right: 10%;
 }
 
 .adspot.ad-five {
-  left:50%;
+  left:40%;
   bottom:90%;
 }
 
 .adspot.ad-six {
-  left:66%;
+  left:53%;
   bottom:90%;
 }
+
+
 
 .ad-logo img {
   width:49px;
@@ -1363,16 +1374,16 @@ input[type=range]:focus::-ms-fill-upper {
   background-repeat: no-repeat;
 }
 
-#tx-list-button {
+/* #tx-list-button {
   position:fixed; 
   top: 5px;
   right: 190px;
-}
+} */
 
 #tx-list-button i{
   color: #fff;
   font-size: 1.7rem;
-  padding: 5px;
+  /* padding: 5px; */
 }
 
 .txinfo-cash{
@@ -1426,7 +1437,26 @@ input[type=range]:focus::-ms-fill-upper {
     background-size: cover;
   }
 
+  .adspot.ad-five {
+    left:15%;
+  }
+  
+  .adspot.ad-six {
+    left:auto;
+    right: 15%;
+  }
 
+  @media only screen and (orientation: landscape) {
+    .adspot.ad-five {
+      left:35%;
+      right:auto;
+    }
+    
+    .adspot.ad-six {
+      left:55%;
+      right: auto;
+    }
+  }
 
   .title {
     width: 170px;
@@ -1441,8 +1471,14 @@ input[type=range]:focus::-ms-fill-upper {
   .bitcoin-cash {
     background-position:50% 60%;
   }
+  
+  .no2x.three {
+    display:none;
+  }
 
-
+  .no2x.four {
+    display:none;
+  }
 
   table tr td img {
     max-height:28px;
@@ -1501,21 +1537,28 @@ input[type=range]:focus::-ms-fill-upper {
   }
 
   .cash-road-sign {
-    top:10px;
     right: 10px;
     left: auto;
     bottom: auto;
   }
 
   .adspot.ad-one {
-    left:10%;
+    left:1%;
+  }
+
+  .adspot.ad-two{
+    left: 30%;
   }
 
   .adspot.ad-three {
-    right:10%;
+    right:30%;
     left:auto;
   }
 
+  .adspot.ad-four{
+    right: 1%;
+  }
+  
   #modal-search fieldset {
     display:block;
     width:auto;
