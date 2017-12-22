@@ -116,7 +116,7 @@ span {
 
 .nav {
   left:0;
-  top:90px;
+  top:15%;
   position:absolute;
   display:block;
   z-index:999;
@@ -618,7 +618,7 @@ span.divider {
   height: 13.34%;
   background: #/*149347*/;
   background: #149347 url('assets/bg/divider.png') repeat-x;
-  background-size: 800px 40px;
+  background-size: 100% 40%;
   background-position:100% 127%;
   position: fixed;
   top: 0;
@@ -1418,7 +1418,7 @@ input[type=range]:focus::-ms-fill-upper {
     font-size:13px;
   }
   .nav {
-    top:90px;
+    top: 15%;
   }
   
   .nav a i {
@@ -1460,7 +1460,7 @@ input[type=range]:focus::-ms-fill-upper {
 
   .title {
     width: 170px;
-    top: 15px;
+    top: 2%;
   }
   .title h2 {
     display: none;
