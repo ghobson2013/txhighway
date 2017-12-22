@@ -126,7 +126,6 @@ socketCash.onmessage = (onmsg) =>{
 		newTX(true, res.x);
 	} else {
 		blockNotify(res.x, true);
-		console.log(res);
 	}
 }
 
@@ -142,11 +141,11 @@ socketCore.onmessage = (onmsg)=> {
 				res.x["sw"] = true;
             }
 		});	
-		
+
 		newTX(false, res.x);
 	} else {
 		blockNotify(res.x, false);
-		console.log(res);
+		
 	}
 }
 
@@ -612,7 +611,7 @@ function addSounds(carType){
 
 	if (carType == carUserCash || carType == carUserCore) {
 		playSound(audioLaCucaracha);
-		console.log("usertx");
+		
 	}
 
 	if (carType == carLambo){
@@ -746,7 +745,6 @@ let isUserTx = function(txInfo){
 	let vouts = txInfo.out;//.vout;
 	let isUserTx = false;
 
-	//console.log(vouts);
 	vouts.forEach((key)=>{
 		let keys = Object.keys(key);
 		if (key.addr == cashAddress.value || key.addr == coreAddress.value){
@@ -991,6 +989,8 @@ let easter_egg = new Konami(function() {
 		$( ".core-mode" ).fadeToggle( "slow", "linear" );
 	}
 });
+
+easter_egg.load();
 
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function(event) {
