@@ -635,7 +635,8 @@ span.divider {
   color: #F9D536;
   text-transform: uppercase;
   font-family: 'Lato', sans-serif;
-  font-size: 0.7em;
+  font-size: 0.9em;
+  font-weight: bold;
   position: absolute;
   left: 10px;
   top: 13px;

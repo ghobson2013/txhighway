@@ -126,6 +126,7 @@ socketCash.onmessage = (onmsg) =>{
 		newTX(true, res.x);
 	} else {
 		blockNotify(res.x, true);
+		console.log(res);
 	}
 }
 
@@ -145,6 +146,7 @@ socketCore.onmessage = (onmsg)=> {
 		newTX(false, res.x);
 	} else {
 		blockNotify(res.x, false);
+		console.log(res);
 	}
 }
 
@@ -385,7 +387,7 @@ function getCoreConfTime(url){
 	xhr.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
 			let obj = JSON.parse(xhr.responseText);
-			coreEta.textContent = obj.period;
+			coreEta.textContent = obj.values[0].y + " MIN";
 		}
 	}
 	xhr.open("GET", url, true);
