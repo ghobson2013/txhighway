@@ -57,6 +57,7 @@ const carCore = new Image(),
 // sound system
 let audioContext = null;
 let gainNode = null;
+let sounds = [];
 
 // sound variables
 let audioMotorcycle = null,
@@ -422,9 +423,11 @@ vis(function(){
 		txCore = [];
 		drawBackground();
 		requestAnimationFrame(animate);
+		if(!isCoreMuted) audioHorns.connect(gainNode);
 		isVisible = true;
 	} else{
-		cancelAnimationFrame(requestID);		
+		cancelAnimationFrame(requestID);
+		if(!isCoreMuted) audioHorns.disconnect()
 		isVisible = false;
 	}
 });
@@ -678,8 +681,7 @@ function loadSound(url, sound){
 			} else if (sound == "horns"){
 				audioHorns = audioContext.createBufferSource()
 				audioHorns.buffer = buffer;
-				audioHorns.connect(gainNode);
-				gainNode.connect(audioContext.destination);
+				audioHorns.start(0);
 			}
 		});
 	}
@@ -828,14 +830,21 @@ function drawVehicles(arr){
 
 	// play horns if there's more than 5 vehicles off screen
 	if(audioHorns && !isCash && !isCoreMuted){
+		//console.log(audioHorns.duration);
 		if (txWaiting > 5 && !isHornsPlaying){
+			/* playSound(audioHorns);
+			setTimeout(() => {
+				isHornsPlaying = false;
+			}, 18648); */
 			audioHorns.loop = true;
-			audioHorns.start(0);
+			audioHorns.connect(gainNode);
 			isHornsPlaying = true;
 		} else if (txWaiting == 0 && audioHorns.loop == true){
 			isHornsPlaying = false;
+			
 			audioHorns.loop = false;
-			audioHorns.stop(0);
+			audioHorns.disconnect();
+			//audioHorns.stop(0);
 		}
 	}
 }
@@ -881,23 +890,6 @@ $('#tx-list-button').click(function(){
 	}
 });
 
-
-$("input.cash-mute").change(function() {
-	if(this.checked) {
-      if (isCashMuted) {
-				isCashMuted = false;
-			 } else {
-				isCashMuted = true;
-			 }
-    } else {
-      if (isCashMuted) {
-				isCashMuted = false;
-			 } else {
-				isCashMuted = true;
-			 }
-    }
-});
-
 $('.nav .legend').hover(function(){
     // $(this).next('ul').slideToggle('500');
     $(this).find('i').toggleClass('fa-car fa-truck')
@@ -931,21 +923,40 @@ $('.nav .donate').hover(function(){
     $(this).find('i').toggleClass('fa-heart fa-money')
 });
 
-$("input.core-mute").change(function() {
+
+$("input.cash-mute").change(function() {
 	if(this.checked) {
-      if (isCoreMuted) {
-				isCoreMuted = false;
+      if (isCashMuted) {
+				isCashMuted = false;
 			 } else {
-				isCoreMuted = true;
+				isCashMuted = true;
 			 }
     } else {
-      if (isCoreMuted) {
-				isCoreMuted = false;
+      if (isCashMuted) {
+				isCashMuted = false;
 			 } else {
-				isCoreMuted = true;
+				isCashMuted = true;
 			 }
     }
 });
+
+$("input.core-mute").change(function() {
+	if(this.checked) {
+      muteCore();
+    } else {
+      muteCore();
+    }
+});
+
+function muteCore(){
+	if (isCoreMuted) {
+		isCoreMuted = false;
+	} else {
+		audioHorns.disconnect();
+		isCoreMuted = true;
+		isHornsPlaying = false;
+	}
+}
 
 $('.nav a').on('click', function(){
   $('#'+$(this).data('modal')).css('display','block');
