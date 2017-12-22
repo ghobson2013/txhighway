@@ -390,7 +390,7 @@ function getCoreConfTime(url){
 function resize(){
 	HEIGHT = window.innerHeight;
 	WIDTH = window.innerWidth;
-	SINGLE_LANE = HEIGHT/14;
+	SINGLE_LANE = HEIGHT/15;
 
 	canvas.width = WIDTH;
 	canvas.height = HEIGHT;
@@ -435,10 +435,10 @@ vis(function(){
 // create a new transaction
 function newTX(isCash, txInfo){
 	if (isCash){
-		let randLane = Math.floor(Math.random() * 8) + 1;
+		let randLane = Math.floor(Math.random() * 8) + 3;
 		createVehicle(isCash, txCash, txInfo, randLane, true);
 	} else {
-		createVehicle(isCash, txCore, txInfo, 10, false);
+		createVehicle(isCash, txCore, txInfo, 12, false);
 	}
 }
 
@@ -753,23 +753,26 @@ function drawBackground(){
 	ctx.clearRect(0,0,WIDTH,HEIGHT);
 	ctx.fillStyle = "#9EA0A3";
 
-	// dash style
-	ctx.setLineDash([6]);
-	ctx.strokeStyle = "#FFF";
 
 	// stroke
-	ctx.strokeRect(-2, SINGLE_LANE * 1, WIDTH + 3, SINGLE_LANE);
+	ctx.setLineDash([6]);
+	ctx.strokeStyle = "#FFF";
+	ctx.strokeRect(-2, SINGLE_LANE * 2, WIDTH + 3, SINGLE_LANE);
 	ctx.strokeRect(-2, SINGLE_LANE * 3, WIDTH + 3, SINGLE_LANE);
 	ctx.strokeRect(-2, SINGLE_LANE * 5, WIDTH + 3, SINGLE_LANE);
 	ctx.strokeRect(-2, SINGLE_LANE * 7, WIDTH + 3, SINGLE_LANE);
+	ctx.strokeRect(-2, SINGLE_LANE * 9, WIDTH + 3, SINGLE_LANE);
 
 	ctx.setLineDash([0]);
 	ctx.strokeStyle = "#3F3B3C";
-	ctx.strokeRect(-2, SINGLE_LANE * 8, WIDTH + 3, SINGLE_LANE);
+	ctx.strokeRect(-2, SINGLE_LANE * 10, WIDTH + 3, SINGLE_LANE);
 
 	ctx.setLineDash([6]);
 	ctx.strokeStyle = "#FFF";
-	ctx.strokeRect(-2, SINGLE_LANE * 10, WIDTH + 3, SINGLE_LANE);
+
+	ctx.strokeRect(-2, SINGLE_LANE * 12, WIDTH + 3, SINGLE_LANE);
+
+
 }
 
 // loop through transactions and draw them
@@ -802,8 +805,8 @@ function drawVehicles(arr){
 			if (item.car == carSegwit){
 				if (!item.y) item.y = y;
 				if (!item.d) item.d = 0.3;
-				let top = SINGLE_LANE * 9 - SINGLE_LANE/4;
-				let bottom = SINGLE_LANE * 9 + SINGLE_LANE/4;
+				let top = SINGLE_LANE * 11 - SINGLE_LANE/4;
+				let bottom = SINGLE_LANE * 11 + SINGLE_LANE/4;
 				if (item.y > bottom) item.d = -0.3;
 				if (item.y < top) item.d = 0.3;
 				item.y += item.d;

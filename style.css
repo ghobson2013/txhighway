@@ -437,12 +437,12 @@ margin:15px 0;display:block;
 }
 .block {
   position: absolute;
-  top: 72.5%;
+  top: 80.01%;
   z-index: 2;
   background: url('assets/bg/block.png') no-repeat;
-  background-size: 50%;
+  background-size: 100%;
   width: 27px;
-  height: 110px;
+  height: 6.67%;
 }
 .block.one {
   left: 55px;
@@ -457,15 +457,14 @@ margin:15px 0;display:block;
   background: url('assets/bg/caution.png') no-repeat;
   background-size: 50% 50%;
   width: 40px;
-  height: 40px;
+  height: 3.335%;
+  top: 82.23%;
 }
 .caution.one {
-  top: 73.5%;
   left: 20px;
 }
 
 .caution.two {
-  top: 73.5%;
   right: 20px;
 }
 
@@ -474,17 +473,16 @@ margin:15px 0;display:block;
   z-index: 2;
   background: url('assets/bg/no2x.png') no-repeat;
   background-size: 80%;
-  width: 48px;
-  height: 48px;
+  width: 60px;
+  height: 6.67%;
+  top: 80.01%;
 }
 
 .no2x.one {
-  top: 72.5%;
   left: 85px;
 }
 
 .no2x.two {
-  top: 72.5%;
   right:85px;
 }
 
@@ -578,19 +576,19 @@ span.divider {
   background: url('assets/bg/divider.png') repeat-x;
   background-size: 50% 50%;
   width: 100%;
-  height: 7%;
+  height: 6.67%;
   position: absolute;
-  top: 57%;
+  top: 66.67%;
   left: 0;
   z-index: 8;
 }
 .bitcoin-cash {
   background: #9EA0A3 url('assets/bg/bitcoin-cash-logo.png') no-repeat center 69%;
   background-size: 21.5%;
-  height: 57%;
+  height: 53.36%;
   width: 100%;
   position: absolute;
-  top: 0;
+  top: 13.34%;
   left: 0;
   z-index: -1;
 }
@@ -599,10 +597,10 @@ span.divider {
     background: #9EA0A3 url(assets/bg/core.png) no-repeat 50% -15px;
 
   background-size: 18.5%;
-  height: 14.4%;
+  height: 13.34%;
   width: 100%;
   position: absolute;
-  bottom: 21.4%;
+  bottom: 13.34%;
   left: 0;
   z-index: -1;
 }
