@@ -66,9 +66,10 @@ let audioMotorcycle = null,
 	audioMercy = null,
 	audioRide = null,
 	audioChaChing = null,
-	audioWoohoo = null,
+	audioLaCucaracha = null,
 	audioSpam = null,
-	audioAllSpam = null;
+	audioAllSpam = null,
+	audioHorns = null;
 
 // constants
 let WIDTH = null,
@@ -96,7 +97,8 @@ let requestID = null;
 let isVisible = true,
 	konamiActive = false,
 	isCashMuted = false,
-	isCoreMuted = false;
+	isCoreMuted = false,
+	isHornsPlaying = false;
 
 // arrays for vehicles
 let txCash = [],
@@ -203,9 +205,10 @@ function init(){
 	loadSound("assets/audio/mercy-6s.mp3", "mercy");
 	loadSound("assets/audio/ride-dirty-7s.mp3", "ride");
 	loadSound("assets/audio/cha-ching.mp3", "cha-ching")
-	loadSound("assets/audio/woohoo.mp3", "woohoo");
+	loadSound("assets/audio/la-cucaracha.mp3", "la-cucaracha");
 	loadSound("assets/audio/spam.mp3", "spam");
 	loadSound("assets/audio/allspam.mp3", "allspam");
+	loadSound("assets/audio/horns.mp3", "horns");
 
 	// acquire data for signs
 	updateMempoolData();
@@ -596,7 +599,7 @@ function getCar(valueOut, donation, isCash, userTx, sdTx, sw){
 function addSounds(carType){
 	if (!isVisible) return;
 
-	if (carType == carUserCash || carType == carUserCore) playSound(audioWoohoo);
+	if (carType == carUserCash || carType == carUserCore) playSound(audioLaCucaracha);
 
 	if (carType == carLambo){
 		let randSong = Math.floor(Math.random() * 2) + 1;
@@ -666,12 +669,17 @@ function loadSound(url, sound){
 				audioRide = buffer;
 			} else if (sound == "cha-ching"){
 				audioChaChing = buffer;
-			} else if (sound == "woohoo"){
-				audioWoohoo = buffer;
+			} else if (sound == "la-cucaracha.mp3"){
+				audioLaCucaracha = buffer;
 			} else if (sound == "spam"){
 				audioSpam = buffer;
 			} else if (sound == "allspam"){
 				audioAllSpam = buffer;
+			} else if (sound == "horns"){
+				audioHorns = audioContext.createBufferSource()
+				audioHorns.buffer = buffer;
+				audioHorns.connect(gainNode);
+				gainNode.connect(audioContext.destination);
 			}
 		});
 	}
@@ -768,6 +776,8 @@ function drawVehicles(arr){
 	let y = null;
 	let width = null;
 	let txWaiting = 0;
+	let isCash = true;
+
 	arr.forEach(function(item, index, object){
 
 		if(!item.isCash && konamiActive) { 
@@ -808,11 +818,26 @@ function drawVehicles(arr){
 			item.x += SPEED;
 		} else {
 			item.x += SPEED * SPEED_MODIFIER;
+			isCash = false;
 		}
 		
 	});
 
+	// update tx offscreen sign
 	transactionsWaiting.textContent = txWaiting;
+
+	// play horns if there's more than 5 vehicles off screen
+	if(audioHorns && !isCash){
+		if (txWaiting > 5 && !isHornsPlaying){
+			audioHorns.loop = true;
+			audioHorns.start(0);
+			isHornsPlaying = true;
+		} else if (txWaiting == 0 && audioHorns.loop == true){
+			isHornsPlaying = false;
+			audioHorns.loop = false;
+			audioHorns.stop(0);
+		}
+	}
 }
 
 // remove vehicles that are off the map
