@@ -438,22 +438,28 @@ function newTX(isCash, txInfo){
 
 // adds tx info to the side list
 function addTxToList(isCash, txid, valueOut, car){
-
-	let node = document.createElement("LI");
+	
+	let listItem = document.createElement("LI");
+	let anchor = document.createElement("A");
 	let text = "txid: " + txid.substring(0, 7) + "...\n";
 	text += "value: " + valueOut.toString().substring(0,9);
+	
 	let textNode = document.createTextNode(text);
 
-	node.setAttribute("style", "background-image: url(" + car.src + ");");
+	anchor.setAttribute("target", "_blank");
+	listItem.setAttribute("style", "background-image: url(" + car.src + ");");
 
     if (isCash){
-        node.className = "txinfo-cash";
+		listItem.className = "txinfo-cash";
+		anchor.setAttribute("href", "https://bch.btc.com/" + txid);
     } else {
-        node.className = "txinfo-core";
+		listItem.className = "txinfo-core";
+		anchor.setAttribute("href", "https://btc.com/" + txid);
     }
 
-	node.appendChild(textNode);
-	transactionList.prepend(node);
+	anchor.appendChild(textNode);
+	listItem.appendChild(anchor);
+	transactionList.prepend(listItem);
 
 	if (transactionList.childNodes.length > 50){
 		transactionList.removeChild(transactionList.childNodes[transactionList.childNodes.length -1]);
@@ -468,7 +474,7 @@ function createVehicle(type, arr, txInfo, lane, isCash){
 
 	if(isCash){
 		donation = isDonationTx(txInfo);
-		sdTx = isSatoshiDiceTx(txInfo);
+		sdTx = isSatoshiBonesTx(txInfo);
 	}
 
 	let val = 0;
@@ -690,7 +696,7 @@ let isDonationTx = function(txInfo){
 }
 
 // check for satoshi dice tx
-let isSatoshiDiceTx = function(txInfo){
+let isSatoshiBonesTx = function(txInfo){
 	let vouts = txInfo.out;//.vout;
 	let satoshiDiceTx = false;
 
