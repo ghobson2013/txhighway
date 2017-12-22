@@ -1,5 +1,7 @@
 Credit
 
-Thanks to cors-anywhere.herokuapp.com, api.blockchair.com, api.blockchain.info, Snap Tortoise's Konami.js, github pages, Eli Afram for the superb metaphor, and the growing Bitcoin Cash community of makers, developers, and supporters. Audio provided by freesounds.org Creative Commons. 
+Designed and developed by maplesyrupsucker & PorlyBe
+
+Thanks to cors-proxy.htmldriven.com, btc.com, blockchain.info, Coinmarketcap.com, Snap Tortoise's Konami.js, github pages, Eli Afram for the superb metaphor, and the growing Bitcoin Cash community of makers, developers, and supporters. Audio provided by freesounds.org Creative Commons. 
 
 Audio samples are covered under Fair Use for educational purposes.
