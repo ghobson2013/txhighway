@@ -827,7 +827,7 @@ function drawVehicles(arr){
 	transactionsWaiting.textContent = txWaiting;
 
 	// play horns if there's more than 5 vehicles off screen
-	if(audioHorns && !isCash){
+	if(audioHorns && !isCash && !isCoreMuted){
 		if (txWaiting > 5 && !isHornsPlaying){
 			audioHorns.loop = true;
 			audioHorns.start(0);
