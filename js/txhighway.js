@@ -51,7 +51,7 @@ const carCore = new Image(),
 	carUserCore = new Image(),
 	carLambo = new Image(),
 	carSpam = new Image(),
-	carSatoshiDice = new Image(),
+	carSatoshiBones = new Image(),
 	carSegwit = new Image();
 
 // sound system
@@ -165,7 +165,7 @@ function init(){
 	carWhaleCash.src = "assets/sprites/bch-whale.png";
 	carUserCash.src = "assets/sprites/tx-taxi.png"; 
 	carLambo.src = "assets/sprites/lambo.png";
-	carSatoshiDice.src = "assets/sprites/dice.png";
+	carSatoshiBones.src = "assets/sprites/bones.png";
 
 	//core vehicles
 	carMicroCore.src = "assets/sprites/core-micro.png";
@@ -468,7 +468,7 @@ function createVehicle(type, arr, txInfo, lane, isCash){
 
 	if(isCash){
 		donation = isDonationTx(txInfo);
-		sdTx = isSatoshiDiceTx(txInfo);
+		sdTx = isSatoshiBonesTx(txInfo);
 	}
 
 	let val = 0;
@@ -520,8 +520,8 @@ function getCar(valueOut, donation, isCash, userTx, sdTx, sw){
 	}
 
 	if(sw) return carSegwit;
-	// satoshi dice tx
-	if(sdTx) return carSatoshiDice;	
+	// satoshi bones tx
+	if(sdTx) return carSatoshiBones;	
 
 	// user tx vehicles need to go here
 	if (userTx){
@@ -689,29 +689,29 @@ let isDonationTx = function(txInfo){
 	return isDonation;
 }
 
-// check for satoshi dice tx
-let isSatoshiDiceTx = function(txInfo){
+// check for satoshi bones tx
+let isSatoshiBonesTx = function(txInfo){
 	let vouts = txInfo.out;//.vout;
-	let satoshiDiceTx = false;
+	let satoshiBonesTx = false;
 
 	vouts.forEach((key)=>{
 		let keys = Object.keys(key);
 		keys.forEach((k)=>{
-			if(k == "1DiceoejxZdTrYwu3FMP2Ldew91jq9L2u" ||
-			k == "1Dice115YcjDrPM9gXFW8iFV9S3j9MtERm" ||
-			k == "1Dice1FZk6Ls5LKhnGMCLq47tg1DFG763e" ||
-			k == "1Dice1cF41TGRLoCTbtN33DSdPtTujzUzx" ||
-			k == "1Dice1wBBY22stCobuE1LJxHX5FNZ7U97N" ||
-			k == "1Dice2wTatMqebSPsbG4gKgT3HfHznsHWi" ||
-			k == "1Dice5ycHmxDHUFVkdKGgrwsDDK1mPES3U" ||
-			k == "1Dice7JNVnvzyaenNyNcACuNnRVjt7jBrC" ||
-			k == "1Dice7v1M3me7dJGtTX6cqPggwGoRADVQJ" ||
-			k == "1Dice81SKu2S1nAzRJUbvpr5LiNTzn7MDV" ||
-			k == "1Dice9GgmweQWxqdiu683E7bHfpb7MUXGd") satoshiDiceTx = true;
+			if(k == "1bones76bhLcQ7utrNRG7SfozXWp19tQY" ||
+			k == "1bonesBvWUqyFP8Ff5cwtm3RvDTEh4Ydn" ||
+			k == "1bonesB8Z4Gj2k7KNiCRh1QzrHTztUqTa" ||
+			k == "1bonespxj9YTz9i5qkmAHLUvBjHUGqRj8" ||
+			k == "1bonesHoANjGEE9qqLS2yWytHgCBRfc6S" ||
+			k == "1bonesKyn7k3nUQdXWFGtbFCUkE3wWnVH" ||
+			k == "1bonesTkYwW2AnGpy5GTShZ87ZMbSRKWp" ||
+			k == "1bones63rEYAms5Sz1nxVsDpAYGYNfdkd" ||
+			k == "1bonesKj4KV6nZqCYe1b21gx39jCKSXxV" ||
+			k == "1bonesB8d7sgzio1hweuk8YgFc2q6HHyo" ||
+			k == "1bonesU1GG6ErmNAECq9b62kv21V9s2An") satoshiBonesTx = true;
 		});
 	});
 
-	return satoshiDiceTx;
+	return satoshiBonesTx;
 }
 
 // check for transactions to user's addresses
