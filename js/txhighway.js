@@ -57,7 +57,8 @@ const carCore = new Image(),
 // sound system
 let audioContext = null;
 let gainNode = null;
-let sounds = [];
+let feesCore = [];
+let feesCash = [];
 
 // sound variables
 let audioMotorcycle = null,
@@ -484,19 +485,44 @@ function createVehicle(type, arr, txInfo, lane, isCash){
 	let donation = false;
 	let userTx = isUserTx(txInfo);
 	let sdTx = false;
+	let fee = 0;
+	let valOut = 0;
+	let valIn = 0;
+
+	txInfo.inputs.forEach((input)=>{
+		valIn += input.prev_out.value;
+	});
+
+	txInfo.out.forEach((tx)=>{
+		valOut += tx.value/100000000;
+	});
+
+	fee = (valIn - valOut *100000000)/100000000;
 
 	if(isCash){
 		donation = isDonationTx(txInfo);
 		sdTx = isSatoshiBonesTx(txInfo);
+
+		fee = fee * PRICE_BCH;
+		if (feesCash.length == 100) feesCash.splice(0,1);
+		feesCash.push(fee);
+		if (feesCash.length == 1) return;
+		let total = 0;
+		for(var i = 0; i < feesCash.length; i++) total += feesCash[i];
+		let avg = total/feesCore.length;
+		document.getElementById("fees-bch").textContent = parseFloat(avg).toFixed(2);
+	} else {
+		fee = fee * PRICE_BTC;
+		if (feesCore.length == 100) feesCore.splice(0,1);
+		feesCore.push(fee);
+		if (feesCore.length == 1) return;
+		let total = 0;
+		for(var i = 0; i < feesCore.length; i++) total += feesCore[i];
+		let avg = total/feesCore.length;
+		document.getElementById("fees-btc").textContent = parseFloat(avg).toFixed(2);
 	}
 
-	let val = 0;
-	txInfo.out.forEach((tx)=>{
-		let v = tx.value/100000000;
-		val += v;
-	});
-
-	let car = getCar(val, donation, isCash, userTx, sdTx, txInfo.sw);
+	let car = getCar(valOut, donation, isCash, userTx, sdTx, txInfo.sw);
 	let width = SINGLE_LANE * (car.width / car.height);
 	let x = -width;
 
@@ -524,7 +550,7 @@ function createVehicle(type, arr, txInfo, lane, isCash){
 		lane: lane,
 		h: SINGLE_LANE,
 		w: width,
-		valueOut: val,
+		valueOut: valOut,
 		donation: donation,
 		userTx: userTx,
 		isCash: isCash
@@ -689,7 +715,7 @@ function loadSound(url, sound){
 			} else if (sound == "allspam"){
 				audioAllSpam = buffer;
 			} else if (sound == "horns"){
-				audioHorns = audioContext.createBufferSource()
+				audioHorns = audioContext.createBufferSource();
 				audioHorns.buffer = buffer;
 				audioHorns.start(0);
 			}
@@ -839,10 +865,7 @@ function drawVehicles(arr){
 	if(audioHorns && !isCash && !isCoreMuted){
 		//console.log(audioHorns.duration);
 		if (txWaiting > 5 && !isHornsPlaying){
-			/* playSound(audioHorns);
-			setTimeout(() => {
-				isHornsPlaying = false;
-			}, 18648); */
+
 			audioHorns.loop = true;
 			audioHorns.connect(gainNode);
 			isHornsPlaying = true;
@@ -851,7 +874,6 @@ function drawVehicles(arr){
 			
 			audioHorns.loop = false;
 			audioHorns.disconnect();
-			//audioHorns.stop(0);
 		}
 	}
 }
@@ -981,10 +1003,8 @@ $('.close').on('click', function(){
 let easter_egg = new Konami(function() { 
 	if (konamiActive == false || konamiActive == null) {
 		playSound(audioAllSpam);
-		
 		konamiActive = true;
 
-		/**  <img src="assets/core-mode.png" alt="Core mode" class="core-mode"> */
 		let img = document.createElement("IMG");
 		img.setAttribute("src", "assets/core-mode.png");
 		img.setAttribute("class", "core-mode");
