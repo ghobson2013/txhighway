@@ -983,6 +983,13 @@ let easter_egg = new Konami(function() {
 		playSound(audioAllSpam);
 		
 		konamiActive = true;
+
+		/**  <img src="assets/core-mode.png" alt="Core mode" class="core-mode"> */
+		let img = document.createElement("IMG");
+		img.setAttribute("src", "assets/core-mode.png");
+		img.setAttribute("class", "core-mode");
+		document.body.appendChild(img);
+
 		$( ".core-mode" ).fadeToggle( "slow", "linear" );
 	} else if (konamiActive == true) {
 		konamiActive = false;

@@ -1381,7 +1381,7 @@ input[type=range]:focus::-ms-fill-upper {
 } */
 
 #tx-list-button i{
-  color: #fff;
+  /* color: #fff; */
   font-size: 1.7rem;
   /* padding: 5px; */
 }
