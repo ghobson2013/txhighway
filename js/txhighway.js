@@ -499,28 +499,12 @@ function createVehicle(type, arr, txInfo, lane, isCash){
 
 	fee = (valIn - valOut *100000000)/100000000;
 
-	if(isCash){
+	if (isCash){
 		donation = isDonationTx(txInfo);
 		sdTx = isSatoshiBonesTx(txInfo);
-
-		fee = fee * PRICE_BCH;
-		if (feesCash.length == 100) feesCash.splice(0,1);
-		feesCash.push(fee);
-		if (feesCash.length == 1) return;
-		let total = 0;
-		for(var i = 0; i < feesCash.length; i++) total += feesCash[i];
-		let avg = total/feesCore.length;
-		document.getElementById("fees-bch").textContent = parseFloat(avg).toFixed(2);
-	} else {
-		fee = fee * PRICE_BTC;
-		if (feesCore.length == 100) feesCore.splice(0,1);
-		feesCore.push(fee);
-		if (feesCore.length == 1) return;
-		let total = 0;
-		for(var i = 0; i < feesCore.length; i++) total += feesCore[i];
-		let avg = total/feesCore.length;
-		document.getElementById("fees-btc").textContent = parseFloat(avg).toFixed(2);
 	}
+
+	updateFees(isCash, fee);
 
 	let car = getCar(valOut, donation, isCash, userTx, sdTx, txInfo.sw);
 	let width = SINGLE_LANE * (car.width / car.height);
@@ -555,6 +539,29 @@ function createVehicle(type, arr, txInfo, lane, isCash){
 		userTx: userTx,
 		isCash: isCash
 	});
+}
+
+
+function updateFees(isCash, fee){
+	if(isCash){
+		fee = fee * PRICE_BCH;
+		if (feesCash.length == 100) feesCash.splice(0,1);
+		feesCash.push(fee);
+		if (feesCash.length == 1) return;
+		let total = 0;
+		for(var i = 0; i < feesCash.length; i++) total += feesCash[i];
+		let avg = total/feesCore.length;
+		document.getElementById("fees-bch").textContent = parseFloat(avg).toFixed(2);
+	} else {
+		fee = fee * PRICE_BTC;
+		if (feesCore.length == 100) feesCore.splice(0,1);
+		feesCore.push(fee);
+		if (feesCore.length == 1) return;
+		let total = 0;
+		for(var i = 0; i < feesCore.length; i++) total += feesCore[i];
+		let avg = total/feesCore.length;
+		document.getElementById("fees-btc").textContent = parseFloat(avg).toFixed(2);
+	}
 }
 
 /* return car based upon transaction size*/
@@ -833,14 +840,14 @@ function drawVehicles(arr){
 
 			// segwit swerving
 			if (item.car == carSegwit){
-				if (!item.y) item.y = y;
+				if (!item.y) item.y = 0;
 				if (!item.d) item.d = 0.3;
-				let top = SINGLE_LANE * 11 - SINGLE_LANE/4;
-				let bottom = SINGLE_LANE * 11 + SINGLE_LANE/4;
-				if (item.y > bottom) item.d = -0.3;
-				if (item.y < top) item.d = 0.3;
+				let top = SINGLE_LANE * (item.lane - 1) - SINGLE_LANE/4;
+				let bottom = SINGLE_LANE * (item.lane - 1) + SINGLE_LANE/4;
+				if (y + item.y > bottom) item.d = -0.3;
+				if (y + item.y < top) item.d = 0.3;
 				item.y += item.d;
-				y = item.y;
+				y += item.y;
 			}
 
 			ctx.drawImage(car, item.x, y, width, SINGLE_LANE);
@@ -863,15 +870,12 @@ function drawVehicles(arr){
 
 	// play horns if there's more than 5 vehicles off screen
 	if(audioHorns && !isCash && !isCoreMuted){
-		//console.log(audioHorns.duration);
 		if (txWaiting > 5 && !isHornsPlaying){
-
 			audioHorns.loop = true;
 			audioHorns.connect(gainNode);
 			isHornsPlaying = true;
 		} else if (txWaiting == 0 && audioHorns.loop == true){
 			isHornsPlaying = false;
-			
 			audioHorns.loop = false;
 			audioHorns.disconnect();
 		}
