@@ -508,6 +508,111 @@ margin:15px 0;display:block;
 }
 
 
+.rotate {
+  /* Safari */
+  -webkit-transform: rotate(90deg);
+
+  /* Firefox */
+  -moz-transform: rotate(90deg);
+
+  /* IE */
+  -ms-transform: rotate(90deg);
+
+  /* Opera */
+  -o-transform: rotate(90deg);
+
+  /* Internet Explorer */
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);
+
+}
+
+.fees-toll {
+  position:absolute;
+  z-index:9;
+  transform-origin: 100% 0;
+  background:#555555;
+  border:1px solid #444;
+  padding:15px 5px;
+  text-align:center;
+  font-family:'Lato', helvetica, arial, sans-serif;
+  color:#fff;
+  font-weight:bold;
+  letter-spacing:1px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  font-size:12px;
+}
+
+.fees-toll:before {
+  content:"";
+  width:100%;
+  height:55%;
+  background:rgba(0,0,0,0.05);
+  z-index:9;
+  position:absolute;
+  top:0;
+  left:0;
+}
+.fees-toll:after {
+     content: "";
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 23px 10px 23px;
+    border-color: transparent transparent #444 transparent;
+    position: absolute;
+    right: -20px;
+    bottom: 16px;
+    position: absolute;
+    -webkit-transform: rotate(-90deg);
+    -moz-transform: rotate(-90deg);
+    -ms-transform: rotate(-90deg);
+    -o-transform: rotate(-90deg);
+    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=0);
+    z-index: 10;
+}
+
+.fees-bch {
+      top: 450px;
+    width: 360px;
+    right: 5%;
+}
+
+.fees-btc {
+bottom: 42px;
+width: 90px;
+right:5%
+}
+
+.fee-title {
+  color: #EEA24B;
+    position: absolute;
+    top: 15px;
+    left: 0px;
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing:1px;
+
+  /* Safari */
+  -webkit-transform: rotate(-90deg);
+
+  /* Firefox */
+  -moz-transform: rotate(-90deg);
+
+  /* IE */
+  -ms-transform: rotate(-90deg);
+
+  /* Opera */
+  -o-transform: rotate(-90deg);
+
+  /* Internet Explorer */
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=0);
+
+}
+
+#fees-bch, #fees-btc {
+  border-top:1px solid #fff;
+}
+
 .ln {
   position:absolute;
   bottom:0px;
@@ -653,7 +758,7 @@ span.divider {
   border: 2px solid #245934;
   border-radius: 10px;
   position: absolute;
-  right: 40px;
+  right: 115px;
   bottom: 35%;
   z-index: 99;
   width: 250px;
@@ -837,7 +942,7 @@ span.divider {
   background:#fff;
   border-bottom:1px solid #999;
   position:absolute;
-  z-index:8;
+  z-index:11;
   bottom:28.5%;
   left:40%;
   border-radius:3px;
