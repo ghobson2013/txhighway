@@ -551,7 +551,7 @@ function updateFees(isCash, fee){
 		let total = 0;
 		for(var i = 0; i < feesCash.length; i++) total += feesCash[i];
 		let avg = total/feesCore.length;
-		document.getElementById("fees-bch").textContent = parseFloat(avg).toFixed(2);
+		document.getElementById("fees-bch").textContent = "$" + parseFloat(avg).toFixed(2);
 	} else {
 		fee = fee * PRICE_BTC;
 		if (feesCore.length == 100) feesCore.splice(0,1);
@@ -560,7 +560,7 @@ function updateFees(isCash, fee){
 		let total = 0;
 		for(var i = 0; i < feesCore.length; i++) total += feesCore[i];
 		let avg = total/feesCore.length;
-		document.getElementById("fees-btc").textContent = parseFloat(avg).toFixed(2);
+		document.getElementById("fees-btc").textContent = "$" + parseFloat(avg).toFixed(2);
 	}
 }
 
