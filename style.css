@@ -580,7 +580,8 @@ margin:15px 0;display:block;
 .fees-btc {
 bottom: 42px;
 width: 90px;
-right:5%
+right:5%;
+background:#2e2e2e !important;
 }
 
 .fee-title {
