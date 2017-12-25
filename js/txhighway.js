@@ -751,7 +751,7 @@ let isDonationTx = function(txInfo){
 // check for satoshi dice tx
 let isSatoshiBonesTx = function(txInfo){
 	let vouts = txInfo.out;//.vout;
-	let satoshiDiceTx = false;
+	let satoshiBonesTx = false;
 
 	vouts.forEach((key)=>{
 		let k = key.addr;
@@ -770,7 +770,7 @@ let isSatoshiBonesTx = function(txInfo){
 
 	});
 
-	return satoshiDiceTx;
+	return satoshiBonesTx;
 }
 
 // check for transactions to user's addresses
