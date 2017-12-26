@@ -1801,7 +1801,7 @@ input[type=range]:focus::-ms-fill-upper {
 
   .ln {
     background-size: cover;
-    background-position: 45% 0;
+    background-position: 0 0;
     width:100%;
   }
 }
