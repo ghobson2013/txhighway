@@ -743,6 +743,17 @@ span.divider {
   left:0;
   z-index:-2;
 }
+
+.road-bg-bs {
+  background:#9EA0A3;
+  position:absolute;
+  height:13.34%;
+  width:100%;
+  bottom:13.34%;
+  left:0;
+  z-index:-2;
+}
+
 .bitcoin-cash {
   background: url('assets/bg/bitcoin-cash-logo_whitebg.png') no-repeat center 33%;
   background-size: 22.5%;
@@ -818,14 +829,14 @@ span.divider {
 
 .bs {
   /*background: #9EA0A3 url(assets/bg/bs.png) no-repeat center 0;*/
-    background: #9EA0A3 url(assets/bg/core.png) no-repeat 50% -15px;
-  background-size: 18.5%;
+    background: url(assets/bg/core.png) no-repeat center top;
+  background-size: auto 50%;
   height: 13.34%;
   width: 100%;
   position: fixed;
   bottom: 13.34%;
   left: 0;
-  z-index: -3;
+  z-index: -1;
 }
 
 .road-sign.cash-road-sign  {
@@ -1670,8 +1681,22 @@ input[type=range]:focus::-ms-fill-upper {
       left:55%;
       right: auto;
     }
+
+    .ln{
+      width: 100%;
+    }
+
+    .fees-btc {
+      bottom:2%;
+      height: 20.01%;
+    }
   }
 
+  @media only screen and (orientation: portrait){
+    .bitcoin-cash, .bs {
+      background-size: auto 50% !important;
+    }
+  }
   .title {
     width: 170px;
     top: 2%;
@@ -1679,9 +1704,7 @@ input[type=range]:focus::-ms-fill-upper {
   .title h2 {
     display: none;
   }
-  .bitcoin-cash, .bs {
-    background-size: 45% !important;
-  }
+  
   .bitcoin-cash {
     background-position:50% 60%;
   }
@@ -1741,6 +1764,11 @@ input[type=range]:focus::-ms-fill-upper {
     right:10.2%;
   }
 
+  @media only screen and (orientation: portrait){
+    .fees-bch,.fees-btc {
+      right:12.5%;
+    }
+  }
     #tx-list-button {
     
     right:auto;
