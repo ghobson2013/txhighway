@@ -71,7 +71,8 @@ let audioMotorcycle = null,
 	audioLaCucaracha = null,
 	audioSpam = null,
 	audioAllSpam = null,
-	audioHorns = null;
+	audioHorns = null,
+	audioLaugh = null;
 
 // constants
 let WIDTH = null,
@@ -212,6 +213,7 @@ function init(){
 	loadSound("assets/audio/spam.mp3", "spam");
 	loadSound("assets/audio/allspam.mp3", "allspam");
 	loadSound("assets/audio/horns.mp3", "horns");
+	loadSound("assets/audio/evil-laugh.mp3", "laugh");
 
 	// acquire data for signs
 	updateMempoolData();
@@ -644,7 +646,10 @@ function addSounds(carType){
 
 	if (carType == carUserCash || carType == carUserCore) {
 		playSound(audioLaCucaracha);
-		
+	}
+
+	if (carType == carSatoshiBones){
+		playSound(audioLaugh);
 	}
 
 	if (carType == carLambo){
@@ -721,6 +726,8 @@ function loadSound(url, sound){
 				audioSpam = buffer;
 			} else if (sound == "allspam"){
 				audioAllSpam = buffer;
+			} else if(sound == "laugh") {
+				audioLaugh = buffer;
 			} else if (sound == "horns"){
 				audioHorns = audioContext.createBufferSource();
 				audioHorns.buffer = buffer;
