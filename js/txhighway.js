@@ -339,6 +339,8 @@ function blockNotify(data, isCash){
 		corePoolInfo.textContent = formatWithCommas(t - amount);
 		setTimeout(() => {
 			getPoolData(urlCors + "https://chain." + urlBtc + "tx/unconfirmed/summary", false);
+			getCoreConfTime(urlBlockchainInfo + "charts/avg-confirmation-time?format=json&cors=true");
+
 		}, 1000);
 	}
 
@@ -731,6 +733,7 @@ function loadSound(url, sound){
 			} else if (sound == "horns"){
 				audioHorns = audioContext.createBufferSource();
 				audioHorns.buffer = buffer;
+				gainNode.connect(audioContext.destination);
 				audioHorns.start(0);
 			}
 		});
@@ -757,12 +760,17 @@ let isDonationTx = function(txInfo){
 
 // check for satoshi dice tx
 let isSatoshiBonesTx = function(txInfo){
-	let vouts = txInfo.out;//.vout;
 	let satoshiBonesTx = false;
 
-	vouts.forEach((key)=>{
-		let k = key.addr;
+	txInfo.out.forEach((key)=>{
+		check(key.addr);
+	});
 
+	txInfo.inputs.forEach((key)=>{
+		check(key.prev_out.addr);
+	});
+
+	function check(k){
 		if(k == "1bones76bhLcQ7utrNRG7SfozXWp19tQY" ||
 			k == "1bonesBvWUqyFP8Ff5cwtm3RvDTEh4Ydn" ||
 			k == "1bonesB8Z4Gj2k7KNiCRh1QzrHTztUqTa" ||
@@ -774,8 +782,7 @@ let isSatoshiBonesTx = function(txInfo){
 			k == "1bonesKj4KV6nZqCYe1b21gx39jCKSXxV" ||
 			k == "1bonesB8d7sgzio1hweuk8YgFc2q6HHyo" ||
 			k == "1bonesU1GG6ErmNAECq9b62kv21V9s2An") satoshiBonesTx = true;
-
-	});
+	}
 
 	return satoshiBonesTx;
 }
