@@ -1092,11 +1092,21 @@ span.divider {
 }
 
 
+.adspot.ad-logo img{
+width:75px;
+height:auto;
+}
 
 .ad-logo img {
   height:30px;
   margin:0;
   padding:3px 3px 0 3px;
+  border-radius: 3px 3px 0 0;
+}
+
+.ad-logo.dark img {
+  background:#333;
+  padding:5px;
 }
 
 .btn {
@@ -1752,13 +1762,17 @@ input[type=range]:focus::-ms-fill-upper {
   }
 
   .adspot.ad-one {
-    left:15%;
+    left:19%;
     right:auto;
   }
 
   .adspot.ad-two{
     left: auto;
-    right: 15%;
+    right: 25%;
+  }
+
+  .adspot.ad-two.ad-logo img {
+    width:48px;
   }
 
   .adspot.ad-three {
@@ -1803,6 +1817,13 @@ input[type=range]:focus::-ms-fill-upper {
     background-size: cover;
     background-position: 0 0;
     width:100%;
+  }
+  .block,.caution {
+    display:none;
+  }
+
+  .waiting-sign {
+    bottom:10.5%;
   }
 }
 
