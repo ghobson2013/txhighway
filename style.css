@@ -573,7 +573,7 @@ margin:15px 0;display:block;
 
 .fees-bch {
     top: 11.5%;
-    height: 53.36%;
+    height: 51.36%;
     width:36px;
     right: 5%;
     
@@ -590,12 +590,13 @@ background:#2e2e2e !important;
 .fee-title {
   color: #EEA24B;
     position: absolute;
-    top: 0;
+    top: 10px;
     left: 0;
     width:100%;
     text-transform: uppercase;
     font-weight: 700;
     letter-spacing:1px;
+    font-size:9px;
 
 /*   /* Safari */
 /*   -webkit-transform: rotate(-90deg);
@@ -614,11 +615,17 @@ background:#2e2e2e !important;
  */
 }
 
+.fee-title.secondary {
+  top:auto;
+  bottom:12px;
+}
+
 #fees-bch, #fees-btc {
-  border-top:1px solid #fff;
-  position:relative;
-  left: -5.5px;
-  top:50%;
+  border-top: 1px solid #fff;
+    position: relative;
+    left: -16.5px;
+    top: 45%;
+    width: 54px;
 }
 
 .ln {
@@ -766,7 +773,7 @@ span.divider {
   border: 2px solid #245934;
   border-radius: 10px;
   position: absolute;
-  right: 2%;
+  right: 10%;
   bottom: 35%;
   z-index: 99;
   width: 250px;
@@ -931,7 +938,7 @@ span.divider {
 
 .whitepaper {
   position:absolute;
-  top:10%;
+  bottom:8%;
   left:2%;
   z-index:9;
   }
@@ -1004,13 +1011,13 @@ span.divider {
 }
 
 .adspot.ad-five {
-  left:40%;
-  bottom:90%;
+  left:35%;
+  bottom:88.5%;
 }
 
 .adspot.ad-six {
   left:53%;
-  bottom:90%;
+  bottom:88.5%;
 }
 
 
