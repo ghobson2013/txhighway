@@ -1494,6 +1494,20 @@ input[type=range]:focus::-ms-fill-upper {
   background-repeat: no-repeat;
 }
 
+#transactions li a {
+  color:#222;
+  text-decoration: none;
+  display:block;
+}
+
+#transactions li a:hover {
+  color:#333;
+}
+
+#transactions li a:visited {
+  color:#777;
+}
+
 /* #tx-list-button {
   position:fixed; 
   top: 5px;
