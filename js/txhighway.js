@@ -801,22 +801,22 @@ function drawBackground(){
 	ctx.fillStyle = "#9EA0A3";
 
 	// stroke
-	ctx.setLineDash([6]);
-	ctx.strokeStyle = "#FFF";
-	ctx.strokeRect(-2, SINGLE_LANE * 2, WIDTH + 3, SINGLE_LANE);
-	ctx.strokeRect(-2, SINGLE_LANE * 3, WIDTH + 3, SINGLE_LANE);
-	ctx.strokeRect(-2, SINGLE_LANE * 5, WIDTH + 3, SINGLE_LANE);
-	ctx.strokeRect(-2, SINGLE_LANE * 7, WIDTH + 3, SINGLE_LANE);
-	ctx.strokeRect(-2, SINGLE_LANE * 9, WIDTH + 3, SINGLE_LANE);
+	// ctx.setLineDash([6]);
+	// ctx.strokeStyle = "#FFF";
+	// ctx.strokeRect(-2, SINGLE_LANE * 2, WIDTH + 3, SINGLE_LANE);
+	// ctx.strokeRect(-2, SINGLE_LANE * 3, WIDTH + 3, SINGLE_LANE);
+	// ctx.strokeRect(-2, SINGLE_LANE * 5, WIDTH + 3, SINGLE_LANE);
+	// ctx.strokeRect(-2, SINGLE_LANE * 7, WIDTH + 3, SINGLE_LANE);
+	// ctx.strokeRect(-2, SINGLE_LANE * 9, WIDTH + 3, SINGLE_LANE);
 
-	ctx.setLineDash([0]);
-	ctx.strokeStyle = "#3F3B3C";
-	ctx.strokeRect(-2, SINGLE_LANE * 10, WIDTH + 3, SINGLE_LANE);
+	// ctx.setLineDash([0]);
+	// ctx.strokeStyle = "#3F3B3C";
+	// ctx.strokeRect(-2, SINGLE_LANE * 10, WIDTH + 3, SINGLE_LANE);
 
-	ctx.setLineDash([6]);
-	ctx.strokeStyle = "#FFF";
+	// ctx.setLineDash([6]);
+	// ctx.strokeStyle = "#FFF";
 
-	ctx.strokeRect(-2, SINGLE_LANE * 12, WIDTH + 3, SINGLE_LANE);
+	// ctx.strokeRect(-2, SINGLE_LANE * 12, WIDTH + 3, SINGLE_LANE);
 }
 
 // loop through transactions and draw them

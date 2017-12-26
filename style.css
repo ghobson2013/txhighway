@@ -84,6 +84,7 @@ h1,h2,h3,h4,h5,h6 {
 
 .title {
   position: absolute;
+  z-index:4;
 }
 span {
   display: block;
@@ -732,9 +733,19 @@ span.divider {
   left: 0;
   z-index: 8;
 }
+
+.road-bg {
+  background:#9EA0A3;
+  position:absolute;
+  height:53.36%;
+  width:100%;
+  top:13.34%;
+  left:0;
+  z-index:-2;
+}
 .bitcoin-cash {
-  background: #9EA0A3 url('assets/bg/bitcoin-cash-logo.png') no-repeat center 33%;
-  background-size: 21.5%;
+  background: url('assets/bg/bitcoin-cash-logo_whitebg.png') no-repeat center 33%;
+  background-size: 22.5%;
   height: 53.36%;
   width: 100%;
   position: absolute;
@@ -742,6 +753,8 @@ span.divider {
   left: 0;
   z-index: -1;
 }
+
+
 .bitcoin-cash:before {
   content: "";
   width: 100%;
@@ -756,6 +769,53 @@ span.divider {
   z-index: -1;
   border-bottom:2px solid #666;
 }
+
+.lane {
+  height:2px;
+  width:100%;
+  position:absolute;
+  left:0;
+
+  background-image: linear-gradient(to right, #ccc 60%, rgba(255, 255, 255, 0) 20%);
+  background-position: top;
+  background-size: 6px 8px;
+  background-repeat: repeat-x;
+  z-index:-2;
+}
+
+.lane.one {
+  top:124px;
+}
+
+.lane.two {
+  top:165px;
+}
+
+.lane.three {
+  top:207px;
+}
+
+.lane.four {
+  top:249px;
+}
+
+.lane.five {
+  top:291px;
+}
+
+.lane.six {
+  top:332px;
+}
+
+.lane.seven {
+  top:373px;
+}
+
+.lane.core {
+  top:498px;
+}
+
+
 .bs {
   /*background: #9EA0A3 url(assets/bg/bs.png) no-repeat center 0;*/
     background: #9EA0A3 url(assets/bg/core.png) no-repeat 50% -15px;
@@ -765,7 +825,7 @@ span.divider {
   position: fixed;
   bottom: 13.34%;
   left: 0;
-  z-index: -1;
+  z-index: -3;
 }
 
 .road-sign.cash-road-sign  {
