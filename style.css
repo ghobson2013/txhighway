@@ -776,7 +776,7 @@ span.divider {
   position:absolute;
   left:0;
 
-  background-image: linear-gradient(to right, #ccc 60%, rgba(255, 255, 255, 0) 20%);
+  background-image: linear-gradient(to right, #c2c2c2 60%, rgba(255, 255, 255, 0) 20%);
   background-position: top;
   background-size: 6px 8px;
   background-repeat: repeat-x;
@@ -784,35 +784,35 @@ span.divider {
 }
 
 .lane.one {
-  top:124px;
+  top:19.67%;
 }
 
 .lane.two {
-  top:165px;
+  top:26.67%;
 }
 
 .lane.three {
-  top:207px;
+  top:33.34%;
 }
 
 .lane.four {
-  top:249px;
+  top:40.01%;
 }
 
 .lane.five {
-  top:291px;
+  top:46.68%;
 }
 
 .lane.six {
-  top:332px;
+  top:53.35%;
 }
 
 .lane.seven {
-  top:373px;
+  top:60.02%;
 }
 
 .lane.core {
-  top:498px;
+  top:79.75%;
 }
 
 
@@ -935,7 +935,7 @@ span.divider {
   margin: 2px 0 3px;
   font-weight: normal;
   color: #F8D448;
-  font-size:7px;
+  font-size:6px;
 }
 
 .tab {
