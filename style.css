@@ -620,11 +620,21 @@ background:#2e2e2e !important;
   bottom:12px;
 }
 
+.fees-toll .avg {
+  position: absolute;
+    left: 15px;
+    top: 50%;
+    width: 37px;
+    font-size:8px;
+    color:#999;
+    text-align:center;
+}
+
 #fees-bch, #fees-btc {
-  border-top: 1px solid #fff;
+  /*border-top: 1px solid #fff;*/
     position: relative;
-    left: -16.5px;
-    top: 45%;
+    left: -19.5px;
+    top: 50%;
     width: 54px;
 }
 
