@@ -389,7 +389,7 @@ function getCoreConfTime(url){
 	xhr.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
 			let obj = JSON.parse(xhr.responseText);
-			coreEta.textContent = obj.values[0].y + " MIN";
+			coreEta.textContent = obj.values[0].y + " MIN+";
 		}
 	}
 	xhr.open("GET", url, true);
