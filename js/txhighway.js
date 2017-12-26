@@ -57,8 +57,6 @@ const carCore = new Image(),
 // sound system
 let audioContext = null;
 let gainNode = null;
-let feesCore = [];
-let feesCash = [];
 
 // sound variables
 let audioMotorcycle = null,
@@ -105,7 +103,9 @@ let isVisible = true,
 
 // arrays for vehicles
 let txCash = [],
-	txCore = [];
+	txCore = [],
+	feesCore = [],
+	feesCash = [];
 
 // connect to sockets
 socketCash.onopen = ()=>{
@@ -346,7 +346,7 @@ function blockNotify(data, isCash){
 
 	if (isVisible) playSound(audioChaChing);
 	
-	confirmedAmount.textContent = amount + " " + ticker;
+	confirmedAmount.textContent = amount + "x " + ticker;
 	confirmedNotify.style.display = "block"; //no pun intended
 	setTimeout(() => {
 		confirmedNotify.style.display = "none";
@@ -576,7 +576,8 @@ function getCar(valueOut, donation, isCash, userTx, sdTx, sw){
 	}
 
 	if(sw) return carSegwit;
-	// satoshi dice tx
+	
+	// satoshi bones tx
 	if(sdTx) return carSatoshiBones;	
 
 	// user tx vehicles need to go here
@@ -801,31 +802,6 @@ let isUserTx = function(txInfo){
 	return isUserTx;
 }
 
-/** Draw the background */
-function drawBackground(){
-	// draw the lanes
-	ctx.clearRect(0,0,WIDTH,HEIGHT);
-	ctx.fillStyle = "#9EA0A3";
-
-	// stroke
-	// ctx.setLineDash([6]);
-	// ctx.strokeStyle = "#FFF";
-	// ctx.strokeRect(-2, SINGLE_LANE * 2, WIDTH + 3, SINGLE_LANE);
-	// ctx.strokeRect(-2, SINGLE_LANE * 3, WIDTH + 3, SINGLE_LANE);
-	// ctx.strokeRect(-2, SINGLE_LANE * 5, WIDTH + 3, SINGLE_LANE);
-	// ctx.strokeRect(-2, SINGLE_LANE * 7, WIDTH + 3, SINGLE_LANE);
-	// ctx.strokeRect(-2, SINGLE_LANE * 9, WIDTH + 3, SINGLE_LANE);
-
-	// ctx.setLineDash([0]);
-	// ctx.strokeStyle = "#3F3B3C";
-	// ctx.strokeRect(-2, SINGLE_LANE * 10, WIDTH + 3, SINGLE_LANE);
-
-	// ctx.setLineDash([6]);
-	// ctx.strokeStyle = "#FFF";
-
-	// ctx.strokeRect(-2, SINGLE_LANE * 12, WIDTH + 3, SINGLE_LANE);
-}
-
 // loop through transactions and draw them
 function drawVehicles(arr){
 	let car = null;
@@ -911,7 +887,8 @@ function removeVehicles(){
 // animate everything
 function animate(){
 	requestID = requestAnimationFrame(animate);
-	drawBackground();
+
+	ctx.clearRect(0,0,WIDTH,HEIGHT);
 	drawVehicles(txCash);
 	drawVehicles(txCore);
 	removeVehicles();
