@@ -1728,6 +1728,10 @@ input[type=range]:focus::-ms-fill-upper {
 
 @media screen and (max-width: 600px){
 
+  .fees-bch,.fees-btc {
+    right:10.2%;
+  }
+
     #tx-list-button {
     
     right:auto;
