@@ -527,7 +527,7 @@ margin:15px 0;display:block;
 }
 
 .fees-toll {
-  position:absolute;
+  position:fixed;
   z-index:9;
   transform-origin: 100% 0;
   background:#555555;
@@ -544,8 +544,8 @@ margin:15px 0;display:block;
 
 .fees-toll:before {
   content:"";
-  width:100%;
-  height:55%;
+  width:50%;
+  height:100%;
   background:rgba(0,0,0,0.05);
   z-index:9;
   position:absolute;
@@ -560,26 +560,29 @@ margin:15px 0;display:block;
     border-width: 0 23px 10px 23px;
     border-color: transparent transparent #444 transparent;
     position: absolute;
-    right: -20px;
-    bottom: 16px;
+    right: 0;
+    bottom: 0;
     position: absolute;
-    -webkit-transform: rotate(-90deg);
+/*     -webkit-transform: rotate(-90deg);
     -moz-transform: rotate(-90deg);
     -ms-transform: rotate(-90deg);
     -o-transform: rotate(-90deg);
-    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=0);
+    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=0); */
     z-index: 10;
 }
 
 .fees-bch {
-      top: 450px;
-    width: 360px;
+    top: 11.5%;
+    height: 53.36%;
+    width:36px;
     right: 5%;
+    
 }
 
 .fees-btc {
-bottom: 42px;
-width: 90px;
+bottom: 12%;
+width: 36px;
+height: 13.34%;
 right:5%;
 background:#2e2e2e !important;
 }
@@ -587,31 +590,35 @@ background:#2e2e2e !important;
 .fee-title {
   color: #EEA24B;
     position: absolute;
-    top: 15px;
-    left: 0px;
+    top: 0;
+    left: 0;
+    width:100%;
     text-transform: uppercase;
     font-weight: 700;
     letter-spacing:1px;
 
-  /* Safari */
-  -webkit-transform: rotate(-90deg);
-
+/*   /* Safari */
+/*   -webkit-transform: rotate(-90deg);
+ */
   /* Firefox */
-  -moz-transform: rotate(-90deg);
-
+/*   -moz-transform: rotate(-90deg);
+ */
   /* IE */
-  -ms-transform: rotate(-90deg);
-
+/*   -ms-transform: rotate(-90deg);
+ */
   /* Opera */
-  -o-transform: rotate(-90deg);
-
+/*   -o-transform: rotate(-90deg);
+ */
   /* Internet Explorer */
-  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=0);
-
+/*   filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=0);
+ */
 }
 
 #fees-bch, #fees-btc {
   border-top:1px solid #fff;
+  position:relative;
+  left: -5.5px;
+  top:50%;
 }
 
 .ln {
@@ -759,7 +766,7 @@ span.divider {
   border: 2px solid #245934;
   border-radius: 10px;
   position: absolute;
-  right: 115px;
+  right: 2%;
   bottom: 35%;
   z-index: 99;
   width: 250px;
@@ -1649,20 +1656,25 @@ input[type=range]:focus::-ms-fill-upper {
   }
 
   .adspot.ad-one {
-    left:1%;
+    left:15%;
+    right:auto;
   }
 
   .adspot.ad-two{
-    left: 30%;
+    left: auto;
+    right: 15%;
   }
 
   .adspot.ad-three {
-    right:30%;
-    left:auto;
+    right:auto;
+    left:15%;
+    bottom: 5%;
   }
 
   .adspot.ad-four{
-    right: 1%;
+    left: auto;
+    right: 15%;
+    bottom:5%
   }
   
   #modal-search fieldset {
@@ -1694,6 +1706,7 @@ input[type=range]:focus::-ms-fill-upper {
   .ln {
     background-size: cover;
     background-position: 45% 0;
+    width:100%;
   }
 }
 
