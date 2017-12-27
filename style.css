@@ -1636,7 +1636,8 @@ input[type=range]:focus::-ms-fill-upper {
 
 }
 
-@media only screen and (max-width:767px) {
+
+@media only screen and (max-width:812px) {
   #modal-info .modal-body p, #modal-info .modal-body ul {
     font-size:13px;
   }
@@ -1680,6 +1681,13 @@ input[type=range]:focus::-ms-fill-upper {
       right: auto;
     }
 
+    .adspot.ad-four{
+      right: 13%;
+    }
+
+    .adspot.ad-one{
+      left: 16%;
+    }
     .ln{
       width: 100%;
     }
@@ -1689,6 +1697,9 @@ input[type=range]:focus::-ms-fill-upper {
       height: 20.01%;
     }
 
+    .whitepaper{
+      left: 10%;
+    }
   }
 
   @media only screen and (orientation: portrait){
@@ -1862,10 +1873,6 @@ input[type=range]:focus::-ms-fill-upper {
 
   
   @media only screen and (orientation: landscape) {
-    .whitepaper{
-      left: 10%;
-    }
-
     .waiting-sign{
       bottom: 1%;
     }
