@@ -433,7 +433,7 @@ vis(function(){
 	if (vis()){
 		txCash = [];
 		txCore = [];
-		drawBackground();
+		//drawBackground();
 		requestAnimationFrame(animate);
 		if(!isCoreMuted) audioHorns.connect(gainNode);
 		isVisible = true;
