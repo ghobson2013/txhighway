@@ -57,8 +57,6 @@ const carCore = new Image(),
 // sound system
 let audioContext = null;
 let gainNode = null;
-let feesCore = [];
-let feesCash = [];
 
 // sound variables
 let audioMotorcycle = null,
@@ -105,7 +103,9 @@ let isVisible = true,
 
 // arrays for vehicles
 let txCash = [],
-	txCore = [];
+	txCore = [],
+	feesCore = [],
+	feesCash = [];
 
 // connect to sockets
 socketCash.onopen = ()=>{
@@ -339,12 +339,14 @@ function blockNotify(data, isCash){
 		corePoolInfo.textContent = formatWithCommas(t - amount);
 		setTimeout(() => {
 			getPoolData(urlCors + "https://chain." + urlBtc + "tx/unconfirmed/summary", false);
+			getCoreConfTime(urlBlockchainInfo + "charts/avg-confirmation-time?format=json&cors=true");
+
 		}, 1000);
 	}
 
 	if (isVisible) playSound(audioChaChing);
 	
-	confirmedAmount.textContent = amount + " " + ticker;
+	confirmedAmount.textContent = amount + "x " + ticker;
 	confirmedNotify.style.display = "block"; //no pun intended
 	setTimeout(() => {
 		confirmedNotify.style.display = "none";
@@ -431,7 +433,7 @@ vis(function(){
 	if (vis()){
 		txCash = [];
 		txCore = [];
-		drawBackground();
+		//drawBackground();
 		requestAnimationFrame(animate);
 		if(!isCoreMuted) audioHorns.connect(gainNode);
 		isVisible = true;
@@ -574,7 +576,8 @@ function getCar(valueOut, donation, isCash, userTx, sdTx, sw){
 	}
 
 	if(sw) return carSegwit;
-	// satoshi dice tx
+	
+	// satoshi bones tx
 	if(sdTx) return carSatoshiBones;	
 
 	// user tx vehicles need to go here
@@ -731,6 +734,7 @@ function loadSound(url, sound){
 			} else if (sound == "horns"){
 				audioHorns = audioContext.createBufferSource();
 				audioHorns.buffer = buffer;
+				gainNode.connect(audioContext.destination);
 				audioHorns.start(0);
 			}
 		});
@@ -757,12 +761,17 @@ let isDonationTx = function(txInfo){
 
 // check for satoshi dice tx
 let isSatoshiBonesTx = function(txInfo){
-	let vouts = txInfo.out;//.vout;
 	let satoshiBonesTx = false;
 
-	vouts.forEach((key)=>{
-		let k = key.addr;
+	txInfo.out.forEach((key)=>{
+		check(key.addr);
+	});
 
+	txInfo.inputs.forEach((key)=>{
+		check(key.prev_out.addr);
+	});
+
+	function check(k){
 		if(k == "1bones76bhLcQ7utrNRG7SfozXWp19tQY" ||
 			k == "1bonesBvWUqyFP8Ff5cwtm3RvDTEh4Ydn" ||
 			k == "1bonesB8Z4Gj2k7KNiCRh1QzrHTztUqTa" ||
@@ -774,8 +783,7 @@ let isSatoshiBonesTx = function(txInfo){
 			k == "1bonesKj4KV6nZqCYe1b21gx39jCKSXxV" ||
 			k == "1bonesB8d7sgzio1hweuk8YgFc2q6HHyo" ||
 			k == "1bonesU1GG6ErmNAECq9b62kv21V9s2An") satoshiBonesTx = true;
-
-	});
+	}
 
 	return satoshiBonesTx;
 }
@@ -792,31 +800,6 @@ let isUserTx = function(txInfo){
 		} 
 	});
 	return isUserTx;
-}
-
-/** Draw the background */
-function drawBackground(){
-	// draw the lanes
-	ctx.clearRect(0,0,WIDTH,HEIGHT);
-	ctx.fillStyle = "#9EA0A3";
-
-	// stroke
-	// ctx.setLineDash([6]);
-	// ctx.strokeStyle = "#FFF";
-	// ctx.strokeRect(-2, SINGLE_LANE * 2, WIDTH + 3, SINGLE_LANE);
-	// ctx.strokeRect(-2, SINGLE_LANE * 3, WIDTH + 3, SINGLE_LANE);
-	// ctx.strokeRect(-2, SINGLE_LANE * 5, WIDTH + 3, SINGLE_LANE);
-	// ctx.strokeRect(-2, SINGLE_LANE * 7, WIDTH + 3, SINGLE_LANE);
-	// ctx.strokeRect(-2, SINGLE_LANE * 9, WIDTH + 3, SINGLE_LANE);
-
-	// ctx.setLineDash([0]);
-	// ctx.strokeStyle = "#3F3B3C";
-	// ctx.strokeRect(-2, SINGLE_LANE * 10, WIDTH + 3, SINGLE_LANE);
-
-	// ctx.setLineDash([6]);
-	// ctx.strokeStyle = "#FFF";
-
-	// ctx.strokeRect(-2, SINGLE_LANE * 12, WIDTH + 3, SINGLE_LANE);
 }
 
 // loop through transactions and draw them
@@ -904,7 +887,8 @@ function removeVehicles(){
 // animate everything
 function animate(){
 	requestID = requestAnimationFrame(animate);
-	drawBackground();
+
+	ctx.clearRect(0,0,WIDTH,HEIGHT);
 	drawVehicles(txCash);
 	drawVehicles(txCore);
 	removeVehicles();
