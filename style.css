@@ -574,7 +574,7 @@ margin:15px 0;display:block;
 
 .fees-bch {
     top: 11.5%;
-    height: 51.36%;
+    height: 52.36%;
     width:36px;
     right: 5%;
     
@@ -1050,7 +1050,7 @@ span.divider {
   top:100%;
   content:"";
   background:#333;
-  height:12px;
+  height:6px;
   width:2px;
   border-right:2px solid #000;
   left:50%;
@@ -1690,6 +1690,7 @@ input[type=range]:focus::-ms-fill-upper {
       bottom:2%;
       height: 20.01%;
     }
+
   }
 
   @media only screen and (orientation: portrait){
@@ -1768,8 +1769,16 @@ input[type=range]:focus::-ms-fill-upper {
     .fees-bch,.fees-btc {
       right:12.5%;
     }
+
+    .ad-one {
+      left: 15% !important;
+    }
+    .ad-two{
+      right: 33% !important;
+    }
   }
-    #tx-list-button {
+
+  #tx-list-button {
     
     right:auto;
     left:5px;
@@ -1851,6 +1860,29 @@ input[type=range]:focus::-ms-fill-upper {
 
   .waiting-sign {
     bottom:10.5%;
+  }
+
+  
+  @media only screen and (orientation: landscape) {
+    .whitepaper{
+      left: 10%;
+    }
+
+    .waiting-sign{
+      bottom: 1%;
+    }
+
+    .nav {
+      top:10%;
+    }
+
+    .fees-bch{
+      height: 49.36%;
+    }
+
+    .ad-four{
+      right:20% !important; 
+    }
   }
 }
 
