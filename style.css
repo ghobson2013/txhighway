@@ -84,6 +84,7 @@ h1,h2,h3,h4,h5,h6 {
 
 .title {
   position: absolute;
+  z-index:4;
 }
 span {
   display: block;
@@ -100,8 +101,8 @@ span {
   max-width: 100%;
 }
 .title h2 {
-  font-size: 17px;
-  color: #231F20;
+  font-size: 16px;
+  color: #fff;
   margin-top: 5px;
   font-family: 'Lato', sans-serif;
   text-align: center;
@@ -110,11 +111,13 @@ span {
   margin-bottom:0;
   padding-bottom:0;
   font-weight:700;
+  letter-spacing:1px;
+  text-shadow:0 1px 3px #000;
 }
 
 .nav {
   left:0;
-  top:100px;
+  top:15%;
   position:absolute;
   display:block;
   z-index:999;
@@ -136,6 +139,8 @@ span {
   color:#fff;
   font-size:1.7rem;
   padding:0px;
+      text-shadow:1px 1px 5px rgba(0,0,0,0.8);
+
 }
 
 .core-nav {
@@ -405,98 +410,240 @@ margin:15px 0;display:block;
   font-family: 'Lato', sans-serif;
 }
 .lane-size.one {
-  top: 3%;
+  top: 15%;
 }
 .lane-size.two {
-  top: 10%;
+  top: 22%;
 }
 .lane-size.three {
-  top: 17%;
+  top: 29%;
 }
 .lane-size.four {
-  top: 24%;
+  top: 36%;
 }
 .lane-size.five {
-  top: 32%;
+  top: 42%;
 }
 .lane-size.six {
-  top: 39%;
+  top: 49%;
 }
 .lane-size.seven {
-  top: 46%;
+  top: 56%;
 }
 .lane-size.eight {
-  top: 53%;
+  top: 62%;
 }
 .lane-size.one-core {
-  top: 67%;
+  top: 76%;
 }
 .lane-size.two-core {
-  top: 74%;
+  top: 83%;
   text-decoration: line-through;
 }
 .block {
-  position: absolute;
-  top: 72.5%;
+  position: fixed;
+  top: 81%;
   z-index: 2;
   background: url('assets/bg/block.png') no-repeat;
-  background-size: 50%;
-  width: 27px;
-  height: 110px;
+  background-size: auto 50%;
+  width: 100%;
+  height: 5%;
+  background-repeat: no-repeat space;
+
 }
 .block.one {
   left: 55px;
 }
 .block.two {
-  right: 55px;
+  right: 80px;
+  background-position: right;
 }
 
 .caution {
-  position: absolute;
+  position: fixed;
   z-index: 2;
   background: url('assets/bg/caution.png') no-repeat;
-  background-size: 50% 50%;
-  width: 40px;
-  height: 40px;
+  background-size: contain;
+  width: 100%;
+  height: 4%;
+  top: 81.5%;
 }
 .caution.one {
-  top: 73.5%;
   left: 20px;
 }
 
 .caution.two {
-  top: 73.5%;
-  right: 20px;
+  right: 40px;
+  background-position-x: right;
 }
 
 .no2x {
-  position: absolute;
+  position: fixed;
   z-index: 2;
   background: url('assets/bg/no2x.png') no-repeat;
-  background-size: 55%;
-  width: 48px;
-  height: 48px;
+  background-size: contain;
+  width: 100%;
+  height: 6.67%;
+  top: 80.01%;
 }
 
 .no2x.one {
-  top: 72.5%;
-  left: 85px;
+  left: 105px;
 }
 
 .no2x.two {
-  top: 72.5%;
-  right:85px;
+  right:125px;
+  background-position-x: right;
 }
 
 
+.no2x.three {
+  left: 215px;
+}
+
+.no2x.four {
+  right:225px;
+  background-position-x: right;
+}
+
+
+.rotate {
+  /* Safari */
+  -webkit-transform: rotate(90deg);
+
+  /* Firefox */
+  -moz-transform: rotate(90deg);
+
+  /* IE */
+  -ms-transform: rotate(90deg);
+
+  /* Opera */
+  -o-transform: rotate(90deg);
+
+  /* Internet Explorer */
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);
+
+}
+
+.fees-toll {
+  position:fixed;
+  z-index:9;
+  transform-origin: 100% 0;
+  background:#555555;
+  border:1px solid #444;
+  padding:15px 5px;
+  text-align:center;
+  font-family:'Lato', helvetica, arial, sans-serif;
+  color:#fff;
+  font-weight:bold;
+  letter-spacing:1px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  font-size:12px;
+}
+
+.fees-toll:before {
+  content:"";
+  width:50%;
+  height:100%;
+  background:rgba(0,0,0,0.05);
+  z-index:9;
+  position:absolute;
+  top:0;
+  left:0;
+}
+.fees-toll:after {
+     content: "";
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 23px 10px 23px;
+    border-color: transparent transparent #444 transparent;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    position: absolute;
+/*     -webkit-transform: rotate(-90deg);
+    -moz-transform: rotate(-90deg);
+    -ms-transform: rotate(-90deg);
+    -o-transform: rotate(-90deg);
+    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=0); */
+    z-index: 10;
+}
+
+.fees-bch {
+    top: 11.5%;
+    height: 52.36%;
+    width:36px;
+    right: 5%;
+    
+}
+
+.fees-btc {
+bottom: 11%;
+width: 36px;
+height: 13.34%;
+right:5%;
+background:#2e2e2e !important;
+}
+
+.fee-title {
+  color: #EEA24B;
+    position: absolute;
+    top: 10px;
+    left: 0;
+    width:100%;
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing:1px;
+    font-size:9px;
+
+/*   /* Safari */
+/*   -webkit-transform: rotate(-90deg);
+ */
+  /* Firefox */
+/*   -moz-transform: rotate(-90deg);
+ */
+  /* IE */
+/*   -ms-transform: rotate(-90deg);
+ */
+  /* Opera */
+/*   -o-transform: rotate(-90deg);
+ */
+  /* Internet Explorer */
+/*   filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=0);
+ */
+}
+
+.fee-title.secondary {
+  top:auto;
+  bottom:12px;
+}
+
+.fees-toll .avg {
+  position: absolute;
+    left: 15px;
+    top: 50%;
+    width: 37px;
+    font-size:8px;
+    color:#999;
+    text-align:center;
+}
+
+#fees-bch, #fees-btc {
+  /*border-top: 1px solid #fff;*/
+    position: relative;
+    left: -19.5px;
+    top: 50%;
+    width: 54px;
+}
 
 .ln {
   position:absolute;
   bottom:0px;
   left:0;
   width:100%;
-  height:15%;
-  width:100%;
+  height:13%;
+  width:73%;
   background:url('assets/bg/ln.png') no-repeat;
   background-size: contain;
 }
@@ -578,49 +725,134 @@ span.divider {
   background: url('assets/bg/divider.png') repeat-x;
   background-size: 50% 50%;
   width: 100%;
-  height: 7%;
+  height: 6.67%;
   position: absolute;
-  top: 57%;
+  top: 66.67%;
   left: 0;
   z-index: 8;
 }
+
+.road-bg {
+  background:#9EA0A3;
+  position:absolute;
+  height:53.36%;
+  width:100%;
+  top:13.34%;
+  left:0;
+  z-index:-2;
+}
+
+.road-bg-bs {
+  background:#9EA0A3;
+  position:absolute;
+  height:13.34%;
+  width:100%;
+  bottom:13.34%;
+  left:0;
+  z-index:-2;
+}
+
 .bitcoin-cash {
-  background: #9EA0A3 url('assets/bg/bitcoin-cash-logo.png') no-repeat center 69%;
-  background-size: 21.5%;
-  height: 57%;
+  background: url('assets/bg/bitcoin-cash-logo_whitebg.png') no-repeat center 33%;
+  background-size: 22.5%;
+  height: 53.36%;
   width: 100%;
   position: absolute;
+  top: 13.34%;
+  left: 0;
+  z-index: -1;
+}
+
+
+.bitcoin-cash:before {
+  content: "";
+  width: 100%;
+  height: 13.34%;
+  background: #/*149347*/;
+  background: #149347 url('assets/bg/divider.png') repeat-x;
+  background-size: 100% 40%;
+  background-position:100% 127%;
+  position: fixed;
   top: 0;
   left: 0;
   z-index: -1;
+  border-bottom:2px solid #666;
 }
+
+.lane {
+  height:2px;
+  width:100%;
+  position:absolute;
+  left:0;
+
+  background-image: linear-gradient(to right, #c2c2c2 60%, rgba(255, 255, 255, 0) 20%);
+  background-position: top;
+  background-size: 6px 8px;
+  background-repeat: repeat-x;
+  z-index:-2;
+}
+
+.lane.one {
+  top:19.67%;
+}
+
+.lane.two {
+  top:26.67%;
+}
+
+.lane.three {
+  top:33.34%;
+}
+
+.lane.four {
+  top:40.01%;
+}
+
+.lane.five {
+  top:46.68%;
+}
+
+.lane.six {
+  top:53.35%;
+}
+
+.lane.seven {
+  top:60.02%;
+}
+
+.lane.core {
+  top:79.75%;
+}
+
+
 .bs {
   /*background: #9EA0A3 url(assets/bg/bs.png) no-repeat center 0;*/
-    background: #9EA0A3 url(assets/bg/core.png) no-repeat 50% -15px;
-
-  background-size: 18.5%;
-  height: 14.4%;
+    background: url(assets/bg/core.png) no-repeat center top;
+  background-size: auto 50%;
+  height: 13.34%;
   width: 100%;
-  position: absolute;
-  bottom: 21.4%;
+  position: fixed;
+  bottom: 13.34%;
   left: 0;
   z-index: -1;
 }
 
-.cash-road-sign  {
-  left:40px;
-  right:auto;
+.road-sign.cash-road-sign  {
+/*   left:330px;
+  right:auto; */
+  bottom:auto;
+  top: 2%;
 }
 
 .core-road-sign.road-sign {
-  /*bottom:9%;*/
+  bottom:2%;
 }
 
 .road-sign {
   border: 2px solid #245934;
   border-radius: 10px;
   position: absolute;
-  right: 40px;
+  right: 10%;
   bottom: 35%;
   z-index: 99;
   width: 250px;
@@ -637,7 +869,8 @@ span.divider {
   color: #F9D536;
   text-transform: uppercase;
   font-family: 'Lato', sans-serif;
-  font-size: 0.7em;
+  font-size: 0.9em;
+  font-weight: bold;
   position: absolute;
   left: 10px;
   top: 13px;
@@ -711,6 +944,7 @@ span.divider {
   margin: 2px 0 3px;
   font-weight: normal;
   color: #F8D448;
+  font-size:7px;
 }
 
 .tab {
@@ -739,18 +973,18 @@ span.divider {
 .waiting-sign {
   border: 2px solid #222;
   border-radius: 10px;
-  position: absolute;
-  left: 40px;
-  bottom: 35%;
+  position: fixed;
+  left: 8px;
+  bottom: 11.5%;
   z-index: 99;
   width: 70px;
-  box-shadow: 2px 3px 15px rgba(0, 0, 0, 0.3);
+  /*box-shadow: 2px 3px 15px rgba(0, 0, 0, 0.3);*/
 }
 
 .waiting-sign .sign-border {
   background:#222;
-  border:2px solid #fff;
-  padding:5px;
+  border:1px solid #fff;
+  padding:3px;
   border-radius: 10px;
 }
 
@@ -759,33 +993,33 @@ span.divider {
 }
 
 .waiting-sign h5 {
-  font-size:1rem;
+  font-size:0.9rem;
   line-height:1;
   text-align:center;
   color:#fff;
   margin:0;
-  padding:0.7rem 0;
+  padding:0.2rem 0;
 }
 
 .waiting-sign .sign-title {
   background:#fff;
-  border-radius:3px;
+  border-radius:3px 3px 5px 5px;
   line-height:1;
   text-transform: uppercase;
-  padding:3px;
+  padding:2px;
   text-align:center;
   color:#222;
   padding:3px 2px 1px;
-  font-size:7px;
-  font-weight:bold;
+  font-size:9px;
+  font-weight:700;
   font-family:'Lato', sans-serif;
   margin:0;
 }
 
 .whitepaper {
   position:absolute;
-  bottom:37%;
-  left:30%;
+  bottom:27.5%;
+  left:1%;
   z-index:9;
   }
 .whitepaper i {
@@ -803,8 +1037,8 @@ span.divider {
   background:#fff;
   border-bottom:1px solid #999;
   position:absolute;
-  z-index:8;
-  bottom:37.8%;
+  z-index:11;
+  bottom:28.5%;
   left:40%;
   border-radius:3px;
 }
@@ -814,7 +1048,7 @@ span.divider {
   top:100%;
   content:"";
   background:#333;
-  height:12px;
+  height:6px;
   width:2px;
   border-right:2px solid #000;
   left:50%;
@@ -838,27 +1072,50 @@ span.divider {
 }
 
 .adspot.ad-one {
-  left:32%;
+  left:12%;
 
 }
 
 .adspot.ad-two {
-  left:48%;
+  left:38%;
   /*display:none;*/
 }
 
 .adspot.ad-three {
-  left:66%;
+  left:56%;
 }
 
-.ad-logo.dark {
-  background:#595959;
+.adspot.ad-four {
+  left:auto;
+  right: 10%;
+}
+
+.adspot.ad-five {
+  left:35%;
+  bottom:88.5%;
+}
+
+.adspot.ad-six {
+  left:53%;
+  bottom:88.5%;
+}
+
+
+.adspot.ad-logo img{
+width:75px;
+height:auto;
 }
 
 .ad-logo img {
-  width:59px;
+  height:30px;
   margin:0;
   padding:3px 3px 0 3px;
+  border-radius: 3px 3px 0 0;
+}
+
+.ad-logo.dark img {
+  background:#333;
+  padding:5px;
 }
 
 .btn {
@@ -993,8 +1250,7 @@ span.divider {
 
 #page {
     display: none;
-    position:absolute;
-    
+
 }
 #loading {
     display: block;
@@ -1327,16 +1583,30 @@ input[type=range]:focus::-ms-fill-upper {
   background-repeat: no-repeat;
 }
 
-#tx-list-button {
+#transactions li a {
+  color:#222;
+  text-decoration: none;
+  display:block;
+}
+
+#transactions li a:hover {
+  color:#333;
+}
+
+#transactions li a:visited {
+  color:#777;
+}
+
+/* #tx-list-button {
   position:fixed; 
   top: 5px;
   right: 190px;
-}
+} */
 
 #tx-list-button i{
-  color: #fff;
+  /* color: #fff; */
   font-size: 1.7rem;
-  padding: 5px;
+  /* padding: 5px; */
 }
 
 .txinfo-cash{
@@ -1366,12 +1636,13 @@ input[type=range]:focus::-ms-fill-upper {
 
 }
 
-@media only screen and (max-width:767px) {
+
+@media only screen and (max-width:812px) {
   #modal-info .modal-body p, #modal-info .modal-body ul {
     font-size:13px;
   }
   .nav {
-    top:50px;
+    top: 15%;
   }
   
   .nav a i {
@@ -1390,23 +1661,71 @@ input[type=range]:focus::-ms-fill-upper {
     background-size: cover;
   }
 
+  .adspot.ad-five {
+    left:15%;
+  }
+  
+  .adspot.ad-six {
+    left:auto;
+    right: 15%;
+  }
 
+  @media only screen and (orientation: landscape) {
+    .adspot.ad-five {
+      left:35%;
+      right:auto;
+    }
+    
+    .adspot.ad-six {
+      left:55%;
+      right: auto;
+    }
 
+    .adspot.ad-four{
+      right: 13%;
+    }
+
+    .adspot.ad-one{
+      left: 16%;
+    }
+    .ln{
+      width: 100%;
+    }
+
+    .fees-btc {
+      bottom:2%;
+      height: 20.01%;
+    }
+
+    .whitepaper{
+      left: 10%;
+    }
+  }
+
+  @media only screen and (orientation: portrait){
+    .bitcoin-cash, .bs {
+      background-size: auto 50% !important;
+    }
+  }
   .title {
     width: 170px;
-    top: 15px;
+    top: 2%;
   }
   .title h2 {
     display: none;
   }
-  .bitcoin-cash, .bs {
-    background-size: 45% !important;
-  }
+  
   .bitcoin-cash {
     background-position:50% 60%;
   }
+  
+  .no2x.three {
+    display:none;
+  }
 
-
+  .no2x.four {
+    display:none;
+  }
 
   table tr td img {
     max-height:28px;
@@ -1451,7 +1770,24 @@ input[type=range]:focus::-ms-fill-upper {
 
 @media screen and (max-width: 600px){
 
-    #tx-list-button {
+  .fees-bch,.fees-btc {
+    right:10.2%;
+  }
+
+  @media only screen and (orientation: portrait){
+    .fees-bch,.fees-btc {
+      right:12.5%;
+    }
+
+    .ad-one {
+      left: 15% !important;
+    }
+    .ad-two{
+      right: 33% !important;
+    }
+  }
+
+  #tx-list-button {
     
     right:auto;
     left:5px;
@@ -1465,21 +1801,37 @@ input[type=range]:focus::-ms-fill-upper {
   }
 
   .cash-road-sign {
-    top:10px;
     right: 10px;
     left: auto;
     bottom: auto;
   }
 
   .adspot.ad-one {
-    left:10%;
+    left:19%;
+    right:auto;
+  }
+
+  .adspot.ad-two{
+    left: auto;
+    right: 25%;
+  }
+
+  .adspot.ad-two.ad-logo img {
+    width:48px;
   }
 
   .adspot.ad-three {
-    right:10%;
-    left:auto;
+    right:auto;
+    left:15%;
+    bottom: 5%;
   }
 
+  .adspot.ad-four{
+    left: auto;
+    right: 15%;
+    bottom:5%
+  }
+  
   #modal-search fieldset {
     display:block;
     width:auto;
@@ -1508,7 +1860,34 @@ input[type=range]:focus::-ms-fill-upper {
 
   .ln {
     background-size: cover;
-    background-position: 45% 0;
+    background-position: 0 0;
+    width:100%;
+  }
+  .block,.caution {
+    display:none;
+  }
+
+  .waiting-sign {
+    bottom:10.5%;
+  }
+
+  
+  @media only screen and (orientation: landscape) {
+    .waiting-sign{
+      bottom: 1%;
+    }
+
+    .nav {
+      top:10%;
+    }
+
+    .fees-bch{
+      height: 49.36%;
+    }
+
+    .ad-four{
+      right:20% !important; 
+    }
   }
 }
 

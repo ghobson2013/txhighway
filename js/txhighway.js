@@ -66,9 +66,11 @@ let audioMotorcycle = null,
 	audioMercy = null,
 	audioRide = null,
 	audioChaChing = null,
-	audioWoohoo = null,
+	audioLaCucaracha = null,
 	audioSpam = null,
-	audioAllSpam = null;
+	audioAllSpam = null,
+	audioHorns = null,
+	audioLaugh = null;
 
 // constants
 let WIDTH = null,
@@ -96,11 +98,14 @@ let requestID = null;
 let isVisible = true,
 	konamiActive = false,
 	isCashMuted = false,
-	isCoreMuted = false;
+	isCoreMuted = false,
+	isHornsPlaying = false;
 
 // arrays for vehicles
 let txCash = [],
-	txCore = [];
+	txCore = [],
+	feesCore = [],
+	feesCash = [];
 
 // connect to sockets
 socketCash.onopen = ()=>{
@@ -138,10 +143,11 @@ socketCore.onmessage = (onmsg)=> {
 				res.x["sw"] = true;
             }
 		});	
-		
+
 		newTX(false, res.x);
 	} else {
 		blockNotify(res.x, false);
+		
 	}
 }
 
@@ -203,9 +209,11 @@ function init(){
 	loadSound("assets/audio/mercy-6s.mp3", "mercy");
 	loadSound("assets/audio/ride-dirty-7s.mp3", "ride");
 	loadSound("assets/audio/cha-ching.mp3", "cha-ching")
-	loadSound("assets/audio/woohoo.mp3", "woohoo");
+	loadSound("assets/audio/la-cucaracha.mp3", "la-cucaracha");
 	loadSound("assets/audio/spam.mp3", "spam");
 	loadSound("assets/audio/allspam.mp3", "allspam");
+	loadSound("assets/audio/horns.mp3", "horns");
+	loadSound("assets/audio/evil-laugh.mp3", "laugh");
 
 	// acquire data for signs
 	updateMempoolData();
@@ -310,7 +318,10 @@ function blockNotify(data, isCash){
 		ticker = "BCH";
 		t = parseInt(cashPoolInfo.textContent.replace(/\,/g,''));
 		amount = data.nTx;
-		cashPoolInfo.textContent = formatWithCommas(t - amount);//"UPDATING";
+		cashPoolInfo.textContent = formatWithCommas(t - amount);
+		setTimeout(() => {
+			getPoolData(urlCors + "https://bch-chain." + urlBtc + "tx/unconfirmed/summary", true);
+		}, 1000);
 	} else {
 		ticker = "BTC";
 		t = parseInt(corePoolInfo.textContent.replace(/\,/g,''));
@@ -326,15 +337,20 @@ function blockNotify(data, isCash){
 		}
 
 		corePoolInfo.textContent = formatWithCommas(t - amount);
+		setTimeout(() => {
+			getPoolData(urlCors + "https://chain." + urlBtc + "tx/unconfirmed/summary", false);
+			getCoreConfTime(urlBlockchainInfo + "charts/avg-confirmation-time?format=json&cors=true");
+
+		}, 1000);
 	}
 
 	if (isVisible) playSound(audioChaChing);
 	
-	confirmedAmount.textContent = amount + " " + ticker;
+	confirmedAmount.textContent = amount + "x " + ticker;
 	confirmedNotify.style.display = "block"; //no pun intended
 	setTimeout(() => {
 		confirmedNotify.style.display = "none";
-		updateMempoolData();
+		//updateMempoolData();
 		updatePriceData();
 	}, 4000);
 }
@@ -375,7 +391,7 @@ function getCoreConfTime(url){
 	xhr.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
 			let obj = JSON.parse(xhr.responseText);
-			coreEta.textContent = obj.period;
+			coreEta.textContent = obj.values[0].y + " MIN+";
 		}
 	}
 	xhr.open("GET", url, true);
@@ -386,7 +402,7 @@ function getCoreConfTime(url){
 function resize(){
 	HEIGHT = window.innerHeight;
 	WIDTH = window.innerWidth;
-	SINGLE_LANE = HEIGHT/14;
+	SINGLE_LANE = HEIGHT/15;
 
 	canvas.width = WIDTH;
 	canvas.height = HEIGHT;
@@ -417,11 +433,13 @@ vis(function(){
 	if (vis()){
 		txCash = [];
 		txCore = [];
-		drawBackground();
+		//drawBackground();
 		requestAnimationFrame(animate);
+		if(!isCoreMuted) audioHorns.connect(gainNode);
 		isVisible = true;
 	} else{
-		cancelAnimationFrame(requestID);		
+		cancelAnimationFrame(requestID);
+		if(!isCoreMuted) audioHorns.disconnect()
 		isVisible = false;
 	}
 });
@@ -429,31 +447,37 @@ vis(function(){
 // create a new transaction
 function newTX(isCash, txInfo){
 	if (isCash){
-		let randLane = Math.floor(Math.random() * 8) + 1;
+		let randLane = Math.floor(Math.random() * 8) + 3;
 		createVehicle(isCash, txCash, txInfo, randLane, true);
 	} else {
-		createVehicle(isCash, txCore, txInfo, 10, false);
+		createVehicle(isCash, txCore, txInfo, 12, false);
 	}
 }
 
 // adds tx info to the side list
 function addTxToList(isCash, txid, valueOut, car){
-
-	let node = document.createElement("LI");
+	
+	let listItem = document.createElement("LI");
+	let anchor = document.createElement("A");
 	let text = "txid: " + txid.substring(0, 7) + "...\n";
 	text += "value: " + valueOut.toString().substring(0,9);
+	
 	let textNode = document.createTextNode(text);
 
-	node.setAttribute("style", "background-image: url(" + car.src + ");");
+	anchor.setAttribute("target", "_blank");
+	listItem.setAttribute("style", "background-image: url(" + car.src + ");");
 
     if (isCash){
-        node.className = "txinfo-cash";
+		listItem.className = "txinfo-cash";
+		anchor.setAttribute("href", "https://bch.btc.com/" + txid);
     } else {
-        node.className = "txinfo-core";
+		listItem.className = "txinfo-core";
+		anchor.setAttribute("href", "https://btc.com/" + txid);
     }
 
-	node.appendChild(textNode);
-	transactionList.prepend(node);
+	anchor.appendChild(textNode);
+	listItem.appendChild(anchor);
+	transactionList.insertBefore(listItem, transactionList[transactionList.length-1]);//.prepend(listItem);
 
 	if (transactionList.childNodes.length > 50){
 		transactionList.removeChild(transactionList.childNodes[transactionList.childNodes.length -1]);
@@ -465,19 +489,28 @@ function createVehicle(type, arr, txInfo, lane, isCash){
 	let donation = false;
 	let userTx = isUserTx(txInfo);
 	let sdTx = false;
+	let fee = 0;
+	let valOut = 0;
+	let valIn = 0;
 
-	if(isCash){
+	txInfo.inputs.forEach((input)=>{
+		valIn += input.prev_out.value;
+	});
+
+	txInfo.out.forEach((tx)=>{
+		valOut += tx.value/100000000;
+	});
+
+	fee = (valIn - valOut *100000000)/100000000;
+
+	if (isCash){
 		donation = isDonationTx(txInfo);
 		sdTx = isSatoshiBonesTx(txInfo);
 	}
 
-	let val = 0;
-	txInfo.out.forEach((tx)=>{
-		let v = tx.value/100000000;
-		val += v;
-	});
+	updateFees(isCash, fee);
 
-	let car = getCar(val, donation, isCash, userTx, sdTx, txInfo.sw);
+	let car = getCar(valOut, donation, isCash, userTx, sdTx, txInfo.sw);
 	let width = SINGLE_LANE * (car.width / car.height);
 	let x = -width;
 
@@ -505,11 +538,34 @@ function createVehicle(type, arr, txInfo, lane, isCash){
 		lane: lane,
 		h: SINGLE_LANE,
 		w: width,
-		valueOut: val,
+		valueOut: valOut,
 		donation: donation,
 		userTx: userTx,
 		isCash: isCash
 	});
+}
+
+
+function updateFees(isCash, fee){
+	if(isCash){
+		fee = fee * PRICE_BCH;
+		if (feesCash.length == 100) feesCash.splice(0,1);
+		feesCash.push(fee);
+		if (feesCash.length == 1) return;
+		let total = 0;
+		for(var i = 0; i < feesCash.length; i++) total += feesCash[i];
+		let avg = total/feesCore.length;
+		document.getElementById("fees-bch").textContent = "$" + parseFloat(avg).toFixed(4);
+	} else {
+		fee = fee * PRICE_BTC;
+		if (feesCore.length == 100) feesCore.splice(0,1);
+		feesCore.push(fee);
+		if (feesCore.length == 1) return;
+		let total = 0;
+		for(var i = 0; i < feesCore.length; i++) total += feesCore[i];
+		let avg = total/feesCore.length;
+		document.getElementById("fees-btc").textContent = "$" + parseFloat(avg).toFixed(2);
+	}
 }
 
 /* return car based upon transaction size*/
@@ -520,6 +576,7 @@ function getCar(valueOut, donation, isCash, userTx, sdTx, sw){
 	}
 
 	if(sw) return carSegwit;
+	
 	// satoshi bones tx
 	if(sdTx) return carSatoshiBones;	
 
@@ -590,7 +647,13 @@ function getCar(valueOut, donation, isCash, userTx, sdTx, sw){
 function addSounds(carType){
 	if (!isVisible) return;
 
-	if (carType == carUserCash || carType == carUserCore) playSound(audioWoohoo);
+	if (carType == carUserCash || carType == carUserCore) {
+		playSound(audioLaCucaracha);
+	}
+
+	if (carType == carSatoshiBones){
+		playSound(audioLaugh);
+	}
 
 	if (carType == carLambo){
 		let randSong = Math.floor(Math.random() * 2) + 1;
@@ -660,12 +723,19 @@ function loadSound(url, sound){
 				audioRide = buffer;
 			} else if (sound == "cha-ching"){
 				audioChaChing = buffer;
-			} else if (sound == "woohoo"){
-				audioWoohoo = buffer;
+			} else if (sound == "la-cucaracha"){
+				audioLaCucaracha = buffer;
 			} else if (sound == "spam"){
 				audioSpam = buffer;
 			} else if (sound == "allspam"){
 				audioAllSpam = buffer;
+			} else if(sound == "laugh") {
+				audioLaugh = buffer;
+			} else if (sound == "horns"){
+				audioHorns = audioContext.createBufferSource();
+				audioHorns.buffer = buffer;
+				gainNode.connect(audioContext.destination);
+				audioHorns.start(0);
 			}
 		});
 	}
@@ -689,15 +759,20 @@ let isDonationTx = function(txInfo){
 	return isDonation;
 }
 
-// check for satoshi bones tx
+// check for satoshi dice tx
 let isSatoshiBonesTx = function(txInfo){
-	let vouts = txInfo.out;//.vout;
 	let satoshiBonesTx = false;
 
-	vouts.forEach((key)=>{
-		let keys = Object.keys(key);
-		keys.forEach((k)=>{
-			if(k == "1bones76bhLcQ7utrNRG7SfozXWp19tQY" ||
+	txInfo.out.forEach((key)=>{
+		check(key.addr);
+	});
+
+	txInfo.inputs.forEach((key)=>{
+		check(key.prev_out.addr);
+	});
+
+	function check(k){
+		if(k == "1bones76bhLcQ7utrNRG7SfozXWp19tQY" ||
 			k == "1bonesBvWUqyFP8Ff5cwtm3RvDTEh4Ydn" ||
 			k == "1bonesB8Z4Gj2k7KNiCRh1QzrHTztUqTa" ||
 			k == "1bonespxj9YTz9i5qkmAHLUvBjHUGqRj8" ||
@@ -708,8 +783,7 @@ let isSatoshiBonesTx = function(txInfo){
 			k == "1bonesKj4KV6nZqCYe1b21gx39jCKSXxV" ||
 			k == "1bonesB8d7sgzio1hweuk8YgFc2q6HHyo" ||
 			k == "1bonesU1GG6ErmNAECq9b62kv21V9s2An") satoshiBonesTx = true;
-		});
-	});
+	}
 
 	return satoshiBonesTx;
 }
@@ -719,41 +793,13 @@ let isUserTx = function(txInfo){
 	let vouts = txInfo.out;//.vout;
 	let isUserTx = false;
 
-	//console.log(vouts);
 	vouts.forEach((key)=>{
 		let keys = Object.keys(key);
-		keys.forEach((k)=>{
-			if (k == cashAddress.value || k == coreAddress.value){
-				isUserTx = true;
-			} 
-		})
+		if (key.addr == cashAddress.value || key.addr == coreAddress.value){
+			isUserTx = true;
+		} 
 	});
 	return isUserTx;
-}
-
-/** Draw the background */
-function drawBackground(){
-	// draw the lanes
-	ctx.clearRect(0,0,WIDTH,HEIGHT);
-	ctx.fillStyle = "#9EA0A3";
-
-	// dash style
-	ctx.setLineDash([6]);
-	ctx.strokeStyle = "#FFF";
-
-	// stroke
-	ctx.strokeRect(-2, SINGLE_LANE * 1, WIDTH + 3, SINGLE_LANE);
-	ctx.strokeRect(-2, SINGLE_LANE * 3, WIDTH + 3, SINGLE_LANE);
-	ctx.strokeRect(-2, SINGLE_LANE * 5, WIDTH + 3, SINGLE_LANE);
-	ctx.strokeRect(-2, SINGLE_LANE * 7, WIDTH + 3, SINGLE_LANE);
-
-	ctx.setLineDash([0]);
-	ctx.strokeStyle = "#3F3B3C";
-	ctx.strokeRect(-2, SINGLE_LANE * 8, WIDTH + 3, SINGLE_LANE);
-
-	ctx.setLineDash([6]);
-	ctx.strokeStyle = "#FFF";
-	ctx.strokeRect(-2, SINGLE_LANE * 10, WIDTH + 3, SINGLE_LANE);
 }
 
 // loop through transactions and draw them
@@ -762,6 +808,8 @@ function drawVehicles(arr){
 	let y = null;
 	let width = null;
 	let txWaiting = 0;
+	let isCash = true;
+
 	arr.forEach(function(item, index, object){
 
 		if(!item.isCash && konamiActive) { 
@@ -782,14 +830,14 @@ function drawVehicles(arr){
 
 			// segwit swerving
 			if (item.car == carSegwit){
-				if (!item.y) item.y = y;
+				if (!item.y) item.y = 0;
 				if (!item.d) item.d = 0.3;
-				let top = SINGLE_LANE * 9 - SINGLE_LANE/4;
-				let bottom = SINGLE_LANE * 9 + SINGLE_LANE/4;
-				if (item.y > bottom) item.d = -0.3;
-				if (item.y < top) item.d = 0.3;
+				let top = SINGLE_LANE * (item.lane - 1) - SINGLE_LANE/4;
+				let bottom = SINGLE_LANE * (item.lane - 1) + SINGLE_LANE/4;
+				if (y + item.y > bottom) item.d = -0.3;
+				if (y + item.y < top) item.d = 0.3;
 				item.y += item.d;
-				y = item.y;
+				y += item.y;
 			}
 
 			ctx.drawImage(car, item.x, y, width, SINGLE_LANE);
@@ -802,11 +850,26 @@ function drawVehicles(arr){
 			item.x += SPEED;
 		} else {
 			item.x += SPEED * SPEED_MODIFIER;
+			isCash = false;
 		}
 		
 	});
 
+	// update tx offscreen sign
 	transactionsWaiting.textContent = txWaiting;
+
+	// play horns if there's more than 5 vehicles off screen
+	if(audioHorns && !isCash && !isCoreMuted){
+		if (txWaiting > 5 && !isHornsPlaying){
+			audioHorns.loop = true;
+			audioHorns.connect(gainNode);
+			isHornsPlaying = true;
+		} else if (txWaiting == 0 && audioHorns.loop == true){
+			isHornsPlaying = false;
+			audioHorns.loop = false;
+			audioHorns.disconnect();
+		}
+	}
 }
 
 // remove vehicles that are off the map
@@ -824,7 +887,8 @@ function removeVehicles(){
 // animate everything
 function animate(){
 	requestID = requestAnimationFrame(animate);
-	drawBackground();
+
+	ctx.clearRect(0,0,WIDTH,HEIGHT);
 	drawVehicles(txCash);
 	drawVehicles(txCore);
 	removeVehicles();
@@ -848,23 +912,6 @@ $('#tx-list-button').click(function(){
 	} else {
 		transactionWrap.style.right = '0%';
 	}
-});
-
-
-$("input.cash-mute").change(function() {
-	if(this.checked) {
-      if (isCashMuted) {
-				isCashMuted = false;
-			 } else {
-				isCashMuted = true;
-			 }
-    } else {
-      if (isCashMuted) {
-				isCashMuted = false;
-			 } else {
-				isCashMuted = true;
-			 }
-    }
 });
 
 $('.nav .legend').hover(function(){
@@ -900,21 +947,40 @@ $('.nav .donate').hover(function(){
     $(this).find('i').toggleClass('fa-heart fa-money')
 });
 
-$("input.core-mute").change(function() {
+
+$("input.cash-mute").change(function() {
 	if(this.checked) {
-      if (isCoreMuted) {
-				isCoreMuted = false;
+      if (isCashMuted) {
+				isCashMuted = false;
 			 } else {
-				isCoreMuted = true;
+				isCashMuted = true;
 			 }
     } else {
-      if (isCoreMuted) {
-				isCoreMuted = false;
+      if (isCashMuted) {
+				isCashMuted = false;
 			 } else {
-				isCoreMuted = true;
+				isCashMuted = true;
 			 }
     }
 });
+
+$("input.core-mute").change(function() {
+	if(this.checked) {
+      muteCore();
+    } else {
+      muteCore();
+    }
+});
+
+function muteCore(){
+	if (isCoreMuted) {
+		isCoreMuted = false;
+	} else {
+		audioHorns.disconnect();
+		isCoreMuted = true;
+		isHornsPlaying = false;
+	}
+}
 
 $('.nav a').on('click', function(){
   $('#'+$(this).data('modal')).css('display','block');
@@ -932,14 +998,21 @@ $('.close').on('click', function(){
 let easter_egg = new Konami(function() { 
 	if (konamiActive == false || konamiActive == null) {
 		playSound(audioAllSpam);
-		
 		konamiActive = true;
+
+		let img = document.createElement("IMG");
+		img.setAttribute("src", "assets/core-mode.png");
+		img.setAttribute("class", "core-mode");
+		document.body.appendChild(img);
+
 		$( ".core-mode" ).fadeToggle( "slow", "linear" );
 	} else if (konamiActive == true) {
 		konamiActive = false;
 		$( ".core-mode" ).fadeToggle( "slow", "linear" );
 	}
 });
+
+easter_egg.load();
 
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function(event) {
