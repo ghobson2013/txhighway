@@ -411,7 +411,7 @@ margin:15px 0;display:block;
 #modal-info .qr {
   float:left;
   width:120px;
-  padding:1rem 2rem 1rem 0;
+  padding:1rem 1rem 1rem 0;
 }
 #modal-donate .modal-body p.label, #modal-info .modal-body p.label {
   background:#eee;
