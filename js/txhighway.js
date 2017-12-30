@@ -477,7 +477,7 @@ function addTxToList(isCash, txid, valueOut, car){
 
 	anchor.appendChild(textNode);
 	listItem.appendChild(anchor);
-	transactionList.insertBefore(listItem, transactionList[transactionList.length-1]);//.prepend(listItem);
+	transactionList.insertBefore(listItem, transactionList.firstChild);
 
 	if (transactionList.childNodes.length > 50){
 		transactionList.removeChild(transactionList.childNodes[transactionList.childNodes.length -1]);
