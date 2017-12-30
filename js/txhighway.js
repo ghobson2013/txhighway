@@ -919,6 +919,15 @@ $('.nav .legend').hover(function(){
     $(this).find('i').toggleClass('fa-car fa-truck')
 });
 
+$('.global-mute a').click(function(){
+    // $(this).next('ul').slideToggle('500');
+    $(this).find('i').toggleClass('fa-volume-up fa-volume-off');
+    $(this).find('i').toggleClass('pulse pulse-off');
+    $('.cash-mute').click();
+    $('.core-mute').click();
+    return false;
+});
+
 $("input.overlay-switch").change(function() {
     if(this.checked) {
       $( ".sign" ).fadeToggle( "slow", "linear" );

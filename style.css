@@ -89,6 +89,57 @@ h1,h2,h3,h4,h5,h6 {
 span {
   display: block;
 }
+
+.global-mute {
+  position:absolute;
+  right:-30px;
+  top:0px;
+  font-size:1.5em;
+}
+.global-mute a {
+  color:#fff;
+}
+
+.global-mute .fa-volume-off {
+  padding-right:12px;
+}
+
+.pulse {
+  cursor: pointer;
+  box-shadow: 0 0 0 rgba(255,255,255, 0.4);
+  animation: pulse 2s infinite;
+  border-radius:50%;
+}
+.pulse:hover {
+  animation: none;
+}
+
+@-webkit-keyframes pulse {
+  0% {
+    -webkit-box-shadow: 0 0 0 0 rgba(255,255,255, 0.4);
+  }
+  70% {
+      -webkit-box-shadow: 0 0 0 10px rgba(255,255,255, 0);
+  }
+  100% {
+      -webkit-box-shadow: 0 0 0 0 rgba(255,255,255, 0);
+  }
+}
+@keyframes pulse {
+  0% {
+    -moz-box-shadow: 0 0 0 0 rgba(255,255,255, 0.4);
+    box-shadow: 0 0 0 0 rgba(255,255,255, 0.4);
+  }
+  70% {
+      -moz-box-shadow: 0 0 0 10px rgba(255,255,255, 0);
+      box-shadow: 0 0 0 10px rgba(255,255,255, 0);
+  }
+  100% {
+      -moz-box-shadow: 0 0 0 0 rgba(255,255,255, 0);
+      box-shadow: 0 0 0 0 rgba(255,255,255, 0);
+  }
+}
+
 /*#logo {display:none;}*/
 
 .title {
@@ -360,7 +411,7 @@ margin:15px 0;display:block;
 #modal-info .qr {
   float:left;
   width:120px;
-  padding:1rem 2rem 1rem 0;
+  padding:1rem 1rem 1rem 0;
 }
 #modal-donate .modal-body p.label, #modal-info .modal-body p.label {
   background:#eee;
@@ -1769,7 +1820,11 @@ input[type=range]:focus::-ms-fill-upper {
 }
 
 @media screen and (max-width: 600px){
-
+  .global-mute {
+    right:auto;
+    left:5px;
+    top:30px;
+  }
   .fees-bch,.fees-btc {
     right:10.2%;
   }

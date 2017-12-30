@@ -28,7 +28,7 @@
   <meta name="og:type" content="website">
 
   <link href="style.min.css?v=1.2" rel="stylesheet" type="text/css">
-  <!--   <link href="style.min.css?v=1.2" rel="stylesheet" type="text/css"> -->
+    <!-- <link href="style.css?v=1.2" rel="stylesheet" type="text/css"> -->
   <link rel="author" href="humans.txt">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.slim.js"></script>
@@ -132,6 +132,9 @@
     <div class="title">
       <img alt="Tx Highway Logo BCH BTC Visualizer" id="logo" src="assets/tx-highway-logo.png">
       <h2>Bitcoin Cash vs Bitcoin Core Live Transaction Visualizer</h2>
+      <div class="global-mute">
+        <a href="#"><i class="fa fa-volume-up pulse" aria-hidden="true"></i></a>
+      </div>
     </div>
 
     <div class="nav">
@@ -371,7 +374,7 @@
 
 
           <div class="row">
-            <div class="col-7">
+            <div class="col-4">
               <h4>Donate to the developers</h4>
               <img alt="Donate to the development team" src="assets/dev_qr_code.png" class="qr">
               <p>Love our idea? Please donate to help support ongoing projects and development! We have several other ideas
@@ -382,7 +385,7 @@
               </p>
               <p class="label">3MtCFL4aWWGS5cDFPbmiNKaPZwuD28oFvF</p>
             </div>
-            <div class="col-5">
+            <div class="col-4">
               <h4>Donate To Ongoing Development</h4>
               <input type="range" min="0" max="100" value="0" disabled id="donationGoal">
               <h6>
@@ -396,6 +399,14 @@
                 <li>and much more</li>
               </ul>
 
+            </div>
+            <div class="col-4">
+              <h4>Donate To The Bitcoin Cash Fund</h4>
+              <img alt="The Bitcoin Cash Fund" src="assets/qr_code.png" class="qr">
+              <p>Support #BitcoinCash growth and make a donation to the
+                <a href="https://thebitcoincash.fund/" target="_blank">The Bitcoin Cash Fund</a>. Stick around after your donation goes through for a bit of fun.
+              </p>
+              <p class="label">3ECKq7onkjnRQR2nNe5uUJp2yMsXRmZavC</p>            
             </div>
           </div>
 
@@ -413,28 +424,29 @@
       <div class="modal-content">
         <div class="modal-header">
           <span class="close">×</span>
-          <h2>Donate to The Bitcoin Cash Fund</h2>
-          <p>Support Bitcoin Cash by donating to the marketing fund to help grow merchant and consumer adoption.</p>
+          <h2>Donate to The Developers</h2>
+          <p>Support ongoing development of TX Highway by making a donation.</p>
         </div>
         <div class="modal-body">
           <div class="row">
             <div class="col-2 col-3-sm">
-              <img alt="The Bitcoin Cash Fund" src="assets/qr_code.png" class="qr">
+              <img alt="Donate to the development team" src="assets/dev_qr_code.png" class="qr">
             </div>
-            <div class="col-7 col-9-sm">
-              <p>Support #BitcoinCash growth and make a donation to the
-                <a href="https://thebitcoincash.fund/" target="_blank">The Bitcoin Cash Fund</a>. Stick around after your donation goes through for a bit of fun.
+            <div class="col-6 col-9-sm">
+              <p>Support #txhighway and it's developers with a donation in BCH. Stick around after your donation goes through for a bit of fun.
               </p>
-              <p class="label">3ECKq7onkjnRQR2nNe5uUJp2yMsXRmZavC</p>
+              <p class="label">3MtCFL4aWWGS5cDFPbmiNKaPZwuD28oFvF</p>
             </div>
-            <div class="col-3">
-              <img alt="The Bitcoin Cash Fund" src="assets/bcf_large.png" class="bcf">
+            <div class="col-4">
+              <h4>Purchase a billboard</h4>
+                <p>Show your support and advertise to Bitcoin Cash users. <a href="mailto:team@txhighway.com?subject=Purchase Ad Spot" title="Your Ad Here" target="_blank">Contact us</a> today! Limited supply available.</p>
+
             </div>
+            
           </div>
         </div>
         <div class="modal-footer">
-          <h3>Visit
-            <a href="http://thebitcoincash.fund" target="_blank">The Bitcoin Cash Fund</a> for more information.</h3>
+          <h3><a href="mailto:team@txhighway.com?subject=Purchase Ad Spot" title="Your Ad Here" target="_blank">Contact the developers</a></h3>
         </div>
       </div>
     </div>
@@ -548,6 +560,10 @@
     <ul id="transactions"></ul>
   </div>
   <script src="js/konami.min.js"></script>
+<<<<<<< HEAD
+=======
+  <!-- <script src="js/txhighway.js"></script> -->
+>>>>>>> a09fee1bc47f0fc97d1fa9e9f7a9c5e5b21c8cdf
   <script src="js/txhighway.min.js"></script>
 </body>
 
