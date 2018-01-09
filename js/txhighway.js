@@ -3,7 +3,7 @@
 // urls
 const urlCash = "wss://ws.blockchain.info/bch/inv",
 	urlCore = "wss://ws.blockchain.info/inv",
-	urlCors = "http://cors-proxy.htmldriven.com/?url=",
+	urlCors = "https://cors-anywhere.herokuapp.com/", //"http://cors-proxy.htmldriven.com/?url=",
 	urlBtc = "api.btc.com/v3/",
 	urlBlockchainInfo = "https://api.blockchain.info/",
 	urlCoinMarketCap = "https://api.coinmarketcap.com/v1/ticker/";
@@ -266,7 +266,7 @@ function getDevDonations(){
 	xhr.onload = function(){
 		if (this.readyState == 4 && this.status == 200) {
 			let res = JSON.parse(this.responseText);
-			res = JSON.parse(res.body);
+			//res = JSON.parse(res.data);
 			let sumVal = res.data.balance;
 			sumVal /= 100000000;
 
@@ -362,7 +362,7 @@ function getPoolData(url, isCash){
 	xhr.onload = function () {
 		if (this.readyState == 4 && this.status == 200) {
 			let obj = JSON.parse(this.responseText);
-			obj = JSON.parse(obj.body);
+			//obj = JSON.parse(obj.body);
 
 			if (isCash){
 				cashPoolInfo.textContent = formatWithCommas(obj.data.count);
