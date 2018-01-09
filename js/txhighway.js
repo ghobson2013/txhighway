@@ -3,7 +3,7 @@
 // urls
 const urlCash = "wss://ws.blockchain.info/bch/inv",
 	urlCore = "wss://ws.blockchain.info/inv",
-	urlCors = "https://cors-proxy.htmldriven.com/?url=",
+	urlCors = "http://cors-proxy.htmldriven.com/?url=",
 	urlBtc = "api.btc.com/v3/",
 	urlBlockchainInfo = "https://api.blockchain.info/",
 	urlCoinMarketCap = "https://api.coinmarketcap.com/v1/ticker/";
