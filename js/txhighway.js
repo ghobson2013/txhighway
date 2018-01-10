@@ -2,7 +2,7 @@
 
 // urls
 const urlCash = "wss://ws.blockchain.info/bch/inv",
-	urlCahsBE = "https://blockexplorer.com/",
+	urlCahsBE = "https://bitcoincash.blockexplorer.com/",
 	urlCore = "wss://ws.blockchain.info/inv",
 	urlCors = "https://cors-anywhere.herokuapp.com/", //"http://cors-proxy.htmldriven.com/?url=",
 	urlBtc = "api.btc.com/v3/",
