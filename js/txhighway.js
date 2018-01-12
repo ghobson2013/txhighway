@@ -4,6 +4,7 @@
 const urlCash = "wss://ws.blockchain.info/bch/inv",
 	urlCahsBE = "https://bitcoincash.blockexplorer.com/",
 	urlCore = "wss://ws.blockchain.info/inv",
+	urlCoreBE = "https://bitcoinlegacy.blockexplorer.com/",
 	urlCors = "https://cors-anywhere.herokuapp.com/", //"http://cors-proxy.htmldriven.com/?url=",
 	urlBtc = "api.btc.com/v3/",
 	urlBlockchainInfo = "https://api.blockchain.info/",
@@ -12,7 +13,8 @@ const urlCash = "wss://ws.blockchain.info/bch/inv",
 // sockets
 const socketCash = new WebSocket(urlCash),
 	socketCore = new WebSocket(urlCore),
-	socketCashBE = io(urlCahsBE);
+	socketCashBE = io(urlCahsBE),
+	socketCoreBE = io(urlCoreBE);
 
 // DOM elements
 const canvas = document.getElementById("renderCanvas"),
@@ -115,6 +117,10 @@ socketCashBE.on("connect", function(){
 	socketCashBE.emit("subscribe", "inv");
 });
 
+socketCoreBE.on("connect", function(){
+	socketCoreBE.emit("subscribe", "inv");
+});
+
 socketCashBE.on("tx", function(data){
 	var txData = {
 		"out": data.vout,
@@ -123,15 +129,32 @@ socketCashBE.on("tx", function(data){
 		"valueOut": data.valueOut,
 		"isCash": true
 	}
-	newTX(true, txData);
+	//console.log(data);
+
+	setTimeout(() => {
+		newTX(true, txData);	
+	}, 3000);
+	
 });
 
+/* socketCoreBE.on("tx", function(data){
+	var txData = {
+		"out": data.vout,
+		"hash": data.txid,
+		"inputs": [],
+		"valueOut": data.valueOut,
+		"isCash": true
+	}
+	setTimeout(() => {
+		newTX(false, txData);	
+	}, 3000);
+}); */
 
 // connect to sockets
-/* socketCash.onopen = ()=>{
+socketCash.onopen = ()=>{
 	socketCash.send(JSON.stringify({"op":"unconfirmed_sub"}));
 	socketCash.send(JSON.stringify({"op":"blocks_sub"}));
-} */
+}
 
 socketCore.onopen = ()=> {
 	socketCore.send(JSON.stringify({"op":"unconfirmed_sub"}));
@@ -474,9 +497,20 @@ vis(function(){
 // create a new transaction
 function newTX(isCash, txInfo){
 	if (isCash){
+		let txExsists = false;
+		txCash.forEach(e => {
+			if(e.id == txInfo.hash) txExsists = true;
+		});
+		if (txExsists) return;
+
 		let randLane = Math.floor(Math.random() * 8) + 3;
 		createVehicle(isCash, txCash, txInfo, randLane, true);
 	} else {
+		let txExsists = false;
+		txCore.forEach(e =>{
+			if(e.id == txInfo.hash) txExsists = true;
+		});
+		if (txExsists) return;
 		createVehicle(isCash, txCore, txInfo, 12, false);
 	}
 }
