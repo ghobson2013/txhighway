@@ -620,8 +620,16 @@ function updateFees(isCash, fee){
 		if (feesCash.length == 1) return;
 		let total = 0;
 		for(var i = 0; i < feesCash.length; i++) total += feesCash[i];
+
 		let avg = total/feesCore.length;
-		document.getElementById("fees-bch").textContent = "$" + parseFloat(avg).toFixed(4);
+        var avgbch = parseFloat(avg).toFixed(4);
+        var valueIsNaN = isNaN(avgbch);
+        if (valueIsNaN) {
+            document.getElementById("fees-bch").textContent = "~ $0.01";
+        } else {
+            document.getElementById("fees-bch").textContent = "$" + avgbch;
+        }
+
 	} else {
 		fee = fee * PRICE_BTC;
 		if (feesCore.length == 100) feesCore.splice(0,1);

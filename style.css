@@ -1619,6 +1619,22 @@ input[type=range]:focus::-ms-fill-upper {
     border-left:1px solid #999;
     background:#f9f9f9;
 }
+#tx-wrap h4 {
+  position:absolute;
+  top:0;
+  left:0;
+  background:#888;
+  color:#fff;
+  margin:0;
+  padding:1.15em 0.2em;
+  font-size:0.65em;
+  text-align:center;
+  text-transform:uppercase;
+  font-family:'Lato', sans-serif;
+  width:100%;
+  letter-spacing: 1px;
+
+}
 #transactions{
   list-style:none;
   margin: 0;
@@ -1819,6 +1835,20 @@ input[type=range]:focus::-ms-fill-upper {
   }
 }
 
+@media screen and (max-width: 600px) and (orientation: portrait) {
+
+    .bitcoin-cash {
+      background-size: auto 40% !important;
+      background-position:42.5% 65%;
+
+    }
+    .bs {
+      background-size: auto 50% !important;
+      background-position:42.5% 0%;
+    }
+
+  }
+
 @media screen and (max-width: 600px){
   .global-mute {
     right:auto;
@@ -1828,6 +1858,29 @@ input[type=range]:focus::-ms-fill-upper {
   .fees-bch,.fees-btc {
     right:10.2%;
   }
+
+
+}
+
+@media only screen and (orientation: landscape) {
+    .waiting-sign{
+      bottom: 1%;
+    }
+
+    .nav {
+      top:10%;
+    }
+
+    .fees-bch{
+      height: 49.36%;
+    }
+
+    .ad-four{
+      right:20% !important; 
+    }
+  }
+
+  
 
   @media only screen and (orientation: portrait){
     .fees-bch,.fees-btc {
@@ -1927,23 +1980,7 @@ input[type=range]:focus::-ms-fill-upper {
   }
 
   
-  @media only screen and (orientation: landscape) {
-    .waiting-sign{
-      bottom: 1%;
-    }
-
-    .nav {
-      top:10%;
-    }
-
-    .fees-bch{
-      height: 49.36%;
-    }
-
-    .ad-four{
-      right:20% !important; 
-    }
-  }
+  
 }
 
 @media screen and (max-width: 460px){
