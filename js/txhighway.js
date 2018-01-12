@@ -2,6 +2,7 @@
 
 // urls
 const urlCash = "wss://ws.blockchain.info/bch/inv",
+	urlCahsBE = "https://bitcoincash.blockexplorer.com/",
 	urlCore = "wss://ws.blockchain.info/inv",
 	urlCors = "https://cors-anywhere.herokuapp.com/", //"http://cors-proxy.htmldriven.com/?url=",
 	urlBtc = "api.btc.com/v3/",
@@ -10,7 +11,8 @@ const urlCash = "wss://ws.blockchain.info/bch/inv",
 
 // sockets
 const socketCash = new WebSocket(urlCash),
-	socketCore = new WebSocket(urlCore);
+	socketCore = new WebSocket(urlCore),
+	socketCashBE = io(urlCahsBE);
 
 // DOM elements
 const canvas = document.getElementById("renderCanvas"),
@@ -107,11 +109,29 @@ let txCash = [],
 	feesCore = [],
 	feesCash = [];
 
+
+
+socketCashBE.on("connect", function(){
+	socketCashBE.emit("subscribe", "inv");
+});
+
+socketCashBE.on("tx", function(data){
+	var txData = {
+		"out": data.vout,
+		"hash": data.txid,
+		"inputs": [],
+		"valueOut": data.valueOut,
+		"isCash": true
+	}
+	newTX(true, txData);
+});
+
+
 // connect to sockets
-socketCash.onopen = ()=>{
+/* socketCash.onopen = ()=>{
 	socketCash.send(JSON.stringify({"op":"unconfirmed_sub"}));
 	socketCash.send(JSON.stringify({"op":"blocks_sub"}));
-}
+} */
 
 socketCore.onopen = ()=> {
 	socketCore.send(JSON.stringify({"op":"unconfirmed_sub"}));
@@ -125,10 +145,16 @@ socketCash.onmessage = (onmsg) =>{
 		let t = parseInt(cashPoolInfo.textContent.replace(/\,/g,''));			
 		cashPoolInfo.textContent = formatWithCommas(t +1);
 
+		//console.log(res.x);
+
 		newTX(true, res.x);
 	} else {
 		blockNotify(res.x, true);
 	}
+}
+
+socketCash.onerror = (onerr) =>{
+	console.log(onerr);
 }
 
 socketCore.onmessage = (onmsg)=> {
@@ -144,6 +170,7 @@ socketCore.onmessage = (onmsg)=> {
             }
 		});	
 
+		//console.log(res.x);
 		newTX(false, res.x);
 	} else {
 		blockNotify(res.x, false);
@@ -510,6 +537,11 @@ function createVehicle(type, arr, txInfo, lane, isCash){
 
 	updateFees(isCash, fee);
 
+	if(txInfo.valueOut){
+		valOut = txInfo.valueOut;
+	}
+
+	//console.log(txInfo);
 	let car = getCar(valOut, donation, isCash, userTx, sdTx, txInfo.sw);
 	let width = SINGLE_LANE * (car.width / car.height);
 	let x = -width;
