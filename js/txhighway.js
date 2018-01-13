@@ -122,8 +122,16 @@ socketCoreBE.on("connect", function(){
 });
 
 socketCashBE.on("tx", function(data){
+
+	let outs = [];
+	data.vout.forEach(k =>{
+		let addr = Object.keys(k)[0];
+		let val = k[addr];
+		outs.push({"addr":addr, "value": val});
+
+	});
 	var txData = {
-		"out": data.vout,
+		"out": outs,
 		"hash": data.txid,
 		"inputs": [],
 		"valueOut": data.valueOut,
@@ -133,7 +141,7 @@ socketCashBE.on("tx", function(data){
 
 	setTimeout(() => {
 		newTX(true, txData);	
-	}, 3000);
+	}, 1000);
 	
 });
 
@@ -314,8 +322,8 @@ function getDevDonations(){
 	let url =  urlCors + "https://bch-chain." + urlBtc + "address/3MtCFL4aWWGS5cDFPbmiNKaPZwuD28oFvF";
 
 	xhr.onload = function(){
-		if (this.readyState == 4 && this.status == 200) {
-			let res = JSON.parse(this.responseText);
+		if (xhr.readyState == 4 && xhr.status == 200) {
+			let res = JSON.parse(xhr.responseText);
 			//res = JSON.parse(res.data);
 			let sumVal = res.data.balance;
 			sumVal /= 100000000;
@@ -337,8 +345,8 @@ function getPriceData(url){
 	let xhr = new XMLHttpRequest();
 
 	xhr.onload = function(){
-		if (this.readyState == 4 && this.status == 200) {		
-			let res = JSON.parse(this.responseText);
+		if (xhr.readyState == 4 && xhr.status == 200) {		
+			let res = JSON.parse(xhr.responseText);
 			if (res[0].symbol == "BCH"){
 				PRICE_BCH = res[0].price_usd;
 				document.getElementById("price_bch").textContent = "USD $" + formatWithCommas(parseFloat(PRICE_BCH).toFixed(2));
@@ -409,9 +417,9 @@ function blockNotify(data, isCash){
 function getPoolData(url, isCash){
 	let xhr = new XMLHttpRequest();
 
-	xhr.onload = function () {
-		if (this.readyState == 4 && this.status == 200) {
-			let obj = JSON.parse(this.responseText);
+	xhr.onreadystatechange = function () {
+		if (xhr.readyState == 4 && xhr.status == 200) {
+			let obj = JSON.parse(xhr.responseText);
 			//obj = JSON.parse(obj.body);
 
 			if (isCash){
@@ -432,14 +440,15 @@ function getPoolData(url, isCash){
 	}
 
 	xhr.open('GET', url, true);
-	xhr.send(null);
+
+	xhr.send();
 }
 
 // get average confirmation time for btc
 function getCoreConfTime(url){
 	let xhr = new XMLHttpRequest();
 	xhr.onreadystatechange = function() {
-		if (this.readyState == 4 && this.status == 200) {
+		if (xhr.readyState == 4 && xhr.status == 200) {
 			let obj = JSON.parse(xhr.responseText);
 			coreEta.textContent = obj.values[0].y + " MIN+";
 		}
@@ -823,6 +832,7 @@ let isDonationTx = function(txInfo){
 
 	vouts.forEach((key)=>{
 		let k = key.addr;
+		
 		if (k == "3ECKq7onkjnRQR2nNe5uUJp2yMsXRmZavC" ||
 				k == "3MtCFL4aWWGS5cDFPbmiNKaPZwuD28oFvF") {
 					isDonation = true;
