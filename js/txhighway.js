@@ -170,9 +170,6 @@ socketCash.onmessage = (onmsg) =>{
 	let res = JSON.parse(onmsg.data);
 
 	if (res.op == "utx"){
-		let t = parseInt(cashPoolInfo.textContent.replace(/\,/g,''));			
-		cashPoolInfo.textContent = formatWithCommas(t +1);
-
 		//console.log(res.x);
 
 		newTX(true, res.x);
@@ -270,6 +267,12 @@ function init(){
 	loadSound("assets/audio/horns.mp3", "horns");
 	loadSound("assets/audio/evil-laugh.mp3", "laugh");
 
+	// set initial volume
+	gainNode.gain.setTargetAtTime(VOLUME, audioContext.currentTime, 0.015);
+
+	// start animation
+	requestID = requestAnimationFrame(animate);
+
 	// acquire data for signs
 	updateMempoolData();
 	updatePriceData();
@@ -287,11 +290,7 @@ function init(){
 		show('loading', false);
 	});
 
-	// set initial volume
-	gainNode.gain.setTargetAtTime(VOLUME, audioContext.currentTime, 0.015);
 
-	// start animation
-	requestID = requestAnimationFrame(animate);
 }
 
 function mobileCheck(){
@@ -375,6 +374,7 @@ function blockNotify(data, isCash){
 		amount = data.nTx;
 		cashPoolInfo.textContent = formatWithCommas(t - amount);
 		setTimeout(() => {
+			console.log('blocknotify is cash');
 			getPoolData(urlCors + "https://bch-chain." + urlBtc + "tx/unconfirmed/summary", true);
 		}, 1000);
 	} else {
@@ -393,6 +393,7 @@ function blockNotify(data, isCash){
 
 		corePoolInfo.textContent = formatWithCommas(t - amount);
 		setTimeout(() => {
+			console.log('blocknotify core');
 			getPoolData(urlCors + "https://chain." + urlBtc + "tx/unconfirmed/summary", false);
 			getCoreConfTime(urlBlockchainInfo + "charts/avg-confirmation-time?format=json&cors=true");
 
@@ -414,6 +415,7 @@ function blockNotify(data, isCash){
 function getPoolData(url, isCash){
 	let xhr = new XMLHttpRequest();
 
+	console.log('get pool data: ' + isCash);
 	xhr.onreadystatechange = function () {
 		if (xhr.readyState == 4 && xhr.status == 200) {
 			let obj = JSON.parse(xhr.responseText);
@@ -433,6 +435,7 @@ function getPoolData(url, isCash){
 					}
 				}
 			}
+		xhr.abort();
 		} 
 	}
 
@@ -504,12 +507,16 @@ vis(function(){
 function newTX(isCash, txInfo){
 	if (isCash){
 		
+		
 		let txExsists = false;
 		txCash.forEach(e => {
 			if(e.id == txInfo.hash) txExsists = true;
 		});
 		if (txExsists) return;
 		
+		let t = parseInt(cashPoolInfo.textContent.replace(/\,/g,''));			
+		cashPoolInfo.textContent = formatWithCommas(t +1);
+
 		let randLane = Math.floor(Math.random() * 8) + 3;
 		createVehicle(isCash, txCash, txInfo, randLane, true);
 	} else {
