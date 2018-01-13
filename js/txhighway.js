@@ -13,8 +13,8 @@ const urlCash = "wss://ws.blockchain.info/bch/inv",
 // sockets
 const socketCash = new WebSocket(urlCash),
 	socketCore = new WebSocket(urlCore),
-	socketCashBE = io(urlCahsBE),
-	socketCoreBE = io(urlCoreBE);
+	socketCashBE = io(urlCahsBE);
+	/* socketCoreBE = io(urlCoreBE); */
 
 // DOM elements
 const canvas = document.getElementById("renderCanvas"),
@@ -111,25 +111,23 @@ let txCash = [],
 	feesCore = [],
 	feesCash = [];
 
-
-
 socketCashBE.on("connect", function(){
 	socketCashBE.emit("subscribe", "inv");
 });
 
-socketCoreBE.on("connect", function(){
+/* socketCoreBE.on("connect", function(){
 	socketCoreBE.emit("subscribe", "inv");
-});
+}); */
 
 socketCashBE.on("tx", function(data){
 
 	let outs = [];
 	data.vout.forEach(k =>{
 		let addr = Object.keys(k)[0];
-		let val = k[addr];
+		let val = k[addr] / 100000000;
 		outs.push({"addr":addr, "value": val});
-
 	});
+	
 	var txData = {
 		"out": outs,
 		"hash": data.txid,
@@ -137,7 +135,6 @@ socketCashBE.on("tx", function(data){
 		"valueOut": data.valueOut,
 		"isCash": true
 	}
-	//console.log(data);
 
 	setTimeout(() => {
 		newTX(true, txData);	
@@ -506,12 +503,13 @@ vis(function(){
 // create a new transaction
 function newTX(isCash, txInfo){
 	if (isCash){
+		
 		let txExsists = false;
 		txCash.forEach(e => {
 			if(e.id == txInfo.hash) txExsists = true;
 		});
 		if (txExsists) return;
-
+		
 		let randLane = Math.floor(Math.random() * 8) + 3;
 		createVehicle(isCash, txCash, txInfo, randLane, true);
 	} else {
@@ -571,14 +569,17 @@ function createVehicle(type, arr, txInfo, lane, isCash){
 		valOut += tx.value/100000000;
 	});
 
+	
 	fee = (valIn - valOut *100000000)/100000000;
+	
+	if (fee < 0) fee = 0;
 
 	if (isCash){
 		donation = isDonationTx(txInfo);
 		sdTx = isSatoshiBonesTx(txInfo);
 	}
 
-	updateFees(isCash, fee);
+	if (fee != 0) updateFees(isCash, fee);
 
 	if(txInfo.valueOut){
 		valOut = txInfo.valueOut;
