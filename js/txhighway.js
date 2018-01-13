@@ -170,8 +170,6 @@ socketCash.onmessage = (onmsg) =>{
 	let res = JSON.parse(onmsg.data);
 
 	if (res.op == "utx"){
-		//console.log(res.x);
-
 		newTX(true, res.x);
 	} else {
 		blockNotify(res.x, true);
@@ -195,7 +193,6 @@ socketCore.onmessage = (onmsg)=> {
             }
 		});	
 
-		//console.log(res.x);
 		newTX(false, res.x);
 	} else {
 		blockNotify(res.x, false);
@@ -275,7 +272,9 @@ function init(){
 
 	// acquire data for signs
 	updateMempoolData();
-	updatePriceData();
+	setTimeout(() => {
+		updatePriceData();	
+	}, 3000);
 	getCoreConfTime(urlBlockchainInfo + "charts/avg-confirmation-time?format=json&cors=true");
 
 	// set donation goal information
@@ -283,7 +282,6 @@ function init(){
 		getDevDonations();	
 	}, 3000);
 	
-
 	// remove loading screen
 	onReady(function () {
 		show('page', true);
@@ -374,7 +372,6 @@ function blockNotify(data, isCash){
 		amount = data.nTx;
 		cashPoolInfo.textContent = formatWithCommas(t - amount);
 		setTimeout(() => {
-			console.log('blocknotify is cash');
 			getPoolData(urlCors + "https://bch-chain." + urlBtc + "tx/unconfirmed/summary", true);
 		}, 1000);
 	} else {
@@ -393,7 +390,6 @@ function blockNotify(data, isCash){
 
 		corePoolInfo.textContent = formatWithCommas(t - amount);
 		setTimeout(() => {
-			console.log('blocknotify core');
 			getPoolData(urlCors + "https://chain." + urlBtc + "tx/unconfirmed/summary", false);
 			getCoreConfTime(urlBlockchainInfo + "charts/avg-confirmation-time?format=json&cors=true");
 
@@ -415,11 +411,9 @@ function blockNotify(data, isCash){
 function getPoolData(url, isCash){
 	let xhr = new XMLHttpRequest();
 
-	console.log('get pool data: ' + isCash);
 	xhr.onreadystatechange = function () {
 		if (xhr.readyState == 4 && xhr.status == 200) {
 			let obj = JSON.parse(xhr.responseText);
-			//obj = JSON.parse(obj.body);
 
 			if (isCash){
 				cashPoolInfo.textContent = formatWithCommas(obj.data.count);
@@ -492,7 +486,6 @@ vis(function(){
 	if (vis()){
 		txCash = [];
 		txCore = [];
-		//drawBackground();
 		requestAnimationFrame(animate);
 		if(!isCoreMuted) audioHorns.connect(gainNode);
 		isVisible = true;
@@ -506,8 +499,6 @@ vis(function(){
 // create a new transaction
 function newTX(isCash, txInfo){
 	if (isCash){
-		
-		
 		let txExsists = false;
 		txCash.forEach(e => {
 			if(e.id == txInfo.hash) txExsists = true;
@@ -592,7 +583,6 @@ function createVehicle(type, arr, txInfo, lane, isCash){
 		valOut = txInfo.valueOut;
 	}
 
-	//console.log(txInfo);
 	let car = getCar(valOut, donation, isCash, userTx, sdTx, txInfo.sw);
 	let width = SINGLE_LANE * (car.width / car.height);
 	let x = -width;
