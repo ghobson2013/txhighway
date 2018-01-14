@@ -81,7 +81,7 @@ let WIDTH = null,
 	HEIGHT = null,
 	SINGLE_LANE = HEIGHT/14,
 	SPEED = 8,
-	SPEED_MODIFIER = 0,
+	SPEED_MODIFIER = 0.5,
 	VOLUME = 0.5,
 	PRICE_BCH = 0,
 	PRICE_BTC = 0,
@@ -191,7 +191,7 @@ socketCore.onmessage = (onmsg)=> {
             if (JSON.stringify(i.script).length < 120){
 				res.x["sw"] = true;
             }
-		});	
+		});
 
 		newTX(false, res.x);
 	} else {
@@ -595,6 +595,7 @@ function createVehicle(type, arr, txInfo, lane, isCash){
 			}
 		});
 	}
+	
 
 	// fix btc vehicle positioning to prevent pile ups. <-- use this if above causes performance issues
 /*  	if (arr.length > 0 && !isCash){
@@ -603,8 +604,9 @@ function createVehicle(type, arr, txInfo, lane, isCash){
 			x = last.x - width - 10;
 		}
 	} */
-	arr.push({
-		type:type,
+
+	let item = {
+		//type:type,
 		id: txInfo.hash,
 		car: car,
 		x: x,
@@ -615,7 +617,11 @@ function createVehicle(type, arr, txInfo, lane, isCash){
 		donation: donation,
 		userTx: userTx,
 		isCash: isCash
-	});
+	};
+
+	arr.push(item);
+
+	//if(!isCash) console.log(x);
 }
 
 
@@ -899,8 +905,11 @@ function drawVehicles(arr){
 		} else {
 			car = item.car;
 		}
-		
-		if (item.x > -car.width - SPEED - 20){
+
+		let intro = -car.width - SPEED;
+		if (!item.isCash) intro = -car.width - SPEED * SPEED_MODIFIER;
+
+		if (item.x > intro){
 			if (!item.isPlaying){
 				addTxToList(item.isCash, item.id, item.valueOut, car);
 				if ((item.isCash && !isCashMuted) || (!item.isCash && !isCoreMuted)) addSounds(car);
@@ -921,8 +930,7 @@ function drawVehicles(arr){
 				item.y += item.d;
 				y += item.y;
 			}
-
-			ctx.drawImage(car, item.x, y, width, SINGLE_LANE);
+			ctx.drawImage(item.car, item.x, y, width, SINGLE_LANE);
 			
 		} else {
 			if (!item.isCash) txWaiting += 1;
@@ -931,8 +939,10 @@ function drawVehicles(arr){
 		if(item.isCash){
 			item.x += SPEED;
 		} else {
-			item.x += SPEED * SPEED_MODIFIER;
+			let spd = SPEED * SPEED_MODIFIER;
+			item.x += spd;
 			isCash = false;
+			
 		}
 		
 	});
