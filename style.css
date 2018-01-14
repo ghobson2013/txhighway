@@ -640,12 +640,12 @@ margin:15px 0;display:block;
     
 }
 
-.fees-btc {
+.fees-toll.fees-btc, .fees-btc {
 bottom: 11%;
 width: 36px;
 height: 13.34%;
 right:5%;
-background:#2e2e2e !important;
+background:#2e2e2e;
 }
 
 .fee-title {
@@ -698,6 +698,99 @@ background:#2e2e2e !important;
     top: 50%;
     width: 54px;
 }
+
+
+
+/*new signage*/
+
+.fees-bch,.fees-btc {
+      right:5%;
+    }
+
+    .fees-toll, .fees-toll.fees-btc, .fees-btc {
+    background:none;
+    border-left:0;
+    box-shadow:none;
+    width:28px;
+    border-width:3px 2px 3px 0;
+    border-radius: 0 10px 10px 0;
+    }
+    .fees-toll:before {height:50px; top:55%; width:50px;}
+    .fees-toll:after {content:none;}
+    .fees-toll .avg {
+      background:#275835;
+      border:1px solid #fff;
+      border-width:1px 1px 0 1px;
+      color:#fff;
+      padding:4px;
+      width:50px;
+      border-radius:5px 5px 0 0 ;
+      left:0;
+      top:48%;
+    }
+    .fees-bch #fees-bch {
+      background:#F8D448;
+      color:#444;
+      left: -26px;
+      top: 49%;
+      width: 58px;
+      border: 1px solid #fff;
+      border-width: 0 1px 1px 1px;
+      border-radius: 0 0 5px 5px;
+      padding: 2px 0;
+    }
+
+    .fees-toll.fees-btc, .fees-btc {
+      right:5%;
+    }
+
+    .fees-toll.fees-btc #fees-btc {
+      top:43%;
+    }
+    .fees-toll.fees-btc .avg {
+      top:41.5%;
+    }
+
+    .fee-title.secondary {display:none;}
+    
+    .fee-title {
+       /* Safari */
+        -webkit-transform: rotate(90deg);
+
+        /* Firefox */
+        -moz-transform: rotate(90deg);
+
+        /* IE */
+        -ms-transform: rotate(90deg);
+
+        /* Opera */
+        -o-transform: rotate(90deg);
+
+        /* Internet Explorer */
+        filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);
+
+        top:49%;
+        width:50px;
+        padding:2px 0;
+        background:#fff;
+        color:#222;
+        border-radius:3px;
+        left:-30px;
+        display:none;
+    }
+
+    .fees-btc #fees-btc {
+      background:#F8D448;
+      color:#444;
+      left: -26px;
+      width: 58px;
+      border: 1px solid #fff;
+      border-width: 0 1px 1px 1px;
+      border-radius: 0 0 5px 5px;
+      padding: 2px 0;
+    }
+
+    /*end new signage*/
 
 .ln {
   position:absolute;
@@ -1906,6 +1999,89 @@ input[type=range]:focus::-ms-fill-upper {
   @media only screen and (orientation: portrait){
     .fees-bch,.fees-btc {
       right:12.5%;
+    }
+
+    .fees-toll, .fees-toll.fees-btc, .fees-btc {
+    background:none;
+    border-left:0;
+    box-shadow:none;
+    width:28px;
+    border-width:3px 2px 3px 0;
+    border-radius: 0 10px 10px 0;
+    }
+    .fees-toll:before {height:50px; top:55%; width:50px;}
+    .fees-toll:after {content:none;}
+    .fees-toll .avg {
+      background:#275835;
+      border:1px solid #fff;
+      border-width:1px 1px 0 1px;
+      color:#fff;
+      padding:4px;
+      width:50px;
+      border-radius:5px 5px 0 0 ;
+      left:0;
+      top:48%;
+    }
+    .fees-bch #fees-bch {
+      background:#F8D448;
+      color:#444;
+      left: -26px;
+      top: 49%;
+      width: 58px;
+      border: 1px solid #fff;
+      border-width: 0 1px 1px 1px;
+      border-radius: 0 0 5px 5px;
+      padding: 2px 0;
+    }
+
+    .fees-toll.fees-btc, .fees-btc {
+      right:12%;
+    }
+
+    .fees-toll.fees-btc #fees-btc {
+      top:43%;
+    }
+    .fees-toll.fees-btc .avg {
+      top:41.5%;
+    }
+
+    .fee-title.secondary {display:none;}
+    
+    .fee-title {
+       /* Safari */
+        -webkit-transform: rotate(90deg);
+
+        /* Firefox */
+        -moz-transform: rotate(90deg);
+
+        /* IE */
+        -ms-transform: rotate(90deg);
+
+        /* Opera */
+        -o-transform: rotate(90deg);
+
+        /* Internet Explorer */
+        filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);
+
+        top:52%;
+        width:50px;
+        padding:2px 0;
+        background:#fff;
+        color:#222;
+        border-radius:3px;
+        left:-30px;
+        display:none;
+    }
+
+    .fees-btc #fees-btc {
+      background:#F8D448;
+      color:#444;
+      left: -26px;
+      width: 58px;
+      border: 1px solid #fff;
+      border-width: 0 1px 1px 1px;
+      border-radius: 0 0 5px 5px;
+      padding: 2px 0;
     }
 
     .ad-one {
