@@ -1881,7 +1881,7 @@ input[type=range]:focus::-ms-fill-upper {
   }
 
 
-}
+
 
 @media only screen and (orientation: landscape) {
     .waiting-sign{
@@ -1988,7 +1988,7 @@ input[type=range]:focus::-ms-fill-upper {
   }
 
   .ln {
-    background-size: 71%;
+    background-size: cover;
     background-position: 0 0;
     width:100%;
   }
