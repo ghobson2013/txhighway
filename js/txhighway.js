@@ -930,7 +930,7 @@ function drawVehicles(arr){
 				item.y += item.d;
 				y += item.y;
 			}
-			ctx.drawImage(item.car, item.x, y, width, SINGLE_LANE);
+			ctx.drawImage(car, item.x, y, width, SINGLE_LANE);
 			
 		} else {
 			if (!item.isCash) txWaiting += 1;
