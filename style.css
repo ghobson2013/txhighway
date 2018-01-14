@@ -143,7 +143,7 @@ span {
 }
 
 /*#logo {display:none;}*/
-.mobile-only {display:none;}
+.mobile-only {display:none !important;}
 .title {
   top: 3px;
   left: 5px;
@@ -1793,7 +1793,7 @@ input[type=range]:focus::-ms-fill-upper {
     display: none;
   }
 
-  .mobile-only {display:inline;}
+  .mobile-only {display:inline !important;}
   .mobile-live {
     position:fixed;
     top:5px;
@@ -1988,7 +1988,7 @@ input[type=range]:focus::-ms-fill-upper {
   }
 
   .ln {
-    background-size: cover;
+    background-size: 71%;
     background-position: 0 0;
     width:100%;
   }
