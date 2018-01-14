@@ -5,7 +5,7 @@ const urlCash = "wss://ws.blockchain.info/bch/inv",
 	urlCahsBE = "https://cashexplorer.bitcoin.com/", //"https://bitcoincash.blockexplorer.com/",
 	urlCore = "wss://ws.blockchain.info/inv",
 	urlCoreBE = "https://bitcoinlegacy.blockexplorer.com/",
-	urlCors = "https://cors-anywhere.herokuapp.com/", //"http://cors-proxy.htmldriven.com/?url=",
+	urlCors = "https://txhighway-cors-proxy-porlybe.c9users.io/index.php?url=", //"https://cors-anywhere.herokuapp.com/", //"http://cors-proxy.htmldriven.com/?url=",
 	urlBtc = "api.btc.com/v3/",
 	urlBlockchainInfo = "https://api.blockchain.info/",
 	urlCoinMarketCap = "https://api.coinmarketcap.com/v1/ticker/";
@@ -414,14 +414,14 @@ function getPoolData(url, isCash){
 	xhr.onreadystatechange = function () {
 		if (xhr.readyState == 4 && xhr.status == 200) {
 			let obj = JSON.parse(xhr.responseText);
-
+			
 			if (isCash){
 				cashPoolInfo.textContent = formatWithCommas(obj.data.count);
 			} else {
 				corePoolInfo.textContent = formatWithCommas(obj.data.count);
 				let mod = obj.data.count/2400/100;
 
-				if (SPEED_MODIFIER == 0){
+				if (SPEED_MODIFIER == 0.5){
 					if (mod >= 0.8){
 						SPEED_MODIFIER = 0.2;
 					} else {
