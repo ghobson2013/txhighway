@@ -1871,6 +1871,8 @@ input[type=range]:focus::-ms-fill-upper {
     .whitepaper{
       left: 10%;
     }
+    .fees-toll.fees-btc, .fees-btc {border:0; right:8%;}
+    .fees-bch {top:9%; right:8%;}
   }
 
   @media only screen and (orientation: portrait){
