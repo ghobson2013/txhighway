@@ -5,7 +5,7 @@ const urlCash = "wss://ws.blockchain.info/bch/inv",
 	urlCahsBE = "https://cashexplorer.bitcoin.com/", //"https://bitcoincash.blockexplorer.com/",
 	urlCore = "wss://ws.blockchain.info/inv",
 	urlCoreBE = "https://bitcoinlegacy.blockexplorer.com/",
-	urlCors = "https://txhighway-cors-proxy-porlybe.c9users.io/index.php?url=", //"https://cors-anywhere.herokuapp.com/", //"http://cors-proxy.htmldriven.com/?url=",
+	urlCors = "https://txhighway-proxy.herokuapp.com/", //"https://txhighway-cors-proxy-porlybe.c9users.io/index.php?url=", //"https://cors-anywhere.herokuapp.com/", //"http://cors-proxy.htmldriven.com/?url=",
 	urlBtc = "api.btc.com/v3/",
 	urlBlockchainInfo = "https://api.blockchain.info/",
 	urlCoinMarketCap = "https://api.coinmarketcap.com/v1/ticker/";
