@@ -468,7 +468,7 @@ margin:15px 0;display:block;
   color: #c2c2c2;
   font-size: 16px;
   text-transform: uppercase;
-  z-index: -2;
+  z-index: -1;
   font-family: 'Lato', sans-serif;
 }
 .lane-size.one {
@@ -1872,7 +1872,6 @@ input[type=range]:focus::-ms-fill-upper {
       left: 10%;
     }
     .fees-toll.fees-btc, .fees-btc {border:0; right:8%;}
-    .fees-bch {top:9%; right:8%;}
   }
 
   @media only screen and (orientation: portrait){
