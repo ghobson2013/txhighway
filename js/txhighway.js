@@ -5,15 +5,17 @@ const urlCash = "wss://ws.blockchain.info/bch/inv",
 	urlCahsBE = "https://cashexplorer.bitcoin.com/", //"https://bitcoincash.blockexplorer.com/",
 	urlCore = "wss://ws.blockchain.info/inv",
 	urlCoreBE = "https://bitcoinlegacy.blockexplorer.com/",
-	urlCors = "https://txhighway-proxy.herokuapp.com/", //"https://txhighway-cors-proxy-porlybe.c9users.io/index.php?url=", //"https://cors-anywhere.herokuapp.com/", //"http://cors-proxy.htmldriven.com/?url=",
+	urlCors = "https://txhighway-proxy.herokuapp.com/index.php?url=", //"https://txhighway-cors-proxy-porlybe.c9users.io/index.php?url=", //"https://cors-anywhere.herokuapp.com/", //"http://cors-proxy.htmldriven.com/?url=",
 	urlBtc = "api.btc.com/v3/",
 	urlBlockchainInfo = "https://api.blockchain.info/",
-	urlCoinMarketCap = "https://api.coinmarketcap.com/v1/ticker/";
+	urlCoinMarketCap = "https://api.coinmarketcap.com/v1/ticker/",
+	urlTxhwNode = "https://txhighway-node.herokuapp.com/";
 
 // sockets
 const socketCash = new WebSocket(urlCash),
 	socketCore = new WebSocket(urlCore),
-	socketCashBE = io(urlCahsBE);
+	socketCashBE = io(urlCahsBE),
+	socketTxhwNode = io(urlTxhwNode);
 	/* socketCoreBE = io(urlCoreBE); */
 
 // DOM elements
@@ -110,6 +112,31 @@ let txCash = [],
 	txCore = [],
 	feesCore = [],
 	feesCash = [];
+
+
+socketTxhwNode.on("stats", function(data){
+
+	PRICE_BCH = data.bchUSD;
+	PRICE_BTC = data.btcUSD;
+
+	document.getElementById("price_bch").textContent = "USD $" + formatWithCommas(parseFloat(PRICE_BCH).toFixed(2));
+	document.getElementById("price_btc").textContent = "USD $" + formatWithCommas(parseFloat(PRICE_BTC).toFixed(2));
+
+	cashPoolInfo.textContent = formatWithCommas(data.bchTX);
+	corePoolInfo.textContent = formatWithCommas(data.btcTX);
+
+	let mod = data.btcTX/2400/100;
+
+	if (SPEED_MODIFIER == 0.5){
+		if (mod >= 0.8){
+			SPEED_MODIFIER = 0.2;
+		} else {
+			SPEED_MODIFIER = 1 - mod;
+		}
+	}
+
+	console.log(data);
+});
 
 socketCashBE.on("connect", function(){
 	socketCashBE.emit("subscribe", "inv");
@@ -271,15 +298,17 @@ function init(){
 	requestID = requestAnimationFrame(animate);
 
 	// acquire data for signs
-	updateMempoolData();
+	/* updateMempoolData();
 	setTimeout(() => {
 		updatePriceData();	
 	}, 3000);
+ */	
 	getCoreConfTime(urlBlockchainInfo + "charts/avg-confirmation-time?format=json&cors=true");
+
 
 	// set donation goal information
 	setTimeout(() => {
-		getDevDonations();	
+		//getDevDonations();	
 	}, 3000);
 	
 	// remove loading screen
@@ -301,7 +330,7 @@ function mobileCheck(){
 }
 
 // gets latest utx count and sets it to signs
-function updateMempoolData(){
+/* function updateMempoolData(){
 	getPoolData(urlCors + "https://chain." + urlBtc + "tx/unconfirmed/summary", false);
 	getPoolData(urlCors + "https://bch-chain." + urlBtc + "tx/unconfirmed/summary", true);
 }
@@ -309,7 +338,8 @@ function updateMempoolData(){
 function updatePriceData(){
 	getPriceData(urlCoinMarketCap + "bitcoin-cash/");
 	getPriceData(urlCoinMarketCap + "bitcoin/");
-}
+} */
+
 // get current balance of dev donation address
 function getDevDonations(){
 	let xhr = new XMLHttpRequest();
@@ -335,7 +365,7 @@ function getDevDonations(){
 }
 
 // get price in usd for bch & btc
-function getPriceData(url){
+/* function getPriceData(url){
 	let xhr = new XMLHttpRequest();
 
 	xhr.onload = function(){
@@ -353,7 +383,7 @@ function getPriceData(url){
 
 	xhr.open('GET', url, true);
 	xhr.send(null);
-}
+} */
 
 // adds thousands seperator to large numbers
 function formatWithCommas(x){
@@ -371,9 +401,9 @@ function blockNotify(data, isCash){
 		t = parseInt(cashPoolInfo.textContent.replace(/\,/g,''));
 		amount = data.nTx;
 		cashPoolInfo.textContent = formatWithCommas(t - amount);
-		setTimeout(() => {
-			getPoolData(urlCors + "https://bch-chain." + urlBtc + "tx/unconfirmed/summary", true);
-		}, 1000);
+		/* setTimeout(() => {
+			//getPoolData(urlCors + "https://bch-chain." + urlBtc + "tx/unconfirmed/summary", true);
+		}, 1000); */
 	} else {
 		ticker = "BTC";
 		t = parseInt(corePoolInfo.textContent.replace(/\,/g,''));
@@ -389,26 +419,27 @@ function blockNotify(data, isCash){
 		}
 
 		corePoolInfo.textContent = formatWithCommas(t - amount);
-		setTimeout(() => {
-			getPoolData(urlCors + "https://chain." + urlBtc + "tx/unconfirmed/summary", false);
-			getCoreConfTime(urlBlockchainInfo + "charts/avg-confirmation-time?format=json&cors=true");
+		getCoreConfTime(urlBlockchainInfo + "charts/avg-confirmation-time?format=json&cors=true");
 
-		}, 1000);
+		/* setTimeout(() => {
+			//getPoolData(urlCors + "https://chain." + urlBtc + "tx/unconfirmed/summary", false);
+
+		}, 1000); */
 	}
 
 	if (isVisible) playSound(audioChaChing);
 	
 	confirmedAmount.textContent = amount + "x " + ticker;
 	confirmedNotify.style.display = "block"; //no pun intended
-	setTimeout(() => {
+	/* setTimeout(() => {
 		confirmedNotify.style.display = "none";
 		//updateMempoolData();
-		updatePriceData();
-	}, 4000);
+		//updatePriceData();
+	}, 4000); */
 }
 
 // retrieve pool information for signs
-function getPoolData(url, isCash){
+/* function getPoolData(url, isCash){
 	let xhr = new XMLHttpRequest();
 
 	xhr.onreadystatechange = function () {
@@ -436,7 +467,7 @@ function getPoolData(url, isCash){
 	xhr.open('GET', url, true);
 
 	xhr.send();
-}
+} */
 
 // get average confirmation time for btc
 function getCoreConfTime(url){
@@ -444,7 +475,8 @@ function getCoreConfTime(url){
 	xhr.onreadystatechange = function() {
 		if (xhr.readyState == 4 && xhr.status == 200) {
 			let obj = JSON.parse(xhr.responseText);
-			coreEta.textContent = obj.values[0].y + " MIN+";
+			let confTime = parseInt(obj.values[0].y).toFixed(2) + " MIN+";
+			coreEta.textContent = confTime;
 		}
 	}
 	xhr.open("GET", url, true);
