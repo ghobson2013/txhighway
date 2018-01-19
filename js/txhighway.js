@@ -5,10 +5,10 @@ const urlCash = "wss://ws.blockchain.info/bch/inv",
 	urlCahsBE = "https://cashexplorer.bitcoin.com/", //"https://bitcoincash.blockexplorer.com/",
 	urlCore = "wss://ws.blockchain.info/inv",
 	urlCoreBE = "https://bitcoinlegacy.blockexplorer.com/",
-	urlCors = "https://txhighway-proxy.herokuapp.com/index.php?url=", //"https://txhighway-cors-proxy-porlybe.c9users.io/index.php?url=", //"https://cors-anywhere.herokuapp.com/", //"http://cors-proxy.htmldriven.com/?url=",
+	//urlCors = "https://txhighway-proxy.herokuapp.com/index.php?url=", //"https://txhighway-cors-proxy-porlybe.c9users.io/index.php?url=", //"https://cors-anywhere.herokuapp.com/", //"http://cors-proxy.htmldriven.com/?url=",
 	urlBtc = "api.btc.com/v3/",
 	urlBlockchainInfo = "https://api.blockchain.info/",
-	urlCoinMarketCap = "https://api.coinmarketcap.com/v1/ticker/",
+	//urlCoinMarketCap = "https://api.coinmarketcap.com/v1/ticker/",
 	urlTxhwNode = "https://txhighway-node.herokuapp.com/";
 
 // sockets
@@ -431,11 +431,11 @@ function blockNotify(data, isCash){
 	
 	confirmedAmount.textContent = amount + "x " + ticker;
 	confirmedNotify.style.display = "block"; //no pun intended
-	/* setTimeout(() => {
+	 setTimeout(() => {
 		confirmedNotify.style.display = "none";
 		//updateMempoolData();
 		//updatePriceData();
-	}, 4000); */
+	}, 4000); 
 }
 
 // retrieve pool information for signs
