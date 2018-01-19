@@ -548,9 +548,12 @@ vis(function(){
 		//txCore = [];
 		//requestAnimationFrame(animate);
 		//if(!isCoreMuted) audioHorns.connect(gainNode);
+		ctx.clearRect(0,0,WIDTH,HEIGHT);
+
 		isVisible = true;
 	} else{
 		//cancelAnimationFrame(requestID);
+		ctx.clearRect(0,0,WIDTH,HEIGHT);
 		setTimeout(() => {
 			animate();
 		}, 1000);
