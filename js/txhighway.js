@@ -307,9 +307,9 @@ function init(){
 
 
 	// set donation goal information
-	setTimeout(() => {
+	/* setTimeout(() => {
 		//getDevDonations();	
-	}, 3000);
+	}, 3000); */
 	
 	// remove loading screen
 	onReady(function () {
@@ -400,7 +400,7 @@ function blockNotify(data, isCash){
 		ticker = "BCH";
 		t = parseInt(cashPoolInfo.textContent.replace(/\,/g,''));
 		amount = data.nTx;
-		cashPoolInfo.textContent = formatWithCommas(t - amount);
+		//cashPoolInfo.textContent = formatWithCommas(t - amount);
 		/* setTimeout(() => {
 			//getPoolData(urlCors + "https://bch-chain." + urlBtc + "tx/unconfirmed/summary", true);
 		}, 1000); */
@@ -418,7 +418,7 @@ function blockNotify(data, isCash){
 			SPEED_MODIFIER = 1 - mod;
 		}
 
-		corePoolInfo.textContent = formatWithCommas(t - amount);
+		//corePoolInfo.textContent = formatWithCommas(t - amount);
 		getCoreConfTime(urlBlockchainInfo + "charts/avg-confirmation-time?format=json&cors=true");
 
 		/* setTimeout(() => {
@@ -427,7 +427,8 @@ function blockNotify(data, isCash){
 		}, 1000); */
 	}
 
-	if (isVisible) playSound(audioChaChing);
+	//if (isVisible) 
+	playSound(audioChaChing);
 	
 	confirmedAmount.textContent = amount + "x " + ticker;
 	confirmedNotify.style.display = "block"; //no pun intended
@@ -514,16 +515,21 @@ let vis = (function(){
     }
 })();
 
+
+
 vis(function(){
 	if (vis()){
-		txCash = [];
-		txCore = [];
-		requestAnimationFrame(animate);
-		if(!isCoreMuted) audioHorns.connect(gainNode);
+		//txCash = [];
+		//txCore = [];
+		//requestAnimationFrame(animate);
+		//if(!isCoreMuted) audioHorns.connect(gainNode);
 		isVisible = true;
 	} else{
-		cancelAnimationFrame(requestID);
-		if(!isCoreMuted) audioHorns.disconnect()
+		//cancelAnimationFrame(requestID);
+		setTimeout(() => {
+			animate();
+		}, 1000);
+		//if(!isCoreMuted) audioHorns.disconnect();
 		isVisible = false;
 	}
 });
@@ -764,7 +770,7 @@ function getCar(valueOut, donation, isCash, userTx, sdTx, sw){
 
 // add sounds to sound array for playback
 function addSounds(carType){
-	if (!isVisible) return;
+	//if (!isVisible) return;
 
 	if (carType == carUserCash || carType == carUserCore) {
 		playSound(audioLaCucaracha);
@@ -922,6 +928,9 @@ let isUserTx = function(txInfo){
 	return isUserTx;
 }
 
+let time = 0,
+	dt = 0;
+
 // loop through transactions and draw them
 function drawVehicles(arr){
 	let car = null;
@@ -930,6 +939,7 @@ function drawVehicles(arr){
 	let txWaiting = 0;
 	let isCash = true;
 
+	
 	arr.forEach(function(item, index, object){
 
 		if(!item.isCash && konamiActive) { 
@@ -959,7 +969,7 @@ function drawVehicles(arr){
 				let bottom = SINGLE_LANE * (item.lane - 1) + SINGLE_LANE/4;
 				if (y + item.y > bottom) item.d = -0.3;
 				if (y + item.y < top) item.d = 0.3;
-				item.y += item.d;
+				item.y += (item.d * dt);
 				y += item.y;
 			}
 			ctx.drawImage(car, item.x, y, width, SINGLE_LANE);
@@ -969,12 +979,11 @@ function drawVehicles(arr){
 		}
 
 		if(item.isCash){
-			item.x += SPEED;
+			item.x += (SPEED * dt);
 		} else {
-			let spd = SPEED * SPEED_MODIFIER;
-			item.x += spd;
+			let spd = (SPEED * SPEED_MODIFIER);
+			item.x += (spd * dt);
 			isCash = false;
-			
 		}
 		
 	});
@@ -1010,12 +1019,25 @@ function removeVehicles(){
 
 // animate everything
 function animate(){
-	requestID = requestAnimationFrame(animate);
+
+	let now = new Date().getTime();
+	dt = now - (time || now);
+	dt = dt/(1000/60);
+	time = now;
+	//console.log(dt);
 
 	ctx.clearRect(0,0,WIDTH,HEIGHT);
 	drawVehicles(txCash);
 	drawVehicles(txCore);
 	removeVehicles();
+
+	if(isVisible){
+		requestID = requestAnimationFrame(animate);
+	} else {
+		setTimeout(() => {
+			animate();
+		}, 1000);
+	}
 }
 
 // adjust speed on slider change
