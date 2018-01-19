@@ -135,7 +135,7 @@ socketTxhwNode.on("stats", function(data){
 		}
 	}
 
-	console.clear();
+	//console.clear();
 	console.log(JSON.stringify(data));
 	console.log(`%c ───█▒▒███
 ───███████
@@ -948,6 +948,7 @@ let isSatoshiBonesTx = function(txInfo){
 let isUserTx = function(txInfo){
 	let vouts = txInfo.out;//.vout;
 	let isUserTx = false;
+
 
 	vouts.forEach((key)=>{
 		let keys = Object.keys(key);
