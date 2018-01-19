@@ -135,6 +135,7 @@ socketTxhwNode.on("stats", function(data){
 		}
 	}
 
+	console.clear();
 	console.log(JSON.stringify(data));
 	console.log(`%c ───█▒▒███
 ───███████
@@ -549,11 +550,12 @@ vis(function(){
 		//requestAnimationFrame(animate);
 		//if(!isCoreMuted) audioHorns.connect(gainNode);
 		ctx.clearRect(0,0,WIDTH,HEIGHT);
-
 		isVisible = true;
 	} else{
 		//cancelAnimationFrame(requestID);
 		ctx.clearRect(0,0,WIDTH,HEIGHT);
+		time = new Date().getTime();
+
 		setTimeout(() => {
 			animate();
 		}, 1000);
