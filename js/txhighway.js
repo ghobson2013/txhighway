@@ -4,11 +4,7 @@
 const urlCash = "wss://ws.blockchain.info/bch/inv",
 	urlCahsBE = "https://cashexplorer.bitcoin.com/", //"https://bitcoincash.blockexplorer.com/",
 	urlCore = "wss://ws.blockchain.info/inv",
-	urlCoreBE = "https://bitcoinlegacy.blockexplorer.com/",
-	//urlCors = "https://txhighway-proxy.herokuapp.com/index.php?url=", //"https://txhighway-cors-proxy-porlybe.c9users.io/index.php?url=", //"https://cors-anywhere.herokuapp.com/", //"http://cors-proxy.htmldriven.com/?url=",
-	urlBtc = "api.btc.com/v3/",
 	urlBlockchainInfo = "https://api.blockchain.info/",
-	//urlCoinMarketCap = "https://api.coinmarketcap.com/v1/ticker/",
 	urlTxhwNode = "https://txhighway-node.herokuapp.com/";
 
 // sockets
@@ -16,7 +12,6 @@ const socketCash = new WebSocket(urlCash),
 	socketCore = new WebSocket(urlCore),
 	socketCashBE = io(urlCahsBE),
 	socketTxhwNode = io(urlTxhwNode);
-	/* socketCoreBE = io(urlCoreBE); */
 
 // DOM elements
 const canvas = document.getElementById("renderCanvas"),
@@ -135,8 +130,16 @@ socketTxhwNode.on("stats", function(data){
 		}
 	}
 
-	//console.clear();
-	console.log(JSON.stringify(data));
+	let sumVal = data.devDonations;
+	sumVal /= 100000000;
+
+	document.getElementById("donationAmt").textContent = sumVal + " BCH";
+	document.getElementById("donationTotal").textContent = DONATION_GOAL + " BCH";
+
+	sumVal = sumVal/DONATION_GOAL * 100;
+	donationGoal.setAttribute("value", sumVal);
+
+	console.clear();
 	console.log(`%c ───█▒▒███
 ───███████
 ───████████
@@ -168,10 +171,6 @@ socketCashBE.on("connect", function(){
 	socketCashBE.emit("subscribe", "inv");
 });
 
-/* socketCoreBE.on("connect", function(){
-	socketCoreBE.emit("subscribe", "inv");
-}); */
-
 socketCashBE.on("tx", function(data){
 
 	let outs = [];
@@ -195,19 +194,6 @@ socketCashBE.on("tx", function(data){
 	
 });
 
-/* socketCoreBE.on("tx", function(data){
-	var txData = {
-		"out": data.vout,
-		"hash": data.txid,
-		"inputs": [],
-		"valueOut": data.valueOut,
-		"isCash": true
-	}
-	setTimeout(() => {
-		newTX(false, txData);	
-	}, 3000);
-}); */
-
 // connect to sockets
 socketCash.onopen = ()=>{
 	socketCash.send(JSON.stringify({"op":"unconfirmed_sub"}));
@@ -227,10 +213,6 @@ socketCash.onmessage = (onmsg) =>{
 	} else {
 		blockNotify(res.x, true);
 	}
-}
-
-socketCash.onerror = (onerr) =>{
-	console.log(onerr);
 }
 
 socketCore.onmessage = (onmsg)=> {
@@ -323,27 +305,13 @@ function init(){
 	// start animation
 	requestID = requestAnimationFrame(animate);
 
-	// acquire data for signs
-	/* updateMempoolData();
-	setTimeout(() => {
-		updatePriceData();	
-	}, 3000);
- */	
 	getCoreConfTime(urlBlockchainInfo + "charts/avg-confirmation-time?format=json&cors=true");
 
-
-	// set donation goal information
-	/* setTimeout(() => {
-		//getDevDonations();	
-	}, 3000); */
-	
 	// remove loading screen
 	onReady(function () {
 		show('page', true);
 		show('loading', false);
 	});
-
-
 }
 
 function mobileCheck(){
@@ -354,62 +322,6 @@ function mobileCheck(){
 	})(navigator.userAgent||navigator.vendor||window.opera);
 	return check;
 }
-
-// gets latest utx count and sets it to signs
-/* function updateMempoolData(){
-	getPoolData(urlCors + "https://chain." + urlBtc + "tx/unconfirmed/summary", false);
-	getPoolData(urlCors + "https://bch-chain." + urlBtc + "tx/unconfirmed/summary", true);
-}
-
-function updatePriceData(){
-	getPriceData(urlCoinMarketCap + "bitcoin-cash/");
-	getPriceData(urlCoinMarketCap + "bitcoin/");
-} */
-
-// get current balance of dev donation address
-function getDevDonations(){
-	let xhr = new XMLHttpRequest();
-	let url =  urlCors + "https://bch-chain." + urlBtc + "address/3MtCFL4aWWGS5cDFPbmiNKaPZwuD28oFvF";
-
-	xhr.onload = function(){
-		if (xhr.readyState == 4 && xhr.status == 200) {
-			let res = JSON.parse(xhr.responseText);
-			//res = JSON.parse(res.data);
-			let sumVal = res.data.balance;
-			sumVal /= 100000000;
-
-			document.getElementById("donationAmt").textContent = sumVal + " BCH";
-			document.getElementById("donationTotal").textContent = DONATION_GOAL + " BCH";
-
-			sumVal = sumVal/DONATION_GOAL * 100;
-			donationGoal.setAttribute("value", sumVal);
-		}
-	}
-
-	xhr.open('GET', url, true);
-	xhr.send(null);
-}
-
-// get price in usd for bch & btc
-/* function getPriceData(url){
-	let xhr = new XMLHttpRequest();
-
-	xhr.onload = function(){
-		if (xhr.readyState == 4 && xhr.status == 200) {		
-			let res = JSON.parse(xhr.responseText);
-			if (res[0].symbol == "BCH"){
-				PRICE_BCH = res[0].price_usd;
-				document.getElementById("price_bch").textContent = "USD $" + formatWithCommas(parseFloat(PRICE_BCH).toFixed(2));
-			} else {
-				PRICE_BTC = res[0].price_usd;
-				document.getElementById("price_btc").textContent = "USD $" + formatWithCommas(parseFloat(PRICE_BTC).toFixed(2));
-			}
-		}
-	}
-
-	xhr.open('GET', url, true);
-	xhr.send(null);
-} */
 
 // adds thousands seperator to large numbers
 function formatWithCommas(x){
@@ -426,16 +338,11 @@ function blockNotify(data, isCash){
 		ticker = "BCH";
 		t = parseInt(cashPoolInfo.textContent.replace(/\,/g,''));
 		amount = data.nTx;
-		//cashPoolInfo.textContent = formatWithCommas(t - amount);
-		/* setTimeout(() => {
-			//getPoolData(urlCors + "https://bch-chain." + urlBtc + "tx/unconfirmed/summary", true);
-		}, 1000); */
 	} else {
 		ticker = "BTC";
 		t = parseInt(corePoolInfo.textContent.replace(/\,/g,''));
 		amount = data.nTx;
 
-		
 		// sets speed modifier for btc lane
 		let mod = t/amount/100;
 		if (mod >= 0.8){
@@ -444,13 +351,8 @@ function blockNotify(data, isCash){
 			SPEED_MODIFIER = 1 - mod;
 		}
 
-		//corePoolInfo.textContent = formatWithCommas(t - amount);
 		getCoreConfTime(urlBlockchainInfo + "charts/avg-confirmation-time?format=json&cors=true");
 
-		/* setTimeout(() => {
-			//getPoolData(urlCors + "https://chain." + urlBtc + "tx/unconfirmed/summary", false);
-
-		}, 1000); */
 	}
 
 	//if (isVisible) 
@@ -458,43 +360,8 @@ function blockNotify(data, isCash){
 	
 	confirmedAmount.textContent = amount + "x " + ticker;
 	confirmedNotify.style.display = "block"; //no pun intended
-	 setTimeout(() => {
-		confirmedNotify.style.display = "none";
-		//updateMempoolData();
-		//updatePriceData();
-	}, 4000); 
+	 setTimeout(() => {	confirmedNotify.style.display = "none";	}, 4000); 
 }
-
-// retrieve pool information for signs
-/* function getPoolData(url, isCash){
-	let xhr = new XMLHttpRequest();
-
-	xhr.onreadystatechange = function () {
-		if (xhr.readyState == 4 && xhr.status == 200) {
-			let obj = JSON.parse(xhr.responseText);
-			
-			if (isCash){
-				cashPoolInfo.textContent = formatWithCommas(obj.data.count);
-			} else {
-				corePoolInfo.textContent = formatWithCommas(obj.data.count);
-				let mod = obj.data.count/2400/100;
-
-				if (SPEED_MODIFIER == 0.5){
-					if (mod >= 0.8){
-						SPEED_MODIFIER = 0.2;
-					} else {
-						SPEED_MODIFIER = 1 - mod;
-					}
-				}
-			}
-		xhr.abort();
-		} 
-	}
-
-	xhr.open('GET', url, true);
-
-	xhr.send();
-} */
 
 // get average confirmation time for btc
 function getCoreConfTime(url){
@@ -545,21 +412,13 @@ let vis = (function(){
 
 vis(function(){
 	if (vis()){
-		//txCash = [];
-		//txCore = [];
-		//requestAnimationFrame(animate);
-		//if(!isCoreMuted) audioHorns.connect(gainNode);
 		ctx.clearRect(0,0,WIDTH,HEIGHT);
 		isVisible = true;
 	} else{
-		//cancelAnimationFrame(requestID);
 		ctx.clearRect(0,0,WIDTH,HEIGHT);
 		time = new Date().getTime();
 
-		setTimeout(() => {
-			animate();
-		}, 1000);
-		//if(!isCoreMuted) audioHorns.disconnect();
+		setTimeout(() => {animate();}, 1000);
 		isVisible = false;
 	}
 });
@@ -573,7 +432,6 @@ function newTX(isCash, txInfo){
 			if(e.id == txInfo.hash) txExsists = true;
 		});
 		if (txExsists) return;
-		//console.log(txInfo.out);
 
 		let t = parseInt(cashPoolInfo.textContent.replace(/\,/g,''));			
 		cashPoolInfo.textContent = formatWithCommas(t +1);
@@ -636,7 +494,6 @@ function createVehicle(type, arr, txInfo, lane, isCash){
 	txInfo.out.forEach((tx)=>{
 		valOut += tx.value/100000000;
 	});
-
 	
 	fee = (valIn - valOut *100000000)/100000000;
 	
@@ -665,15 +522,6 @@ function createVehicle(type, arr, txInfo, lane, isCash){
 			}
 		});
 	}
-	
-
-	// fix btc vehicle positioning to prevent pile ups. <-- use this if above causes performance issues
-/*  	if (arr.length > 0 && !isCash){
-		let last = arr[arr.length -1];
-		if (width >= last.x && lane == last.lane){
-			x = last.x - width - 10;
-		}
-	} */
 
 	let item = {
 		//type:type,
@@ -691,9 +539,7 @@ function createVehicle(type, arr, txInfo, lane, isCash){
 
 	arr.push(item);
 
-	//if(!isCash) console.log(x);
 }
-
 
 function updateFees(isCash, fee){
 	if(isCash){
@@ -802,8 +648,6 @@ function getCar(valueOut, donation, isCash, userTx, sdTx, sw){
 
 // add sounds to sound array for playback
 function addSounds(carType){
-	//if (!isVisible) return;
-
 	if (carType == carUserCash || carType == carUserCore) {
 		playSound(audioLaCucaracha);
 	}
@@ -960,8 +804,6 @@ let isUserTx = function(txInfo, isCash){
 		let isCashAddress = bchaddr.isCashAddress;
 		let detectAddressFormat = bchaddr.detectAddressFormat;
 
-		//console.log(detectAddressFormat(address));
-
 		let addrType;
 		if (address.length > 0){
 			try {
@@ -974,7 +816,6 @@ let isUserTx = function(txInfo, isCash){
 
 		}
 	}
-	//console.log(txInfo);
 
 	vouts.forEach((key)=>{
 		if (key.addr == address || key.addr == coreAddress.value) isUserTx = true;
@@ -992,7 +833,6 @@ function drawVehicles(arr){
 	let width = null;
 	let txWaiting = 0;
 	let isCash = true;
-
 	
 	arr.forEach(function(item, index, object){
 
@@ -1078,7 +918,6 @@ function animate(){
 	dt = now - (time || now);
 	dt = dt/(1000/60);
 	time = now;
-	//console.log(dt);
 
 	ctx.clearRect(0,0,WIDTH,HEIGHT);
 	drawVehicles(txCash);
