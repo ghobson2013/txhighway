@@ -566,13 +566,15 @@ vis(function(){
 
 // create a new transaction
 function newTX(isCash, txInfo){
+	
 	if (isCash){
 		let txExsists = false;
 		txCash.forEach(e => {
 			if(e.id == txInfo.hash) txExsists = true;
 		});
 		if (txExsists) return;
-		
+		//console.log(txInfo.out);
+
 		let t = parseInt(cashPoolInfo.textContent.replace(/\,/g,''));			
 		cashPoolInfo.textContent = formatWithCommas(t +1);
 
@@ -621,7 +623,7 @@ function addTxToList(isCash, txid, valueOut, car){
 // create vehicles and push to an array
 function createVehicle(type, arr, txInfo, lane, isCash){
 	let donation = false;
-	let userTx = isUserTx(txInfo);
+	let userTx = isUserTx(txInfo, isCash);
 	let sdTx = false;
 	let fee = 0;
 	let valOut = 0;
@@ -908,7 +910,7 @@ let isDonationTx = function(txInfo){
 		if (k == "3ECKq7onkjnRQR2nNe5uUJp2yMsXRmZavC" ||
 				k == "3MtCFL4aWWGS5cDFPbmiNKaPZwuD28oFvF") {
 					isDonation = true;
-					setTimeout(getDevDonations(), 3000);
+					//setTimeout(getDevDonations(), 3000);
 		}
 	});
 
@@ -945,16 +947,37 @@ let isSatoshiBonesTx = function(txInfo){
 }
 
 // check for transactions to user's addresses
-let isUserTx = function(txInfo){
+let isUserTx = function(txInfo, isCash){
 	let vouts = txInfo.out;//.vout;
 	let isUserTx = false;
+	let address = cashAddress.value;
 
+
+	if(isCash){
+		let toLegacyAddress = bchaddr.toLegacyAddress;
+		let isLegacyAddress = bchaddr.isLegacyAddress;
+		let isBitpayAddress = bchaddr.isBitpayAddress;
+		let isCashAddress = bchaddr.isCashAddress;
+		let detectAddressFormat = bchaddr.detectAddressFormat;
+
+		//console.log(detectAddressFormat(address));
+
+		let addrType;
+		if (address.length > 0){
+			try {
+				addrType = detectAddressFormat(address);
+			}
+			catch (err){
+				return;
+			}
+			if (isLegacyAddress(address) || isBitpayAddress(address) || isCashAddress(address)) address = toLegacyAddress(cashAddress.value);
+
+		}
+	}
+	//console.log(txInfo);
 
 	vouts.forEach((key)=>{
-		let keys = Object.keys(key);
-		if (key.addr == cashAddress.value || key.addr == coreAddress.value){
-			isUserTx = true;
-		} 
+		if (key.addr == address || key.addr == coreAddress.value) isUserTx = true;
 	});
 	return isUserTx;
 }
